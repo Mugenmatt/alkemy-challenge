@@ -8,6 +8,9 @@ import { Login } from './pages/login';
 import { SearchHeroes } from './pages/search';
 import styled from 'styled-components/macro';
 import  userDefaultIcon  from './assets/img/userDefault.svg';
+import ReactModal from 'react-modal';
+
+ReactModal.setAppElement('#root');
 
 const Header = styled.div`
   background-color: #fff;

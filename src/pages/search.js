@@ -1,5 +1,7 @@
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components/macro';
+import Modal from 'react-modal';
 import  userDefaultIcon  from '../assets/img/userDefault.svg';
 import  searchIcon  from '../assets/img/search-icon.svg';
 
@@ -8,6 +10,7 @@ const SearchContent = styled.div`
     margin: auto;
     padding: 20px 100px;
     background-color: #fff;
+    margin-bottom: 3%;
 `;
 
 const Search = styled.form`
@@ -35,12 +38,13 @@ const AllHeroes = styled.div`
     margin-bottom: 3%;
 `;
 
-const HeroBox = styled.div`
+const HeroCard = styled.div`
     width: 15%;
     border: 0.4em solid #000;
     border-radius: 10px;
     margin-bottom: 3%;
     margin-right: 3%;
+    cursor: pointer;
 `;
 
 const HeroImg = styled.img`
@@ -90,7 +94,56 @@ const BackHomeBtn = styled.p`
     }
 `;
 
+const ModalBox = styled.div`
+    width: 70%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+`;
+
+const HeroImgModal = styled.img`
+    width: 100%;
+`;
+
+const HeroNameModal = styled.p`
+    font-size: 2em;
+    display: inline-block;
+    margin: 0.2em 0 0.2em 0;
+
+`;
+
+const HeroDescriptionModal = styled.p`
+    font-size: 2em;
+    display: inline-block;
+    margin: 0.5em 0 0.5em 0;
+`;
+
+const HeroDataModal = styled.p`
+    font-size: 2em;
+    color: red;
+    display: inline-block;
+    margin: 0.5em 0 0.5em 0;
+`;
+
+const CloseModal = styled.button`
+    font-size: 2em;
+    width: 20%;
+    padding: 20px;
+    margin: auto;
+    margin: 5% auto;
+    cursor: pointer;
+    background-color: #fff;
+    border: #000;
+    border-radius: 10px;
+    :hover {
+        background-color: #000;
+        color:#fff;
+    }
+`;
+
 export const SearchHeroes = () => {
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+
     return (
         <>
             <SearchContent>
@@ -100,14 +153,31 @@ export const SearchHeroes = () => {
                 </Search>
 
                 <AllHeroes>
-                    <HeroBox>
+                    <HeroCard onClick={() => setModalIsOpen(true)}>
                         <HeroImg src={userDefaultIcon} alt='Hero Icon' />
+                        
                         <HeroName>Hero Name</HeroName>
                         <AddHeroForm method='POST' action=''>
                             <AddHeroBtn type='submit' value='+' />
                         </AddHeroForm>
-                    </HeroBox>
-
+                    </HeroCard>
+                    <Modal
+                        isOpen={modalIsOpen} 
+                        shouldCloseOnEsc={() => setModalIsOpen(false)} 
+                        shouldCloseOnOverlayClick={() => setModalIsOpen(false)} 
+                        onRequestClose={() => setModalIsOpen(false)}>
+                            <ModalBox>
+                                <HeroImgModal src={userDefaultIcon} alt='Hero Image' />
+                                <HeroNameModal>Hero Name: <HeroDataModal> </HeroDataModal></HeroNameModal>
+                                <HeroDescriptionModal>Nick Name: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Height: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Weight: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Eyes Color: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Hair Color: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Job: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
+                            </ModalBox>
+                        </Modal>
                 </AllHeroes>
 
                 <Link to='/' style={{ textDecoration: 'none'}}><BackHomeBtn> Go back with your team </BackHomeBtn></Link>

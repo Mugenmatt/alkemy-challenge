@@ -7,6 +7,7 @@ const HomeContent = styled.div`
     margin: auto;
     padding: 20px 100px;
     background-color: #fff;
+    margin-bottom: 3%;
 `;
 
 const TitleHome = styled.h1`
