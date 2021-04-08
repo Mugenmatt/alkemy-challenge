@@ -41,10 +41,8 @@ const App = () => {
     const urlToken = `https://superheroapi.com/api/${token}`
 
     const correctUser = {
-    // email: 'challenge@alkemy.org',
-    // password: 'react'
-    email: 'a@a.com',
-    password: '123'
+    email: 'challenge@alkemy.org',
+    password: 'react'
   }
   const [emailData, setEmailData] = useState(null);
   const [passwordData, setPasswordData] = useState(null);

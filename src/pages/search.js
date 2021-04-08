@@ -24,15 +24,20 @@ const SearchInput = styled.input`
     width: 20%;
 `;
 
-const SearchImg = styled.img`
-    background-color: #000;
-    width: 23px;
+const SearchBtn = styled.input`
     vertical-align: top;
-    border: 1px solid #000;
+    width: 3%;
+    background-image: url(${searchIcon});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #000;
+    border: none;
+    padding: 0.2%;
+    cursor: pointer;
 `;
 
 const AllHeroes = styled.div`
-    width: 100%;
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
@@ -157,25 +162,18 @@ export const SearchHeroes = ({token, urlToken}) => {
     const isLogged = window.localStorage.getItem('isAuthorized');
 
     const [heroesList, setHeroesList] = useState([]);
-    const [searchHero, setSearchHero] = useState(null);
-    
-    useEffect(() => {
-        
-        let newHero = [];
-            for(let heroNumber = 1; heroNumber <= 20; heroNumber++ ){
-                fetch(`${urlToken}/${heroNumber}`)
-                .then(data => data.json())
-                .then(data => {
-                    newHero = [...newHero, data];
-                    setHeroesList(...heroesList, newHero)
-                    return newHero;
-                })
-        }
-    }, [])
-    // console.log(heroesList);
+    const [writtenHero, setWrittenHero] = useState(null);
 
-    const handleSearch = hero => {
-        setSearchHero(hero.target.value)
+    const handleWrittenHero = hero => {
+        setWrittenHero(hero.target.value)
+    }
+
+    const searchHero = async e => {
+        e.preventDefault()
+        const fetchHeroes = await fetch(`${urlToken}/search/${writtenHero}`)
+        let selectedHero = await fetchHeroes.json();
+        selectedHero = selectedHero.results;
+        return setHeroesList(selectedHero);
     }
 
     if(isLogged === 'false' || !isLogged){
@@ -185,9 +183,9 @@ export const SearchHeroes = ({token, urlToken}) => {
         <>
                 <SearchContent>
 
-                    <Search method='GET' action=''>
-                        <SearchInput type='text' placeholder='Hero name...' onChange={handleSearch} />
-                        <SearchImg src={searchIcon} alt='Magnifying Glass Icon' />
+                    <Search onSubmit={searchHero}>
+                        <SearchInput type='text' placeholder='Hero name...' onChange={handleWrittenHero} />
+                        <SearchBtn type='submit' value='' />
                     </Search>
 
                     <AllHeroes>
