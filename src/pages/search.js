@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components/macro';
 import Modal from 'react-modal';
 import  userDefaultIcon  from '../assets/img/userDefault.svg';
@@ -11,6 +11,7 @@ const SearchContent = styled.div`
     padding: 20px 100px;
     background-color: #fff;
     margin-bottom: 3%;
+    border-radius: 20px;
 `;
 
 const Search = styled.form`
@@ -141,48 +142,71 @@ const CloseModal = styled.button`
     }
 `;
 
-export const SearchHeroes = () => {
+export const SearchHeroes = ({token}) => {
     const [modalIsOpen, setModalIsOpen] = useState(false)
+
+    const url = `https://superheroapi.com/api/${token}`
+
+    const isLogged = window.localStorage.getItem('isAuthorized');
+
+    // function Heroes() {
+    //     fetch(`url/ACA EL QUE TRAE TODOS LOS HEROES`)
+    //     .then(data => data.json())
+    //     .then(data => {
+    //         return console.log(data);
+    //     })
+    // }
+
+    // useEffect(() => {
+
+    //     Heroes();
+        
+    // }, [])
+
+    if(isLogged === 'false'){
+        return <Redirect to='/login' />
+    }
 
     return (
         <>
-            <SearchContent>
-                <Search method='GET' action=''>
-                    <SearchInput type='text' placeholder='Hero name...' />
-                    <SearchImg src={searchIcon} alt='Magnifying Glass Icon' />
-                </Search>
+                <SearchContent>
 
-                <AllHeroes>
-                    <HeroCard onClick={() => setModalIsOpen(true)}>
-                        <HeroImg src={userDefaultIcon} alt='Hero Icon' />
-                        
-                        <HeroName>Hero Name</HeroName>
-                        <AddHeroForm method='POST' action=''>
-                            <AddHeroBtn type='submit' value='+' />
-                        </AddHeroForm>
-                    </HeroCard>
-                    <Modal
-                        isOpen={modalIsOpen} 
-                        shouldCloseOnEsc={() => setModalIsOpen(false)} 
-                        shouldCloseOnOverlayClick={() => setModalIsOpen(false)} 
-                        onRequestClose={() => setModalIsOpen(false)}>
-                            <ModalBox>
-                                <HeroImgModal src={userDefaultIcon} alt='Hero Image' />
-                                <HeroNameModal>Hero Name: <HeroDataModal> </HeroDataModal></HeroNameModal>
-                                <HeroDescriptionModal>Nick Name: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                <HeroDescriptionModal>Height: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                <HeroDescriptionModal>Weight: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                <HeroDescriptionModal>Eyes Color: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                <HeroDescriptionModal>Hair Color: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                <HeroDescriptionModal>Job: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
-                            </ModalBox>
-                        </Modal>
-                </AllHeroes>
+                    <Search method='GET' action=''>
+                        <SearchInput type='text' placeholder='Hero name...' />
+                        <SearchImg src={searchIcon} alt='Magnifying Glass Icon' />
+                    </Search>
 
-                <Link to='/' style={{ textDecoration: 'none'}}><BackHomeBtn> Go back with your team </BackHomeBtn></Link>
+                    <AllHeroes>
+                        <HeroCard onClick={() => setModalIsOpen(true)}>
+                            <HeroImg src={userDefaultIcon} alt='Hero Icon' />
+                            
+                            <HeroName>Hero Name</HeroName>
+                            <AddHeroForm method='POST' action=''>
+                                <AddHeroBtn type='submit' value='+' />
+                            </AddHeroForm>
+                        </HeroCard>
+                        <Modal
+                            isOpen={modalIsOpen} 
+                            shouldCloseOnEsc={() => setModalIsOpen(false)} 
+                            shouldCloseOnOverlayClick={() => setModalIsOpen(false)} 
+                            onRequestClose={() => setModalIsOpen(false)}>
+                                <ModalBox>
+                                    <HeroImgModal src={userDefaultIcon} alt='Hero Image' />
+                                    <HeroNameModal>Hero Name: <HeroDataModal> </HeroDataModal></HeroNameModal>
+                                    <HeroDescriptionModal>Nick Name: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                    <HeroDescriptionModal>Height: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                    <HeroDescriptionModal>Weight: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                    <HeroDescriptionModal>Eyes Color: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                    <HeroDescriptionModal>Hair Color: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                    <HeroDescriptionModal>Job: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                    <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
+                                </ModalBox>
+                            </Modal>
+                    </AllHeroes>
 
-            </SearchContent>
+                    <Link to='/' style={{ textDecoration: 'none'}}><BackHomeBtn> Go back with your team </BackHomeBtn></Link>
+
+                </SearchContent>
         </>
     )
 }

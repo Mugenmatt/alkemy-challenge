@@ -1,3 +1,5 @@
+import {useState} from 'react';
+import { Redirect } from 'react-router';
 import styled from 'styled-components/macro';
 
 const FormBox = styled.div`
@@ -12,7 +14,6 @@ const FormBox = styled.div`
 `;
 
 const FormTitle = styled.h1`
-    margin: 0 0 3% 0;
     font-weight: 500;
 `;
 
@@ -23,12 +24,19 @@ const FormData = styled.form`
     width: 100%;
 `;
 
+const LabelInput = styled.label`
+    font-size: 1.5em;
+    width: 70%;
+    text-align: left;
+    margin-top: 5%;
+`;
+
 const Input = styled.input`
     width: 70%;
     border-radius: 20px;
     border: 1px solid #000;
     padding: 2%;
-    margin: 3% 0;
+    margin: 2% 0;
     cursor: pointer;
 `;
 
@@ -38,7 +46,7 @@ const SendBtn = styled.input`
     font-weight: 700;
     border-radius: 20px;
     border: 1px solid #000;
-    background-color: #ccc;
+    background-color: #fff;
     padding: 2%;
     margin: 3% 0;
     cursor: pointer;
@@ -49,19 +57,39 @@ const SendBtn = styled.input`
     }
 `;
 
-export const Login = () => {
+const ErrorMessage = styled.p`
+    color: red;
+`;
+
+export const Login = (props) => {
+    const { emailData, passwordData, handleSubmit, handleEmail, handlePassword, invalidInput, emptyInput } = props;
+    const isLogged = window.localStorage.getItem('isAuthorized');
+    if(isLogged === 'true') {
+        return <Redirect to='/' />
+    }
     return (
-        <FormBox>
-            <FormTitle>LOGIN</FormTitle>
-            <FormData method="POST" action="" >
 
-                <Input type="text" placeholder="Type here..." />
+        <>
+                <FormBox>
 
-                <Input type="password" placeholder="Type here..." />
+                    <FormTitle>LOGIN</FormTitle>
+                    {emptyInput && <ErrorMessage> Inputs cannot be empty! </ErrorMessage>}
+                    {invalidInput && <ErrorMessage> Invalid email or password </ErrorMessage>}
+                    
+                    <FormData onSubmit={handleSubmit}>
 
-                <SendBtn type="submit" value="ENTER" />
+                        <LabelInput>Email</LabelInput>
+                        <Input type="text" placeholder="Type your email here..." onChange={handleEmail} />
 
-            </FormData>
-        </FormBox>
+                        <LabelInput>Password</LabelInput>
+                        <Input type="password" placeholder="Type your password here..." onChange={handlePassword} />
+
+                        <SendBtn type="submit" value="SUBMIT" />
+
+                    </FormData>
+
+                </FormBox>
+            
+        </>
     )
 }

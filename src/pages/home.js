@@ -1,4 +1,5 @@
-import {Link} from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components/macro';
 import  userDefaultIcon  from '../assets/img/userDefault.svg';
 
@@ -7,6 +8,7 @@ const HomeContent = styled.div`
     margin: auto;
     padding: 20px 100px;
     background-color: #fff;
+    border-radius: 20px;
     margin-bottom: 3%;
 `;
 
@@ -101,41 +103,72 @@ const DataTeamPowerstats = styled.span`
     color: red;
 `;
 
-export const Home = () => {
+export const Home = ({token, urlToken}) => {
+
+    const isLogged = window.localStorage.getItem('isAuthorized');
+
+    function TeamHero() {
+        fetch(`${urlToken}/70/powerstats`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                Authorization:
+                `${token}`
+                },
+          })
+        .then(data => data.json())
+        .then(data => {
+            return console.log(data);
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
+    useEffect(() => {
+
+        TeamHero();
+        
+    }, [])
+
+    if(isLogged === 'false'){
+        return <Redirect to='/login' />
+    }
     return (
-        <HomeContent>
-            
-            <TitleHome>Your Team!</TitleHome>
+        <>
+                <HomeContent>
 
-            <TeamBox>
-                <Hero>
-                    <HeroImg src={userDefaultIcon} alt="Image of the Hero" />
-                    <HeroName> Hero Name </HeroName>
-                    <HeroPowerStats> Intelligence:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                    <HeroPowerStats> Strength:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                    <HeroPowerStats> Speed:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                    <HeroPowerStats> Durability:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                    <HeroPowerStats> Power:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                    <HeroPowerStats> Combat:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                    <DeleteBox method="POST" action="">
-                        <DeleteBtn type="submit" value="Delete" />
-                    </DeleteBox>
-                </Hero>
+                    <TitleHome>Your Team!</TitleHome>
 
-            </TeamBox>
+                    <TeamBox>
+                        <Hero>
+                            <HeroImg src={userDefaultIcon} alt="Image of the Hero" />
+                            <HeroName> Hero Name </HeroName>
+                            <HeroPowerStats> Intelligence:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                            <HeroPowerStats> Strength:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                            <HeroPowerStats> Speed:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                            <HeroPowerStats> Durability:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                            <HeroPowerStats> Power:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                            <HeroPowerStats> Combat:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                            <DeleteBox method="POST" action="">
+                                <DeleteBtn type="submit" value="Delete" />
+                            </DeleteBox>
+                        </Hero>
 
-            <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>
+                    </TeamBox>
 
-            <TitleHome>Team Powerstats</TitleHome>
+                    <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>
 
-            <TeamPowerstatsBox>
-                <TeamPowerstats> Intelligence: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
-                <TeamPowerstats> Strength: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
-                <TeamPowerstats> Speed: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
-                <TeamPowerstats> Durability: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
-                <TeamPowerstats> Power: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
-                <TeamPowerstats> Combat: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
-            </TeamPowerstatsBox>
-        </HomeContent>
+                    <TitleHome>Team Powerstats</TitleHome>
+
+                    <TeamPowerstatsBox>
+                        <TeamPowerstats> Intelligence: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Strength: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Speed: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Durability: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Power: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Combat: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
+                    </TeamPowerstatsBox>
+                </HomeContent>
+        </>
     )
 }
