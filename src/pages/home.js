@@ -1,7 +1,9 @@
+import axios from 'axios';
 import {useState, useEffect} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components/macro';
 import  userDefaultIcon  from '../assets/img/userDefault.svg';
+import Axios from 'axios'
 
 const HomeContent = styled.div`
     width: 80%;
@@ -107,37 +109,39 @@ export const Home = ({token, urlToken}) => {
 
     const isLogged = window.localStorage.getItem('isAuthorized');
 
+
     function TeamHero() {
-        fetch(`${urlToken}/70/powerstats`, {
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                Authorization:
-                `${token}`
-                },
-          })
-        .then(data => data.json())
+
+        fetch(`${urlToken}/1`)
         .then(data => {
-            return console.log(data);
-        }).catch(error => {
-            console.log(error);
+            return data.json();
         })
+        .then(heroData => {
+            const hero = {
+                _name: heroData.name,
+                _image: heroData.image.url,
+                _powerstats: heroData.powerstats
+            }
+            return setMyHero(hero);
+        })
+        .catch(error => error)
+
     }
 
-    useEffect(() => {
+    const [myHero, setMyHero] = useState({});
 
-        TeamHero();
-        
+    useEffect(() => {
+        TeamHero()
     }, [])
 
-    if(isLogged === 'false'){
+    if(isLogged === 'false' || !isLogged){
         return <Redirect to='/login' />
     }
     return (
         <>
                 <HomeContent>
 
-                    <TitleHome>Your Team!</TitleHome>
+                <TitleHome>Your Team!</TitleHome>
 
                     <TeamBox>
                         <Hero>

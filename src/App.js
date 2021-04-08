@@ -8,6 +8,7 @@ import  userDefaultIcon  from './assets/img/userDefault.svg';
 import logoutIcon from './assets/img/logout.svg';
 import ReactModal from 'react-modal';
 
+
 ReactModal.setAppElement('#root');
 
 const Header = styled.div`
@@ -47,11 +48,10 @@ const App = () => {
   }
   const [emailData, setEmailData] = useState(null);
   const [passwordData, setPasswordData] = useState(null);
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(null);
   const [invalidInput, setInvalidInput] = useState(false);
   const [emptyInput, setEmptyInput] = useState(false);
 
-  window.localStorage.setItem('isAuthorized', isAuth);
 
   const isLogged = window.localStorage.getItem('isAuthorized');
 
@@ -66,13 +66,19 @@ const App = () => {
   const handleSubmit = e => {
       e.preventDefault()
       if(emailData === correctUser.email && passwordData === correctUser.password) {
-        return setIsAuth(true)
+    window.localStorage.setItem('isAuthorized', 'true');
+    return setIsAuth(true)
       } else if(emailData === null || passwordData === null) {
         return setEmptyInput(true)
       } else {
         return setInvalidInput(true)
       }
   }
+
+  const handleLogout = logout => {
+      window.localStorage.removeItem('isAuthorized')
+  }
+
     return (
       <div className="App">
         <Router>
@@ -83,7 +89,7 @@ const App = () => {
             <Link to='/login' style={{width:'10%'}} >
               { 
                 isLogged === 'true' ?
-                <UserIconImg src={userDefaultIcon} alt="User Login Icon" />
+                <UserIconImg src={userDefaultIcon} alt="User Login Icon" onClick={handleLogout} />
                 :
                 <UserIconImg src={logoutIcon} alt="User Logout Icon" />
               }

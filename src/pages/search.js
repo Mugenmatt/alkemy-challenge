@@ -39,17 +39,26 @@ const AllHeroes = styled.div`
     margin-bottom: 3%;
 `;
 
-const HeroCard = styled.div`
+const HeroCardContainer = styled.div`
     width: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: space-between;
     border: 0.4em solid #000;
     border-radius: 10px;
+    overflow: hidden;
     margin-bottom: 3%;
     margin-right: 3%;
+`;
+
+const HeroCard = styled.div`
+    width: 100%;
     cursor: pointer;
 `;
 
 const HeroImg = styled.img`
     width: 100%;
+    max-height: 200px;
 `;
 
 const HeroName = styled.h3`
@@ -142,66 +151,79 @@ const CloseModal = styled.button`
     }
 `;
 
-export const SearchHeroes = ({token}) => {
+export const SearchHeroes = ({token, urlToken}) => {
     const [modalIsOpen, setModalIsOpen] = useState(false)
-
-    const url = `https://superheroapi.com/api/${token}`
 
     const isLogged = window.localStorage.getItem('isAuthorized');
 
-    // function Heroes() {
-    //     fetch(`url/ACA EL QUE TRAE TODOS LOS HEROES`)
-    //     .then(data => data.json())
-    //     .then(data => {
-    //         return console.log(data);
-    //     })
-    // }
-
-    // useEffect(() => {
-
-    //     Heroes();
+    const [heroesList, setHeroesList] = useState([]);
+    const [searchHero, setSearchHero] = useState(null);
+    
+    useEffect(() => {
         
-    // }, [])
+        let newHero = [];
+            for(let heroNumber = 1; heroNumber <= 20; heroNumber++ ){
+                fetch(`${urlToken}/${heroNumber}`)
+                .then(data => data.json())
+                .then(data => {
+                    newHero = [...newHero, data];
+                    setHeroesList(...heroesList, newHero)
+                    return newHero;
+                })
+        }
+    }, [])
+    // console.log(heroesList);
 
-    if(isLogged === 'false'){
-        return <Redirect to='/login' />
+    const handleSearch = hero => {
+        setSearchHero(hero.target.value)
     }
 
+    if(isLogged === 'false' || !isLogged){
+        return <Redirect to='/login' />
+    }
     return (
         <>
                 <SearchContent>
 
                     <Search method='GET' action=''>
-                        <SearchInput type='text' placeholder='Hero name...' />
+                        <SearchInput type='text' placeholder='Hero name...' onChange={handleSearch} />
                         <SearchImg src={searchIcon} alt='Magnifying Glass Icon' />
                     </Search>
 
                     <AllHeroes>
-                        <HeroCard onClick={() => setModalIsOpen(true)}>
-                            <HeroImg src={userDefaultIcon} alt='Hero Icon' />
-                            
-                            <HeroName>Hero Name</HeroName>
-                            <AddHeroForm method='POST' action=''>
-                                <AddHeroBtn type='submit' value='+' />
-                            </AddHeroForm>
-                        </HeroCard>
-                        <Modal
-                            isOpen={modalIsOpen} 
-                            shouldCloseOnEsc={() => setModalIsOpen(false)} 
-                            shouldCloseOnOverlayClick={() => setModalIsOpen(false)} 
-                            onRequestClose={() => setModalIsOpen(false)}>
-                                <ModalBox>
-                                    <HeroImgModal src={userDefaultIcon} alt='Hero Image' />
-                                    <HeroNameModal>Hero Name: <HeroDataModal> </HeroDataModal></HeroNameModal>
-                                    <HeroDescriptionModal>Nick Name: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                    <HeroDescriptionModal>Height: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                    <HeroDescriptionModal>Weight: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                    <HeroDescriptionModal>Eyes Color: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                    <HeroDescriptionModal>Hair Color: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                    <HeroDescriptionModal>Job: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
-                                    <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
-                                </ModalBox>
-                            </Modal>
+                        {   
+                            heroesList.map(hero => {
+                                return <HeroCardContainer key={hero.id} loading="lazy">
+                                <HeroCard onClick={() => setModalIsOpen(true)}>
+                                    {hero.image.url ?
+                                        <HeroImg src={hero.image.url} alt='Hero Icon' />
+                                        : <HeroImg src={userDefaultIcon} alt='Image Hero Icon Not Found' />
+                                    }
+                                    <HeroName>{hero.name}</HeroName>
+                                    <AddHeroForm method='POST' action=''>
+                                        <AddHeroBtn type='submit' value='+' />
+                                    </AddHeroForm>
+
+                                <Modal
+                                    isOpen={modalIsOpen} 
+                                    onRequestClose={() => setModalIsOpen(false)}
+                                    >
+                                        <ModalBox>
+                                            <HeroImgModal src={hero.image.url} alt='Hero Image' />
+                                            <HeroNameModal>Hero Name: <HeroDataModal> {hero.name}</HeroDataModal></HeroNameModal>
+                                            <HeroDescriptionModal>Nick Name: <HeroDataModal>{hero.biography.aliases[0]} </HeroDataModal></HeroDescriptionModal>
+                                            <HeroDescriptionModal>Height: <HeroDataModal> {hero.appearance.height[0]}, {hero.appearance.height[1]} </HeroDataModal></HeroDescriptionModal>
+                                            <HeroDescriptionModal>Weight: <HeroDataModal> </HeroDataModal></HeroDescriptionModal>
+                                            <HeroDescriptionModal>Eyes Color: <HeroDataModal> {hero.appearance['eye-color']} </HeroDataModal></HeroDescriptionModal>
+                                            <HeroDescriptionModal>Hair Color: <HeroDataModal> {hero.appearance['hair-color']} </HeroDataModal></HeroDescriptionModal>
+                                            <HeroDescriptionModal>Job: <HeroDataModal> {hero.work.occupation[0]} </HeroDataModal></HeroDescriptionModal>
+                                            <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
+                                        </ModalBox>
+                                    </Modal>
+                                    </HeroCard>
+                                </HeroCardContainer>
+                            })
+                        }
                     </AllHeroes>
 
                     <Link to='/' style={{ textDecoration: 'none'}}><BackHomeBtn> Go back with your team </BackHomeBtn></Link>
