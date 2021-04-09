@@ -20,6 +20,14 @@ const TitleSearch = styled.h1`
     margin-bottom: 3%;
 `;
 
+const TitleRules = styled.p`
+    font-size: 2em;
+    color: green;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3%;
+`;
+
 const AlignmentHeroes = styled.p`
     color: #000;
     display:inline-block;
@@ -27,13 +35,13 @@ const AlignmentHeroes = styled.p`
     font-size: 2em;
     margin: 2% 0 5% 5%;
     text-align: center;
-    
 `;
 
 const AlignmentHeroesData = styled.span`
     color: red;
     display: inline-block;
     font-size: 2em;
+    vertical-align: middle;
 `;
 
 const Search = styled.form`
@@ -87,6 +95,7 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
     const isLogged = window.localStorage.getItem('isAuthorized');
     const [heroesList, setHeroesList] = useState([]);
     const [writtenHero, setWrittenHero] = useState(null);
+    const [errorFetch, setErrorFetch] = useState(null)
 
     if(isLogged === 'false' || !isLogged){
         return <Redirect to='/login' />
@@ -100,16 +109,21 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
 
     const searchHero = async e => {
         try {
-            const fetchHeroes = await fetch(`${urlToken}/search/${writtenHero}`)
+            const fetchHeroes = await fetch(`search/${writtenHero}`)
             let selectedHero = await fetchHeroes.json();
-            selectedHero = selectedHero.results;
-            selectedHero.map(hero => {
-                return hero.isChosen = 'false'
-            })
-            console.log(selectedHero);
-            setHeroesList(selectedHero);
+            if(selectedHero.response === 'success') {
+
+                selectedHero = selectedHero.results;
+
+                selectedHero.map(hero => {
+                    return hero.isChosen = 'false'
+                })
+                
+                return setHeroesList(selectedHero);
+            }
         } catch(error) {
-            console.log('Error ' + error);
+            console.log(error);
+            setErrorFetch(error)
         }
      }
 
@@ -127,13 +141,17 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
 
                     <TitleSearch>Choose your heroes!</TitleSearch>
 
+                    <TitleRules>There should be 3 superheroes and 3 supervillains!</TitleRules>
+
                     <Search >
                         <SearchInput type='text' placeholder='Hero name...' onChange={handleWrittenHero} />
                         <SearchBtn type='button' value='' onClick={searchHero} />
                     </Search>
 
-                    <AlignmentHeroes>The good one's: <AlignmentHeroesData>{goodHeroes.length}</AlignmentHeroesData></AlignmentHeroes>
-                    <AlignmentHeroes>The bad one's: <AlignmentHeroesData>{badHeroes.length}</AlignmentHeroesData></AlignmentHeroes>
+                    { errorFetch && <p> { errorFetch }</p> }
+
+                    <AlignmentHeroes>SuperHeroes: <AlignmentHeroesData>{goodHeroes.length}</AlignmentHeroesData></AlignmentHeroes>
+                    <AlignmentHeroes>SuperVillains: <AlignmentHeroesData>{badHeroes.length}</AlignmentHeroesData></AlignmentHeroes>
 
                     <AllHeroes>
                         <>

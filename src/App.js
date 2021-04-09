@@ -41,8 +41,8 @@ const Main = styled.div`
 `;
 
 const App = () => {
-    const token = 1132055343928952;
-    const urlToken = `https://superheroapi.com/api/${token}`
+    // const token = 1132055343928952;
+    // const urlToken = `https://superheroapi.com/api/${token}`
 
     const correctUser = {
     email: 'challenge@alkemy.org',
@@ -132,8 +132,8 @@ const App = () => {
 
                 <Route path="/search-heroes">
                   <SearchHeroes 
-                    token={token}
-                    urlToken={urlToken}
+                    // token={token}
+                    // urlToken={urlToken}
                     handleSelectedHeroe={handleSelectedHeroe}
                   />
                 </Route>

@@ -1,5 +1,6 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import Modal from 'react-modal';
+import ReactDOM from 'react-dom';
 // import  userDefaultIcon  from '../assets/img/userDefault.svg';
 import styled from 'styled-components';
 
@@ -96,63 +97,110 @@ const CloseModal = styled.button`
 `;
 
 export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, goodHeroes, badHeroes }) => {
-    const [modalIsOpen, setModalIsOpen] = useState(false)
-
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [chosenHeroModal, setChosenHeroModal] = useState([]);
+    const heroesListCopy = [...heroesList];
     return (<>
         {   
             heroesList.map(hero => {
+
                 let heroSelection = JSON.parse(window.localStorage.getItem('myTeam', hero))
+
                 let myTeamID = heroSelection.map(hero => {
                     return hero.id;
                 })
+
                 return <div style={{display:'inline', width: '15%', margin:'0 3% 3% 0'}} key={hero.id}>
                     {
                         !myTeamID.includes(hero.id) &&
-                            <HeroCard >
-                                <HeroImg src={hero.image.url} alt='Hero Icon' onClick={() => setModalIsOpen(true)} />
-                                <HeroName onClick={() => setModalIsOpen(true)} >{hero.name}</HeroName>
+                        <HeroCard >
 
-                                { goodHeroes.length >= 3 || badHeroes.length >= 3 ?
-                                        <AddHeroForm >
-                                            <AddHeroBtn type='button' value={`Only 3 ${hero.biography.alignment} one's!`} />
-                                        </AddHeroForm>
-                                    : <>
+                            <HeroImg src={hero.image.url} alt='Hero Icon' onClick={() => {
+                                setModalIsOpen(true) 
+                                setChosenHeroModal(hero)
+                                }
+                            } />
+
+                            <HeroName onClick={() => {
+                                setModalIsOpen(true) 
+                                setChosenHeroModal(hero)
+                                }
+                            } >{hero.name}</HeroName>
+
                                 {
-                                    heroSelection !== 'null' &&
-                                    heroSelection.length <= 5 ?
+                                    hero.biography.alignment === 'neutral' &&
                                     <AddHeroForm >
-                                        <AddHeroBtn type='button' value='Add to My Team!' onClick={() => handleSelectedHeroe(hero)} />
-                                    </AddHeroForm>
-                                    :
-                                    <AddHeroForm >
-                                        <AddHeroBtn type='button' value='Limit: 6 heroes!' />
+                                        <AddHeroBtn type='button' value='Neutral' />
                                     </AddHeroForm>
                                 }
-                                </>}
-                        <Modal
-                            isOpen={modalIsOpen} 
-                            onRequestClose={() => setModalIsOpen(false)}
-                            >
-                                <ModalBox>
-                                    <HeroImgModal src={hero.image.url} alt='Hero Image' />
-                                    <HeroNameModal>Hero Name: <HeroDataModal> {hero.name}</HeroDataModal></HeroNameModal>
-                                    <HeroDescriptionModal>Nick Name: <HeroDataModal>{hero.biography.aliases[0]} </HeroDataModal></HeroDescriptionModal>
-                                    <HeroDescriptionModal>Height: <HeroDataModal> {hero.appearance.height[0]}  </HeroDataModal></HeroDescriptionModal>
-                                    <HeroDescriptionModal>Weight: <HeroDataModal> {hero.appearance.height[1]} </HeroDataModal></HeroDescriptionModal>
-                                    <HeroDescriptionModal>Eyes Color: <HeroDataModal> {hero.appearance['eye-color']} </HeroDataModal></HeroDescriptionModal>
-                                    <HeroDescriptionModal>Hair Color: <HeroDataModal> {hero.appearance['hair-color']} </HeroDataModal></HeroDescriptionModal>
-                                    <HeroDescriptionModal>Job: <HeroDataModal> {hero.work.occupation} </HeroDataModal></HeroDescriptionModal>
-                                    <HeroDescriptionModal>Alignment: <HeroDataModal> {hero.biography.alignment} </HeroDataModal></HeroDescriptionModal>
-                                    <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
-                                </ModalBox>
-                            </Modal>
+                                
+                            <>
+                                {
+                                    goodHeroes.length === 3 && 
+                                    hero.biography.alignment === 'good' &&
+                                    <AddHeroForm >
+                                        <AddHeroBtn type='button' value='No more superheroes!' />
+                                    </AddHeroForm>
+                                }
+
+                                {
+                                    badHeroes.length === 3 && 
+                                    hero.biography.alignment === 'bad' &&
+                                    <AddHeroForm >
+                                        <AddHeroBtn type='button' value='No more supervillains!' />
+                                    </AddHeroForm>
+                                }
+                            </>
+
+                                { 
+                                    heroSelection !== 'null' &&
+                                    heroSelection.length <= 5 && 
+                                    hero.biography.alignment !== 'neutral' &&
+                                    <AddHeroForm >
+                                        <AddHeroBtn type='button' style={{
+                                            display: badHeroes.length === 3 || goodHeroes.length === 3 ? 'none' : 'inline'
+                                        }} 
+                                        value={'Add to My Team!'} 
+                                        onClick={() => handleSelectedHeroe(hero)} />
+                                    </AddHeroForm>
+                                }
                         </HeroCard>
-                    
                     }
-                </div>
+
+                    {
+                        modalIsOpen &&
+                        heroesListCopy.find(heroData => {
+                            if(heroData.id === chosenHeroModal.id) {
+                                return <Modal
+                                    key={heroData.id}
+                                    isOpen={true} 
+                                    onRequestClose={() => setModalIsOpen(false)}
+                                    >
+                                        <ModalBox>
+                                            <HeroImgModal src={heroData.image.url} alt='Hero Image' />
+                                            <HeroNameModal>Hero Name: <HeroDataModal> {heroData.name}</HeroDataModal></HeroNameModal>
+                                            <HeroDescriptionModal>Nick Name: <HeroDataModal>{heroData.biography.aliases[0] === '-' ? 'No aliases' : heroData.biography.aliases} </HeroDataModal></HeroDescriptionModal>
+                                            <HeroDescriptionModal>Height: <HeroDataModal> {heroData.appearance.height[0] === '-' ? "Unknown" : heroData.appearance.height[0] } </HeroDataModal></HeroDescriptionModal>
+                                            <HeroDescriptionModal>Weight: <HeroDataModal> {heroData.appearance.weight[1] === '0 kg' ? "Unknown" : heroData.appearance.weight[1]} </HeroDataModal></HeroDescriptionModal>
+                                            <HeroDescriptionModal>Eyes Color: <HeroDataModal> {heroData.appearance['eye-color'] === '-' ? "Unknown" : heroData.appearance['eye-color']} </HeroDataModal></HeroDescriptionModal>
+                                            <HeroDescriptionModal>Hair Color: <HeroDataModal> {heroData.appearance['hair-color'] === '-' ? 'Unknown' : heroData.appearance['hair-color']} </HeroDataModal></HeroDescriptionModal>
+                                            <HeroDescriptionModal>Job: <HeroDataModal> {heroData.work.occupation === '-' ? 'No job' : heroData.work.occupation} </HeroDataModal></HeroDescriptionModal>
+                                            <HeroDescriptionModal>Alignment: <HeroDataModal> {heroData.biography.alignment} </HeroDataModal></HeroDescriptionModal>
+                                            <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
+                                        </ModalBox>
+                                    </Modal>
+                            }
+                        })
+                    }
+
+                    </div>
 
             })
         }
+
+     
+
         </>
+        
     )
 }

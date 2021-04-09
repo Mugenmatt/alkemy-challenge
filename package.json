@@ -2,6 +2,7 @@
   "name": "alkemy-challenge",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://superheroapi.com/api/1132055343928952/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
