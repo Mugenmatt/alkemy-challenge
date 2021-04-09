@@ -133,7 +133,7 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, goodHeroes,
                                         <AddHeroBtn type='button' value='Neutral' />
                                     </AddHeroForm>
                                 }
-                                
+
                             <>
                                 {
                                     goodHeroes.length === 3 && 
@@ -165,32 +165,6 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, goodHeroes,
                                     </AddHeroForm>
                                 }
                         </HeroCard>
-                    }
-
-                    {
-                        modalIsOpen &&
-                        heroesListCopy.find(heroData => {
-                            if(heroData.id === chosenHeroModal.id) {
-                                return <Modal
-                                    key={heroData.id}
-                                    isOpen={true} 
-                                    onRequestClose={() => setModalIsOpen(false)}
-                                    >
-                                        <ModalBox>
-                                            <HeroImgModal src={heroData.image.url} alt='Hero Image' />
-                                            <HeroNameModal>Hero Name: <HeroDataModal> {heroData.name}</HeroDataModal></HeroNameModal>
-                                            <HeroDescriptionModal>Nick Name: <HeroDataModal>{heroData.biography.aliases[0] === '-' ? 'No aliases' : heroData.biography.aliases} </HeroDataModal></HeroDescriptionModal>
-                                            <HeroDescriptionModal>Height: <HeroDataModal> {heroData.appearance.height[0] === '-' ? "Unknown" : heroData.appearance.height[0] } </HeroDataModal></HeroDescriptionModal>
-                                            <HeroDescriptionModal>Weight: <HeroDataModal> {heroData.appearance.weight[1] === '0 kg' ? "Unknown" : heroData.appearance.weight[1]} </HeroDataModal></HeroDescriptionModal>
-                                            <HeroDescriptionModal>Eyes Color: <HeroDataModal> {heroData.appearance['eye-color'] === '-' ? "Unknown" : heroData.appearance['eye-color']} </HeroDataModal></HeroDescriptionModal>
-                                            <HeroDescriptionModal>Hair Color: <HeroDataModal> {heroData.appearance['hair-color'] === '-' ? 'Unknown' : heroData.appearance['hair-color']} </HeroDataModal></HeroDescriptionModal>
-                                            <HeroDescriptionModal>Job: <HeroDataModal> {heroData.work.occupation === '-' ? 'No job' : heroData.work.occupation} </HeroDataModal></HeroDescriptionModal>
-                                            <HeroDescriptionModal>Alignment: <HeroDataModal> {heroData.biography.alignment} </HeroDataModal></HeroDescriptionModal>
-                                            <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
-                                        </ModalBox>
-                                    </Modal>
-                            }
-                        })
                     }
 
                     </div>
