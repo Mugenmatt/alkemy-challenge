@@ -99,14 +99,19 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
     }
 
     const searchHero = async e => {
-        const fetchHeroes = await fetch(`${urlToken}/search/${writtenHero}`)
-        let selectedHero = await fetchHeroes.json();
-        selectedHero = selectedHero.results;
-        selectedHero.map(hero => {
-            return hero.isChosen = 'false'
-        })
-        return setHeroesList(selectedHero);
-    }
+        try {
+            const fetchHeroes = await fetch(`${urlToken}/search/${writtenHero}`)
+            let selectedHero = await fetchHeroes.json();
+            selectedHero = selectedHero.results;
+            selectedHero.map(hero => {
+                return hero.isChosen = 'false'
+            })
+            console.log(selectedHero);
+            setHeroesList(selectedHero);
+        } catch(error) {
+            console.log('Error ' + error);
+        }
+     }
 
     let goodHeroes = heroes.filter(hero => {
         return hero.biography.alignment === 'good'
