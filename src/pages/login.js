@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import { Redirect } from 'react-router';
 import styled from 'styled-components/macro';
 
@@ -62,7 +61,7 @@ const ErrorMessage = styled.p`
 `;
 
 export const Login = (props) => {
-    const { emailData, passwordData, handleSubmit, handleEmail, handlePassword, invalidInput, emptyInput } = props;
+    const { handleSubmit, handleEmail, handlePassword, invalidInput, emptyInput } = props;
     const isLogged = window.localStorage.getItem('isAuthorized');
     if(isLogged === 'true') {
         return <Redirect to='/' />

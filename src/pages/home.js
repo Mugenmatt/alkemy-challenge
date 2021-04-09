@@ -1,9 +1,8 @@
-import axios from 'axios';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components/macro';
+import Modal from 'react-modal';
 import  userDefaultIcon  from '../assets/img/userDefault.svg';
-import Axios from 'axios'
 
 const HomeContent = styled.div`
     width: 80%;
@@ -27,11 +26,11 @@ const TeamBox = styled.div`
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    padding: 50px;
 `;
 
 const Hero = styled.div`
     width: 20%;
-    padding: 50px;
     margin-bottom: 3%;
     display: flex;
     flex-direction: column;
@@ -40,7 +39,8 @@ const Hero = styled.div`
 `;
 
 const HeroImg = styled.img`
-    width: 40%;
+    width: 100%;
+    max-height: 200px;
     margin: auto;
 `;
 
@@ -52,6 +52,7 @@ const HeroName = styled.h3`
 const HeroPowerStats = styled.p`
     font-weight: 300;
     margin: 0.7em 0;
+    margin-left: 15%;
 `;
 
 const DataHeroPowerstats = styled.span`
@@ -60,7 +61,7 @@ const DataHeroPowerstats = styled.span`
 `;
 
 const DeleteBox = styled.form`
-    margin: auto;
+    margin: 3% auto 5% auto;
 `;
 
 const DeleteBtn = styled.input`
@@ -105,34 +106,58 @@ const DataTeamPowerstats = styled.span`
     color: red;
 `;
 
-export const Home = ({token, urlToken}) => {
+const ModalBox = styled.div`
+    width: 70%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+`;
+
+const HeroImgModal = styled.img`
+    width: 100%;
+`;
+
+const HeroNameModal = styled.p`
+    font-size: 2em;
+    display: inline-block;
+    margin: 0.2em 0 0.2em 0;
+
+`;
+
+const HeroDescriptionModal = styled.p`
+    font-size: 2em;
+    display: inline-block;
+    margin: 0.5em 0 0.5em 0;
+`;
+
+const HeroDataModal = styled.span`
+    font-size: 2em;
+    color: red;
+    display: inline-block;
+    margin: 0.5em 0 0.5em 0;
+`;
+
+const CloseModal = styled.button`
+    font-size: 2em;
+    width: 20%;
+    padding: 20px;
+    margin: auto;
+    margin: 5% auto;
+    cursor: pointer;
+    background-color: #fff;
+    border: #000;
+    border-radius: 10px;
+    :hover {
+        background-color: #000;
+        color:#fff;
+    }
+`;
+
+export const Home = ({newHero}) => {
 
     const isLogged = window.localStorage.getItem('isAuthorized');
 
-
-    function TeamHero() {
-
-        fetch(`${urlToken}/1`)
-        .then(data => {
-            return data.json();
-        })
-        .then(heroData => {
-            const hero = {
-                _name: heroData.name,
-                _image: heroData.image.url,
-                _powerstats: heroData.powerstats
-            }
-            return setMyHero(hero);
-        })
-        .catch(error => error)
-
-    }
-
-    const [myHero, setMyHero] = useState({});
-
-    useEffect(() => {
-        TeamHero()
-    }, [])
+    const [modalIsOpen, setModalIsOpen] = useState(false)
 
     if(isLogged === 'false' || !isLogged){
         return <Redirect to='/login' />
@@ -144,20 +169,37 @@ export const Home = ({token, urlToken}) => {
                 <TitleHome>Your Team!</TitleHome>
 
                     <TeamBox>
-                        <Hero>
-                            <HeroImg src={userDefaultIcon} alt="Image of the Hero" />
-                            <HeroName> Hero Name </HeroName>
-                            <HeroPowerStats> Intelligence:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                            <HeroPowerStats> Strength:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                            <HeroPowerStats> Speed:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                            <HeroPowerStats> Durability:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                            <HeroPowerStats> Power:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                            <HeroPowerStats> Combat:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                            <DeleteBox method="POST" action="">
-                                <DeleteBtn type="submit" value="Delete" />
-                            </DeleteBox>
-                        </Hero>
 
+                            <Hero>
+                                <HeroImg src={userDefaultIcon} alt="Image of the Hero" onClick={() => setModalIsOpen(true)} />
+                                <HeroName onClick={() => setModalIsOpen(true)}> NAME </HeroName>
+                                <HeroPowerStats> Intelligence:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                                <HeroPowerStats> Strength:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                                <HeroPowerStats> Speed:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                                <HeroPowerStats> Durability:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                                <HeroPowerStats> Power:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                                <HeroPowerStats> Combat:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
+                                <DeleteBox method="POST" action="">
+                                    <DeleteBtn type="submit" value="Delete" />
+                                </DeleteBox>
+                                <Modal
+                                        isOpen={modalIsOpen} 
+                                        onRequestClose={() => setModalIsOpen(false)}
+                                        >
+                                            <ModalBox>
+                                                <HeroImgModal src={userDefaultIcon} alt='Hero Image' />
+                                                <HeroNameModal>Hero Name: <HeroDataModal> {}</HeroDataModal></HeroNameModal>
+                                                <HeroDescriptionModal>Nick Name: <HeroDataModal>{} </HeroDataModal></HeroDescriptionModal>
+                                                <HeroDescriptionModal>Height: <HeroDataModal> {}  </HeroDataModal></HeroDescriptionModal>
+                                                <HeroDescriptionModal>Weight: <HeroDataModal> {} </HeroDataModal></HeroDescriptionModal>
+                                                <HeroDescriptionModal>Eyes Color: <HeroDataModal> {} </HeroDataModal></HeroDescriptionModal>
+                                                <HeroDescriptionModal>Hair Color: <HeroDataModal> {} </HeroDataModal></HeroDescriptionModal>
+                                                <HeroDescriptionModal>Job: <HeroDataModal> {} </HeroDataModal></HeroDescriptionModal>
+                                                <HeroDescriptionModal>Alignment: <HeroDataModal> {} </HeroDataModal></HeroDescriptionModal>
+                                                <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
+                                            </ModalBox>
+                                        </Modal>
+                            </Hero>
                     </TeamBox>
 
                     <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>

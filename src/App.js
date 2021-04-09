@@ -1,13 +1,17 @@
 import React, {useState} from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Home } from './pages/home';
 import { Login } from './pages/login';
 import { SearchHeroes } from './pages/search';
+import { Error } from './pages/error'
 import styled from 'styled-components/macro';
 import  userDefaultIcon  from './assets/img/userDefault.svg';
 import logoutIcon from './assets/img/logout.svg';
 import ReactModal from 'react-modal';
 
+// HEROKU:  heroku open [Abrir la app en heroku]
+// git remote remove -v [Elimina el repo de heroku]
+// git push heroku master [actualizacion de heroku]
 
 ReactModal.setAppElement('#root');
 
@@ -49,7 +53,7 @@ const App = () => {
   const [isAuth, setIsAuth] = useState(null);
   const [invalidInput, setInvalidInput] = useState(false);
   const [emptyInput, setEmptyInput] = useState(false);
-
+  const [selectedHero, setSelectedHero] = useState([]);
 
   const isLogged = window.localStorage.getItem('isAuthorized');
 
@@ -62,9 +66,8 @@ const App = () => {
   }
 
   const handleSubmit = e => {
-      e.preventDefault()
-      if(emailData === correctUser.email && passwordData === correctUser.password) {
-    window.localStorage.setItem('isAuthorized', 'true');
+    if(emailData === correctUser.email && passwordData === correctUser.password) {
+      window.localStorage.setItem('isAuthorized', 'true');
     return setIsAuth(true)
       } else if(emailData === null || passwordData === null) {
         return setEmptyInput(true)
@@ -73,9 +76,20 @@ const App = () => {
       }
   }
 
-  const handleLogout = logout => {
+  if(window.localStorage.getItem('isAuthorized') === 'true') {
+    window.localStorage.setItem('myTeam', JSON.stringify(selectedHero))
+  }
+
+  const handleLogout = () => {
       window.localStorage.removeItem('isAuthorized')
   }
+
+  const handleSelectedHeroe = (hero) => {
+    setSelectedHero([hero, ...selectedHero]) 
+    window.localStorage.getItem('myTeam', hero.isChosen = 'true')
+  }
+  
+
 
     return (
       <div className="App">
@@ -112,17 +126,19 @@ const App = () => {
 
                 <Route exact path="/" >
                   <Home 
-                    token={token} 
-                    urlToken={urlToken} 
+                    newHero={selectedHero}
                   />
                 </Route>
 
                 <Route path="/search-heroes">
                   <SearchHeroes 
-                    token={token} 
-                    urlToken={urlToken} 
+                    token={token}
+                    urlToken={urlToken}
+                    handleSelectedHeroe={handleSelectedHeroe}
                   />
                 </Route>
+
+                <Route component={Error} />
 
               </Switch>
 

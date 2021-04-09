@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import Modal from 'react-modal';
-import  userDefaultIcon  from '../assets/img/userDefault.svg';
+// import  userDefaultIcon  from '../assets/img/userDefault.svg';
 import styled from 'styled-components';
 
 
@@ -98,7 +98,6 @@ const CloseModal = styled.button`
 export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, goodHeroes, badHeroes }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false)
 
-
     return (<>
         {   
             heroesList.map(hero => {
@@ -110,11 +109,7 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, goodHeroes,
                     {
                         !myTeamID.includes(hero.id) &&
                             <HeroCard >
-                                { 
-                                    hero.image.url === 'null' || !hero.image.url ?
-                                    <HeroImg src={userDefaultIcon} alt='Hero Icon' onClick={() => setModalIsOpen(true)} />
-                                    : <HeroImg src={hero.image.url} alt='Hero Icon' onClick={() => setModalIsOpen(true)} />
-                                }
+                                <HeroImg src={hero.image.url} alt='Hero Icon' onClick={() => setModalIsOpen(true)} />
                                 <HeroName onClick={() => setModalIsOpen(true)} >{hero.name}</HeroName>
 
                                 { goodHeroes.length >= 3 || badHeroes.length >= 3 ?
