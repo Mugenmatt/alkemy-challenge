@@ -127,13 +127,9 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
     }
 
     const searchHero = async e => {
-        const settings = {
-            headers: {
-                'Content-Type':'application/json'
-            }
-        }
+        
         try {
-            let fetchHeroes = await fetch(`${proxy}/${urlToken}/search/${writtenHero}`, settings)
+            let fetchHeroes = await fetch(`${proxy}/${urlToken}/search/${writtenHero}`)
             let selectedHero = await fetchHeroes.json();
             if(selectedHero.response === 'success') {
                 selectedHero = selectedHero.results;

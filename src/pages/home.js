@@ -159,8 +159,11 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
     const [chosenHeroModal, setChosenHeroModal] = useState(null);
-    // const [deleteHero, setDeleteHero] = useState({})
     
+    if(isLogged === 'false' || !isLogged){
+        return <Redirect to='/login' />
+    }
+
     const teamPowerstats = [...team];
 
     let TeamIntelligence = teamPowerstats.reduce((prev, curHero) => {
@@ -226,7 +229,7 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
         }
         heightData = Number(heightData)
         let resultado = parseInt(prev + heightData / teamPowerstats.length);
-        return `${resultado}cm`
+        return `${resultado} cm`
       }, 0);
 
       let TeamWeight = teamPowerstats.reduce((prev, curHero) => {
@@ -238,12 +241,9 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
         }
         weightData = Number(weightData)
         let resultado = parseInt(prev + weightData / teamPowerstats.length);
-        return `${resultado}kg`
+        return `${resultado} kg`
       }, 0);
 
-    if(isLogged === 'false' || !isLogged){
-        return <Redirect to='/login' />
-    }
     return (
         <>
                 <HomeContent>

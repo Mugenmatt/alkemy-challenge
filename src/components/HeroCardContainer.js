@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import Modal from 'react-modal';
-// import  userDefaultIcon  from '../assets/img/userDefault.svg';
+import userDefaultIcon  from '../assets/img/userDefault.svg';
 import styled from 'styled-components';
 
 
 const HeroCard = styled.div`
     width: 100%;
+    height: 100%;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -98,6 +99,7 @@ const CloseModal = styled.button`
 export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutralHeroSelection, goodHeroes, badHeroes }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [chosenHeroModal, setChosenHeroModal] = useState({});
+    console.log(heroesList);
 
     return (<>
         {   
@@ -114,12 +116,20 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                         !myTeamID.includes(hero.id) &&
                         <HeroCard >
 
-                            <HeroImg src={hero.image.url} alt='Hero Icon' onClick={() => {
-                                setModalIsOpen(true) 
-                                setChosenHeroModal(hero)
-                                }
-                            } />
-
+                            {
+                                !hero.image.url.error ?
+                                <HeroImg src={hero.image.url} alt={`Hero Icon`} onClick={() => {
+                                    setModalIsOpen(true) 
+                                    setChosenHeroModal(hero)
+                                    }
+                                } />
+                                :
+                                <HeroImg src={userDefaultIcon} alt={`Hero Icon`} onClick={() => {
+                                    setModalIsOpen(true) 
+                                    setChosenHeroModal(hero)
+                                    }
+                                } />
+                            }
                             <HeroName onClick={() => {
                                 setModalIsOpen(true) 
                                 setChosenHeroModal(hero)
@@ -139,8 +149,8 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                                 <AddHeroForm >
                                     {
                                         goodHeroes.length === 3 ?
-                                        <AddHeroBtn type='button' value='No more SuperHeroe'/>
-                                        : <AddHeroBtn type='button' value='SuperHeroe' onClick={() => handleSelectedHeroe(hero)} />
+                                        <AddHeroBtn type='button' value='No more SuperHeroes!'/>
+                                        : <AddHeroBtn type='button' value='SuperHeroes' onClick={() => handleSelectedHeroe(hero)} />
                                     }
                                 </AddHeroForm>
                             }
@@ -150,7 +160,7 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                                 <AddHeroForm >
                                     {
                                         badHeroes.length === 3 ?
-                                        <AddHeroBtn type='button' value='No more SuperVillain' />
+                                        <AddHeroBtn type='button' value='No more SuperVillains!' />
                                         : <AddHeroBtn type='button' value='SuperVillain' onClick={() => handleSelectedHeroe(hero)} />
                                     }
                                 </AddHeroForm>
@@ -169,7 +179,7 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                     onRequestClose={() => setModalIsOpen(false)}
                     >
                         <ModalBox>
-                            <HeroImgModal src={chosenHeroModal.image.url} alt='Hero Image' />
+                            {chosenHeroModal.image.url ? <HeroImgModal src={chosenHeroModal.image.url} alt='Hero Image' /> : <HeroImgModal src={userDefaultIcon} alt='Hero Image' />}
                             <HeroNameModal>Hero Name: <HeroDataModal> {chosenHeroModal.name}</HeroDataModal></HeroNameModal>
                             <HeroDescriptionModal>Nick Name: <HeroDataModal>{chosenHeroModal.biography.aliases[0] === '-' ? 'No aliases' : chosenHeroModal.biography.aliases} </HeroDataModal></HeroDescriptionModal>
                             <HeroDescriptionModal>Height: <HeroDataModal> {chosenHeroModal.appearance.height[0] === '-' ? "Unknown" : chosenHeroModal.appearance.height[0] } </HeroDataModal></HeroDescriptionModal>

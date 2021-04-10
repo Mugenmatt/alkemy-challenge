@@ -9,10 +9,6 @@ import  userDefaultIcon  from './assets/img/userDefault.svg';
 import logoutIcon from './assets/img/logout.svg';
 import ReactModal from 'react-modal';
 
-// HEROKU:  heroku open [Abrir la app en heroku]
-// git remote remove -v [Elimina el repo de heroku]
-// git push heroku master [actualizacion de heroku]
-
 ReactModal.setAppElement('#root');
 
 const Header = styled.div`
@@ -80,8 +76,8 @@ const App = () => {
       }
   }
 
-  if(window.localStorage.getItem('isAuthorized') === 'true') {
-    window.localStorage.setItem('myTeam', JSON.stringify(selectedHero))
+  if(isLogged === 'true') {
+    window.localStorage.setItem('myTeam', JSON.stringify(selectedHero));
   }
 
   const handleLogout = () => {
@@ -148,7 +144,6 @@ const App = () => {
                     proxy={proxy}
                     urlToken={urlToken}
                     handleSelectedHeroe={handleSelectedHeroe}
-                    proxy={proxy}
                     setHeroesList={setHeroesList}
                     heroesList={heroesList}
                   />
