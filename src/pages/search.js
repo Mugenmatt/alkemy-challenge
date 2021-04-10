@@ -100,7 +100,6 @@ const BackHomeBtn = styled.p`
 `;
 
 export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesList, heroesList }) => {
-
     const isLogged = window.localStorage.getItem('isAuthorized');
     const [writtenHero, setWrittenHero] = useState(null);
     const [errorFetch, setErrorFetch] = useState('')

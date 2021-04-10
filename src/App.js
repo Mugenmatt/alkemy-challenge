@@ -145,6 +145,7 @@ const App = () => {
 
                 <Route path="/search-heroes">
                   <SearchHeroes 
+                    proxy={proxy}
                     urlToken={urlToken}
                     handleSelectedHeroe={handleSelectedHeroe}
                     proxy={proxy}
