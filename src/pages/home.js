@@ -162,6 +162,16 @@ export const Home = ({newHero}) => {
     
     const team = JSON.parse(window.localStorage.getItem('myTeam'));
 
+    const teamPowerstats = [...team];
+
+    let objTeamPowerstatsTogheter = {};
+
+    // const teamPowerstatsSum = teamPowerstats.map(hero => {
+        
+    // })
+
+
+
     if(isLogged === 'false' || !isLogged){
         return <Redirect to='/login' />
     }
@@ -186,12 +196,12 @@ export const Home = ({newHero}) => {
                                             setChosenHeroModal(hero)
                                             }
                                         }> {hero.name} </HeroName>
-                                        <HeroPowerStats> Intelligence:<DataHeroPowerstats> {hero.powerstats.intelligence} </DataHeroPowerstats> </HeroPowerStats>
-                                        <HeroPowerStats> Strength:<DataHeroPowerstats> {hero.powerstats.strength} </DataHeroPowerstats> </HeroPowerStats>
-                                        <HeroPowerStats> Speed:<DataHeroPowerstats> {hero.powerstats.speed} </DataHeroPowerstats> </HeroPowerStats>
-                                        <HeroPowerStats> Durability:<DataHeroPowerstats> {hero.powerstats.durability} </DataHeroPowerstats> </HeroPowerStats>
-                                        <HeroPowerStats> Power:<DataHeroPowerstats> {hero.powerstats.power} </DataHeroPowerstats> </HeroPowerStats>
-                                        <HeroPowerStats> Combat:<DataHeroPowerstats> {hero.powerstats.combat} </DataHeroPowerstats> </HeroPowerStats>
+                                        <HeroPowerStats> Intelligence:<DataHeroPowerstats> {hero.powerstats.intelligence === 'null' ? 0 : hero.powerstats.intelligence} </DataHeroPowerstats> </HeroPowerStats>
+                                        <HeroPowerStats> Strength:<DataHeroPowerstats> {hero.powerstats.strength === 'null' ? 0 : hero.powerstats.strength} </DataHeroPowerstats> </HeroPowerStats>
+                                        <HeroPowerStats> Speed:<DataHeroPowerstats> {hero.powerstats.speed === 'null' ? 0 : hero.powerstats.speed} </DataHeroPowerstats> </HeroPowerStats>
+                                        <HeroPowerStats> Durability:<DataHeroPowerstats> {hero.powerstats.durability === 'null' ? 0 : hero.powerstats.durability} </DataHeroPowerstats> </HeroPowerStats>
+                                        <HeroPowerStats> Power:<DataHeroPowerstats> {hero.powerstats.power === 'null' ? 0 : hero.powerstats.power} </DataHeroPowerstats> </HeroPowerStats>
+                                        <HeroPowerStats> Combat:<DataHeroPowerstats> {hero.powerstats.combat === 'null' ? 0 : hero.powerstats.combat} </DataHeroPowerstats> </HeroPowerStats>
                                         <DeleteBox method="POST" action="">
                                             <DeleteBtn type="submit" value="Delete" />
                                         </DeleteBox>
@@ -220,9 +230,9 @@ export const Home = ({newHero}) => {
                                 </Modal>
                             }
                     </TeamBox>
-
-                    <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>
-
+                    {
+                         <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>
+                    }
                     <TitleHome>Team Powerstats</TitleHome>
 
                     <TeamPowerstatsBox>
