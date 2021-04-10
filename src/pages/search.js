@@ -123,10 +123,14 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
     }
 
     const searchHero = async e => {
+        const settings = {
+            headers: {
+                'Content-Type':'application/json'
+            }
+        }
         try {
-            let fetchHeroes = await fetch(`search/${writtenHero}`)
+            let fetchHeroes = await fetch(`search/${writtenHero}`, settings)
             let selectedHero = await fetchHeroes.json();
-            console.log(selectedHero);
                 selectedHero = selectedHero.results;
                 selectedHero.map(hero => {
                     return hero.isChosen = 'false'
@@ -136,7 +140,7 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
             console.log('ERROR: ', error);
             setErrorFetch(error)
         }
-     }
+    }
 
     let goodHeroes = heroes.filter(hero => {
         return hero.biography.alignment === 'good'

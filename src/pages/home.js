@@ -158,7 +158,7 @@ export const Home = ({newHero}) => {
     const isLogged = window.localStorage.getItem('isAuthorized');
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
-    const [chosenHeroModal, setChosenHeroModal] = useState({});
+    const [chosenHeroModal, setChosenHeroModal] = useState(null);
     
     const team = JSON.parse(window.localStorage.getItem('myTeam'));
 
