@@ -99,7 +99,7 @@ const BackHomeBtn = styled.p`
     }
 `;
 
-export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
+export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe }) => {
 
     const isLogged = window.localStorage.getItem('isAuthorized');
     const [heroesList, setHeroesList] = useState([]);
