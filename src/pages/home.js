@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components/macro';
 import Modal from 'react-modal';
-import  userDefaultIcon  from '../assets/img/userDefault.svg';
+// import  userDefaultIcon  from '../assets/img/userDefault.svg';
 
 const HomeContent = styled.div`
     width: 80%;
@@ -158,6 +158,9 @@ export const Home = ({newHero}) => {
     const isLogged = window.localStorage.getItem('isAuthorized');
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
+    const [chosenHeroModal, setChosenHeroModal] = useState({});
+    
+    const team = JSON.parse(window.localStorage.getItem('myTeam'));
 
     if(isLogged === 'false' || !isLogged){
         return <Redirect to='/login' />
@@ -169,37 +172,53 @@ export const Home = ({newHero}) => {
                 <TitleHome>Your Team!</TitleHome>
 
                     <TeamBox>
-
-                            <Hero>
-                                <HeroImg src={userDefaultIcon} alt="Image of the Hero" onClick={() => setModalIsOpen(true)} />
-                                <HeroName onClick={() => setModalIsOpen(true)}> NAME </HeroName>
-                                <HeroPowerStats> Intelligence:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                                <HeroPowerStats> Strength:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                                <HeroPowerStats> Speed:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                                <HeroPowerStats> Durability:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                                <HeroPowerStats> Power:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                                <HeroPowerStats> Combat:<DataHeroPowerstats> </DataHeroPowerstats> </HeroPowerStats>
-                                <DeleteBox method="POST" action="">
-                                    <DeleteBtn type="submit" value="Delete" />
-                                </DeleteBox>
+                        {
+                            team.map(hero => {
+                                return(
+                                    <Hero key={hero.id}>
+                                        <HeroImg src={hero.image.url} alt="Image of the Hero" onClick={() => {
+                                            setModalIsOpen(true)
+                                            setChosenHeroModal(hero)
+                                            }
+                                        } />
+                                        <HeroName onClick={() => {
+                                            setModalIsOpen(true)
+                                            setChosenHeroModal(hero)
+                                            }
+                                        }> {hero.name} </HeroName>
+                                        <HeroPowerStats> Intelligence:<DataHeroPowerstats> {hero.powerstats.intelligence} </DataHeroPowerstats> </HeroPowerStats>
+                                        <HeroPowerStats> Strength:<DataHeroPowerstats> {hero.powerstats.strength} </DataHeroPowerstats> </HeroPowerStats>
+                                        <HeroPowerStats> Speed:<DataHeroPowerstats> {hero.powerstats.speed} </DataHeroPowerstats> </HeroPowerStats>
+                                        <HeroPowerStats> Durability:<DataHeroPowerstats> {hero.powerstats.durability} </DataHeroPowerstats> </HeroPowerStats>
+                                        <HeroPowerStats> Power:<DataHeroPowerstats> {hero.powerstats.power} </DataHeroPowerstats> </HeroPowerStats>
+                                        <HeroPowerStats> Combat:<DataHeroPowerstats> {hero.powerstats.combat} </DataHeroPowerstats> </HeroPowerStats>
+                                        <DeleteBox method="POST" action="">
+                                            <DeleteBtn type="submit" value="Delete" />
+                                        </DeleteBox>
+                                    </Hero>
+                                )
+                            })
+                        }
+                            {
+                                modalIsOpen &&
                                 <Modal
-                                        isOpen={modalIsOpen} 
-                                        onRequestClose={() => setModalIsOpen(false)}
-                                        >
-                                            <ModalBox>
-                                                <HeroImgModal src={userDefaultIcon} alt='Hero Image' />
-                                                <HeroNameModal>Hero Name: <HeroDataModal> {}</HeroDataModal></HeroNameModal>
-                                                <HeroDescriptionModal>Nick Name: <HeroDataModal>{} </HeroDataModal></HeroDescriptionModal>
-                                                <HeroDescriptionModal>Height: <HeroDataModal> {}  </HeroDataModal></HeroDescriptionModal>
-                                                <HeroDescriptionModal>Weight: <HeroDataModal> {} </HeroDataModal></HeroDescriptionModal>
-                                                <HeroDescriptionModal>Eyes Color: <HeroDataModal> {} </HeroDataModal></HeroDescriptionModal>
-                                                <HeroDescriptionModal>Hair Color: <HeroDataModal> {} </HeroDataModal></HeroDescriptionModal>
-                                                <HeroDescriptionModal>Job: <HeroDataModal> {} </HeroDataModal></HeroDescriptionModal>
-                                                <HeroDescriptionModal>Alignment: <HeroDataModal> {} </HeroDataModal></HeroDescriptionModal>
-                                                <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
-                                            </ModalBox>
-                                        </Modal>
-                            </Hero>
+                                isOpen={modalIsOpen} 
+                                onRequestClose={() => setModalIsOpen(false)}
+                                >
+                                    <ModalBox>
+                                        <HeroImgModal src={chosenHeroModal.image.url} alt='Hero Image' />
+                                        <HeroNameModal>Hero Name: <HeroDataModal> {chosenHeroModal.name}</HeroDataModal></HeroNameModal>
+                                        <HeroDescriptionModal>Nick Name: <HeroDataModal>{chosenHeroModal.biography.aliases} </HeroDataModal></HeroDescriptionModal>
+                                        <HeroDescriptionModal>Height: <HeroDataModal> {chosenHeroModal.biography.height}  </HeroDataModal></HeroDescriptionModal>
+                                        <HeroDescriptionModal>Weight: <HeroDataModal> {chosenHeroModal.biography.weight} </HeroDataModal></HeroDescriptionModal>
+                                        <HeroDescriptionModal>Eyes Color: <HeroDataModal> {chosenHeroModal.biography["eye-color"]} </HeroDataModal></HeroDescriptionModal>
+                                        <HeroDescriptionModal>Hair Color: <HeroDataModal> {chosenHeroModal.biography["hair-color"]} </HeroDataModal></HeroDescriptionModal>
+                                        <HeroDescriptionModal>Job: <HeroDataModal> {chosenHeroModal.work.occupation} </HeroDataModal></HeroDescriptionModal>
+                                        <HeroDescriptionModal>Alignment: <HeroDataModal> {chosenHeroModal.biography.alignment} </HeroDataModal></HeroDescriptionModal>
+                                        <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
+                                    </ModalBox>
+                                </Modal>
+                            }
                     </TeamBox>
 
                     <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>

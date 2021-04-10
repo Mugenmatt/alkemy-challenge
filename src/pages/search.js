@@ -25,6 +25,15 @@ const TitleRules = styled.p`
     color: green;
     font-weight: 700;
     text-align: center;
+    margin-bottom: 0;
+`;
+
+const RulesClarification = styled.p`
+    display: block;
+    font-size: 1em;
+    color: red;
+    font-weight: 700;
+    text-align: center;
     margin-bottom: 3%;
 `;
 
@@ -95,7 +104,8 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
     const isLogged = window.localStorage.getItem('isAuthorized');
     const [heroesList, setHeroesList] = useState([]);
     const [writtenHero, setWrittenHero] = useState(null);
-    const [errorFetch, setErrorFetch] = useState(null)
+    const [errorFetch, setErrorFetch] = useState('')
+    const [neutralChoice, setNeutralChoice] = useState(false);
 
     if(isLogged === 'false' || !isLogged){
         return <Redirect to='/login' />
@@ -106,23 +116,24 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
     const handleWrittenHero = hero => {
         setWrittenHero(hero.target.value)
     }
+    
+    const handleNeutralHeroSelection = hero => {
+        setNeutralChoice(true)
+        setTimeout(() => { setNeutralChoice(false) }, 4000);
+    }
 
     const searchHero = async e => {
         try {
-            const fetchHeroes = await fetch(`search/${writtenHero}`)
+            let fetchHeroes = await fetch(`search/${writtenHero}`)
             let selectedHero = await fetchHeroes.json();
-            if(selectedHero.response === 'success') {
-
+            console.log(selectedHero);
                 selectedHero = selectedHero.results;
-
                 selectedHero.map(hero => {
                     return hero.isChosen = 'false'
                 })
-                
                 return setHeroesList(selectedHero);
-            }
         } catch(error) {
-            console.log(error);
+            console.log('ERROR: ', error);
             setErrorFetch(error)
         }
      }
@@ -134,7 +145,7 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
     let badHeroes = heroes.filter(hero => {
         return hero.biography.alignment === 'bad'
     })
-
+    
     return (
         <>
                 <SearchContent>
@@ -143,15 +154,17 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
 
                     <TitleRules>There should be 3 superheroes and 3 supervillains!</TitleRules>
 
+                    { <RulesClarification style={{opacity: neutralChoice ? '1' : '0'}}>Neutral heroes does not count</RulesClarification>}
+
                     <Search >
                         <SearchInput type='text' placeholder='Hero name...' onChange={handleWrittenHero} />
                         <SearchBtn type='button' value='' onClick={searchHero} />
                     </Search>
 
-                    { errorFetch && <p> { errorFetch }</p> }
+                    { errorFetch && <span> { errorFetch } </span> }
 
-                    <AlignmentHeroes>SuperHeroes: <AlignmentHeroesData>{goodHeroes.length}</AlignmentHeroesData></AlignmentHeroes>
-                    <AlignmentHeroes>SuperVillains: <AlignmentHeroesData>{badHeroes.length}</AlignmentHeroesData></AlignmentHeroes>
+                    <AlignmentHeroes>SuperHeroes: <AlignmentHeroesData>{goodHeroes.length}/3</AlignmentHeroesData></AlignmentHeroes>
+                    <AlignmentHeroes>SuperVillains: <AlignmentHeroesData>{badHeroes.length}/3</AlignmentHeroesData></AlignmentHeroes>
 
                     <AllHeroes>
                         <>
@@ -160,6 +173,7 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
                             handleSelectedHeroe={handleSelectedHeroe} 
                             goodHeroes={goodHeroes} 
                             badHeroes={badHeroes} 
+                            handleNeutralHeroSelection={handleNeutralHeroSelection}
                         />
                         </>
                     </AllHeroes>

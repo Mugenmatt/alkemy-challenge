@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import Modal from 'react-modal';
-import ReactDOM from 'react-dom';
 // import  userDefaultIcon  from '../assets/img/userDefault.svg';
 import styled from 'styled-components';
 
@@ -96,10 +95,10 @@ const CloseModal = styled.button`
     }
 `;
 
-export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, goodHeroes, badHeroes }) => {
+export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutralHeroSelection, goodHeroes, badHeroes }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [chosenHeroModal, setChosenHeroModal] = useState([]);
-    const heroesListCopy = [...heroesList];
+    const [chosenHeroModal, setChosenHeroModal] = useState({});
+
     return (<>
         {   
             heroesList.map(hero => {
@@ -125,45 +124,54 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, goodHeroes,
                                 setModalIsOpen(true) 
                                 setChosenHeroModal(hero)
                                 }
-                            } >{hero.name}</HeroName>
+                            } >{hero.name}
+                            </HeroName>
 
-                                {
-                                    hero.biography.alignment === 'neutral' &&
-                                    <AddHeroForm >
-                                        <AddHeroBtn type='button' value='Neutral' />
-                                    </AddHeroForm>
-                                }
+                            {
+                                hero.biography.alignment === 'neutral' &&
+                                <AddHeroForm >
+                                    <AddHeroBtn type='button' value='Neutral' onClick={handleNeutralHeroSelection} />
+                                </AddHeroForm>
+                            }
 
                             <>
                                 {
                                     goodHeroes.length === 3 && 
                                     hero.biography.alignment === 'good' &&
                                     <AddHeroForm >
-                                        <AddHeroBtn type='button' value='No more superheroes!' />
+                                        {
+                                            hero.biography.alignment === 'good' &&
+                                            <AddHeroBtn type='button' value='No more superheroes!' />
+                                        }
                                     </AddHeroForm>
                                 }
-
                                 {
                                     badHeroes.length === 3 && 
                                     hero.biography.alignment === 'bad' &&
                                     <AddHeroForm >
-                                        <AddHeroBtn type='button' value='No more supervillains!' />
+                                        {
+                                            hero.biography.alignment === 'bad' &&
+                                            <AddHeroBtn type='button' value='No more supervillains!' />
+                                        }
                                     </AddHeroForm>
                                 }
                             </>
 
-                                { 
-                                    heroSelection !== 'null' &&
-                                    heroSelection.length <= 5 && 
-                                    hero.biography.alignment !== 'neutral' &&
+                            {
+                            goodHeroes.length === 3 || badHeroes.length === 3 ?
+                                <AddHeroForm >
+                                    <AddHeroBtn type='button'
+                                    value={'Add to My Team!'} 
+                                />
+                                </AddHeroForm>
+                                :
                                     <AddHeroForm >
-                                        <AddHeroBtn type='button' style={{
-                                            display: badHeroes.length === 3 || goodHeroes.length === 3 ? 'none' : 'inline'
-                                        }} 
-                                        value={'Add to My Team!'} 
-                                        onClick={() => handleSelectedHeroe(hero)} />
-                                    </AddHeroForm>
-                                }
+                                    <AddHeroBtn type='button' 
+                                    value={'Add to My Team!'} 
+                                    onClick={() => handleSelectedHeroe(hero)} />
+                                </AddHeroForm>
+                            }
+
                         </HeroCard>
                     }
 
@@ -171,9 +179,26 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, goodHeroes,
 
             })
         }
-
-     
-
+                {
+                modalIsOpen &&
+                    <Modal
+                    isOpen={true} 
+                    onRequestClose={() => setModalIsOpen(false)}
+                    >
+                        <ModalBox>
+                            <HeroImgModal src={chosenHeroModal.image.url} alt='Hero Image' />
+                            <HeroNameModal>Hero Name: <HeroDataModal> {chosenHeroModal.name}</HeroDataModal></HeroNameModal>
+                            <HeroDescriptionModal>Nick Name: <HeroDataModal>{chosenHeroModal.biography.aliases[0] === '-' ? 'No aliases' : chosenHeroModal.biography.aliases} </HeroDataModal></HeroDescriptionModal>
+                            <HeroDescriptionModal>Height: <HeroDataModal> {chosenHeroModal.appearance.height[0] === '-' ? "Unknown" : chosenHeroModal.appearance.height[0] } </HeroDataModal></HeroDescriptionModal>
+                            <HeroDescriptionModal>Weight: <HeroDataModal> {chosenHeroModal.appearance.weight[1] === '0 kg' ? "Unknown" : chosenHeroModal.appearance.weight[1]} </HeroDataModal></HeroDescriptionModal>
+                            <HeroDescriptionModal>Eyes Color: <HeroDataModal> {chosenHeroModal.appearance['eye-color'] === '-' ? "Unknown" : chosenHeroModal.appearance['eye-color']} </HeroDataModal></HeroDescriptionModal>
+                            <HeroDescriptionModal>Hair Color: <HeroDataModal> {chosenHeroModal.appearance['hair-color'] === '-' ? 'Unknown' : chosenHeroModal.appearance['hair-color']} </HeroDataModal></HeroDescriptionModal>
+                            <HeroDescriptionModal>Job: <HeroDataModal> {chosenHeroModal.work.occupation === '-' ? 'No job' : chosenHeroModal.work.occupation} </HeroDataModal></HeroDescriptionModal>
+                            <HeroDescriptionModal>Alignment: <HeroDataModal> {chosenHeroModal.biography.alignment} </HeroDataModal></HeroDescriptionModal>
+                            <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
+                        </ModalBox>
+                    </Modal>
+                    }
         </>
         
     )
