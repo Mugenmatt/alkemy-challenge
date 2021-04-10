@@ -41,8 +41,9 @@ const Main = styled.div`
 `;
 
 const App = () => {
-    // const token = 1132055343928952;
-    // const urlToken = `https://superheroapi.com/api/${token}`
+    const token = 1132055343928952;
+    const urlToken = `https://superheroapi.com/api/${token}`
+    const proxy = 'https://rocky-basin-57618.herokuapp.com';
 
     const correctUser = {
     email: 'challenge@alkemy.org',
@@ -54,8 +55,11 @@ const App = () => {
   const [invalidInput, setInvalidInput] = useState(false);
   const [emptyInput, setEmptyInput] = useState(false);
   const [selectedHero, setSelectedHero] = useState([]);
+  const [heroesList, setHeroesList] = useState([]);
 
   const isLogged = window.localStorage.getItem('isAuthorized');
+
+  const team = JSON.parse(window.localStorage.getItem('myTeam'));
 
   const handleEmail = email => {
     return setEmailData(email.target.value);
@@ -89,6 +93,12 @@ const App = () => {
     window.localStorage.getItem('myTeam', hero.isChosen = 'true')
   }
   
+  const handleDeleteHero = (heroDelete) => {
+    let deleteCharacter = team.filter(hero => {
+        return hero.id !== heroDelete.id
+      })
+      setSelectedHero(deleteCharacter)
+  }
 
 
     return (
@@ -126,15 +136,20 @@ const App = () => {
 
                 <Route exact path="/" >
                   <Home 
-                    newHero={selectedHero}
+                    setHeroesList={setHeroesList}
+                    heroesList={heroesList}
+                    handleDeleteHero={handleDeleteHero}
+                    team={team}
                   />
                 </Route>
 
                 <Route path="/search-heroes">
                   <SearchHeroes 
-                    // token={token}
-                    // urlToken={urlToken}
+                    urlToken={urlToken}
                     handleSelectedHeroe={handleSelectedHeroe}
+                    proxy={proxy}
+                    setHeroesList={setHeroesList}
+                    heroesList={heroesList}
                   />
                 </Route>
 

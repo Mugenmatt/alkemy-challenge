@@ -99,12 +99,12 @@ const BackHomeBtn = styled.p`
     }
 `;
 
-export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
+export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesList, heroesList }) => {
 
     const isLogged = window.localStorage.getItem('isAuthorized');
-    const [heroesList, setHeroesList] = useState([]);
     const [writtenHero, setWrittenHero] = useState(null);
     const [errorFetch, setErrorFetch] = useState('')
+    const [errorNoData, setErrorNoData] = useState(false);
     const [neutralChoice, setNeutralChoice] = useState(false);
 
     if(isLogged === 'false' || !isLogged){
@@ -117,9 +117,14 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
         setWrittenHero(hero.target.value)
     }
     
-    const handleNeutralHeroSelection = hero => {
+    const handleNeutralHeroSelection = () => {
         setNeutralChoice(true)
         setTimeout(() => { setNeutralChoice(false) }, 4000);
+    }
+
+    const handleErrorNoData = () => {
+        setErrorNoData(true)
+        setTimeout(() => { setErrorNoData(false) }, 4000);
     }
 
     const searchHero = async e => {
@@ -129,13 +134,18 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
             }
         }
         try {
-            let fetchHeroes = await fetch(`${urlToken}/search/${writtenHero}`, settings)
+            let fetchHeroes = await fetch(`${proxy}/${urlToken}/search/${writtenHero}`, settings)
             let selectedHero = await fetchHeroes.json();
+            if(selectedHero.response === 'success') {
                 selectedHero = selectedHero.results;
                 selectedHero.map(hero => {
                     return hero.isChosen = 'false'
                 })
                 return setHeroesList(selectedHero);
+            } else {
+                console.log('ERROR: ' + selectedHero.error);
+                handleErrorNoData()
+            }
         } catch(error) {
             console.log('ERROR: ', error);
             setErrorFetch(error)
@@ -158,7 +168,8 @@ export const SearchHeroes = ({ urlToken, handleSelectedHeroe }) => {
 
                     <TitleRules>There should be 3 superheroes and 3 supervillains!</TitleRules>
 
-                    { <RulesClarification style={{opacity: neutralChoice ? '1' : '0'}}>Neutral heroes does not count</RulesClarification>}
+                    { <RulesClarification style={{opacity: neutralChoice ? '1' : '0'}}>Neutral heroes does not count</RulesClarification> }
+                    { <RulesClarification style={{opacity: errorNoData ? '1' : '0'}}> Character with given name not found </RulesClarification> }
 
                     <Search >
                         <SearchInput type='text' placeholder='Hero name...' onChange={handleWrittenHero} />

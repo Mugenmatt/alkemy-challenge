@@ -153,14 +153,93 @@ const CloseModal = styled.button`
     }
 `;
 
-export const Home = ({newHero}) => {
+export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
 
     const isLogged = window.localStorage.getItem('isAuthorized');
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
     const [chosenHeroModal, setChosenHeroModal] = useState(null);
+    // const [deleteHero, setDeleteHero] = useState({})
     
-    const team = JSON.parse(window.localStorage.getItem('myTeam'));
+    const teamPowerstats = [...team];
+
+    let TeamIntelligence = teamPowerstats.reduce((prev, curHero) => {
+        let powerstats;
+        if(curHero.powerstats.intelligence === 'null') {
+            powerstats = curHero.powerstats.intelligence = 0
+        }
+        powerstats = Number(curHero.powerstats.intelligence)
+        return prev + powerstats;
+      }, 0);
+
+      let TeamStrength = teamPowerstats.reduce((prev, curHero) => {
+        let powerstats;
+        if(curHero.powerstats.strength === 'null') {
+            powerstats = curHero.powerstats.strength = 0
+        }
+        powerstats = Number(curHero.powerstats.strength)
+        return prev + powerstats;
+      }, 0);
+
+      let TeamSpeed = teamPowerstats.reduce((prev, curHero) => {
+        let powerstats;
+        if(curHero.powerstats.speed === 'null') {
+            powerstats = curHero.powerstats.speed = 0
+        }
+        powerstats = Number(curHero.powerstats.speed)
+        return prev + powerstats;
+      }, 0);
+
+      let TeamDurability = teamPowerstats.reduce((prev, curHero) => {
+        let powerstats;
+        if(curHero.powerstats.durability === 'null') {
+            powerstats = curHero.powerstats.durability = 0
+        }
+        powerstats = Number(curHero.powerstats.durability)
+        return prev + powerstats;
+      }, 0);
+
+      let TeamPower = teamPowerstats.reduce((prev, curHero) => {
+        let powerstats;
+        if(curHero.powerstats.power === 'null') {
+            powerstats = curHero.powerstats.power = 0
+        }
+        powerstats = Number(curHero.powerstats.power)
+        return prev + powerstats;
+      }, 0);
+
+      let TeamCombat = teamPowerstats.reduce((prev, curHero) => {
+        let powerstats;
+        if(curHero.powerstats.combat === 'null') {
+            powerstats = curHero.powerstats.combat = 0
+        }
+        powerstats = Number(curHero.powerstats.combat)
+        return prev + powerstats;
+      }, 0);
+
+      let TeamHeight = teamPowerstats.reduce((prev, curHero) => {
+        prev = parseInt(prev)
+        let heightData = curHero.appearance.height[1];
+        heightData = heightData.replace('cm', '')
+        if(heightData === null) {
+            heightData = 0
+        }
+        heightData = Number(heightData)
+        let resultado = parseInt(prev + heightData / teamPowerstats.length);
+        return `${resultado}cm`
+      }, 0);
+
+      let TeamWeight = teamPowerstats.reduce((prev, curHero) => {
+        prev = parseInt(prev)
+        let weightData = curHero.appearance.weight[1];
+        weightData = weightData.replace('kg', '')
+        if(weightData === null) {
+            weightData = 0
+        }
+        weightData = Number(weightData)
+        let resultado = parseInt(prev + weightData / teamPowerstats.length);
+        return `${resultado}kg`
+      }, 0);
 
     if(isLogged === 'false' || !isLogged){
         return <Redirect to='/login' />
@@ -174,29 +253,33 @@ export const Home = ({newHero}) => {
                     <TeamBox>
                         {
                             team.map(hero => {
-                                return(
-                                    <Hero key={hero.id}>
-                                        <HeroImg src={hero.image.url} alt="Image of the Hero" onClick={() => {
-                                            setModalIsOpen(true)
-                                            setChosenHeroModal(hero)
-                                            }
-                                        } />
-                                        <HeroName onClick={() => {
-                                            setModalIsOpen(true)
-                                            setChosenHeroModal(hero)
-                                            }
-                                        }> {hero.name} </HeroName>
-                                        <HeroPowerStats> Intelligence:<DataHeroPowerstats> {hero.powerstats.intelligence} </DataHeroPowerstats> </HeroPowerStats>
-                                        <HeroPowerStats> Strength:<DataHeroPowerstats> {hero.powerstats.strength} </DataHeroPowerstats> </HeroPowerStats>
-                                        <HeroPowerStats> Speed:<DataHeroPowerstats> {hero.powerstats.speed} </DataHeroPowerstats> </HeroPowerStats>
-                                        <HeroPowerStats> Durability:<DataHeroPowerstats> {hero.powerstats.durability} </DataHeroPowerstats> </HeroPowerStats>
-                                        <HeroPowerStats> Power:<DataHeroPowerstats> {hero.powerstats.power} </DataHeroPowerstats> </HeroPowerStats>
-                                        <HeroPowerStats> Combat:<DataHeroPowerstats> {hero.powerstats.combat} </DataHeroPowerstats> </HeroPowerStats>
-                                        <DeleteBox method="POST" action="">
-                                            <DeleteBtn type="submit" value="Delete" />
-                                        </DeleteBox>
-                                    </Hero>
-                                )
+                                return(<>
+                                    {
+                                        hero.isChosen === 'true' &&
+                                        <>
+                                        <Hero key={hero.id}>
+                                            <HeroImg src={hero.image.url} alt="Image of the Hero" onClick={() => {
+                                                setModalIsOpen(true)
+                                                setChosenHeroModal(hero)
+                                                }
+                                            } />
+                                            <HeroName onClick={() => {
+                                                setModalIsOpen(true)
+                                                setChosenHeroModal(hero)
+                                                }
+                                            }> {hero.name} </HeroName>
+                                            <HeroPowerStats> Intelligence:<DataHeroPowerstats> {hero.powerstats.intelligence === 'null' ? 0 : hero.powerstats.intelligence} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Strength:<DataHeroPowerstats> {hero.powerstats.strength === 'null' ? 0 : hero.powerstats.strength} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Speed:<DataHeroPowerstats> {hero.powerstats.speed === 'null' ? 0 : hero.powerstats.speed} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Durability:<DataHeroPowerstats> {hero.powerstats.durability === 'null' ? 0 : hero.powerstats.durability} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Power:<DataHeroPowerstats> {hero.powerstats.power === 'null' ? 0 : hero.powerstats.power} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Combat:<DataHeroPowerstats> {hero.powerstats.combat === 'null' ? 0 : hero.powerstats.combat} </DataHeroPowerstats> </HeroPowerStats>
+                                            <DeleteBox>
+                                                <DeleteBtn type="button" value="Delete" onClick={() => handleDeleteHero(hero)} />
+                                            </DeleteBox>
+                                        </Hero>
+                                    </>}
+                                </>)
                             })
                         }
                             {
@@ -209,10 +292,10 @@ export const Home = ({newHero}) => {
                                         <HeroImgModal src={chosenHeroModal.image.url} alt='Hero Image' />
                                         <HeroNameModal>Hero Name: <HeroDataModal> {chosenHeroModal.name}</HeroDataModal></HeroNameModal>
                                         <HeroDescriptionModal>Nick Name: <HeroDataModal>{chosenHeroModal.biography.aliases} </HeroDataModal></HeroDescriptionModal>
-                                        <HeroDescriptionModal>Height: <HeroDataModal> {chosenHeroModal.biography.height}  </HeroDataModal></HeroDescriptionModal>
-                                        <HeroDescriptionModal>Weight: <HeroDataModal> {chosenHeroModal.biography.weight} </HeroDataModal></HeroDescriptionModal>
-                                        <HeroDescriptionModal>Eyes Color: <HeroDataModal> {chosenHeroModal.biography["eye-color"]} </HeroDataModal></HeroDescriptionModal>
-                                        <HeroDescriptionModal>Hair Color: <HeroDataModal> {chosenHeroModal.biography["hair-color"]} </HeroDataModal></HeroDescriptionModal>
+                                        <HeroDescriptionModal>Height: <HeroDataModal> {chosenHeroModal.appearance.height[1]}  </HeroDataModal></HeroDescriptionModal>
+                                        <HeroDescriptionModal>Weight: <HeroDataModal> {chosenHeroModal.appearance.weight[1]} </HeroDataModal></HeroDescriptionModal>
+                                        <HeroDescriptionModal>Eyes Color: <HeroDataModal> {chosenHeroModal.appearance['eye-color']} </HeroDataModal></HeroDescriptionModal>
+                                        <HeroDescriptionModal>Hair Color: <HeroDataModal> {chosenHeroModal.appearance['hair-color']} </HeroDataModal></HeroDescriptionModal>
                                         <HeroDescriptionModal>Job: <HeroDataModal> {chosenHeroModal.work.occupation} </HeroDataModal></HeroDescriptionModal>
                                         <HeroDescriptionModal>Alignment: <HeroDataModal> {chosenHeroModal.biography.alignment} </HeroDataModal></HeroDescriptionModal>
                                         <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
@@ -221,17 +304,21 @@ export const Home = ({newHero}) => {
                             }
                     </TeamBox>
 
-                    <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>
+                    {   JSON.parse(window.localStorage.getItem('myTeam')).length < 6 &&
+                         <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>
+                    }
 
                     <TitleHome>Team Powerstats</TitleHome>
 
                     <TeamPowerstatsBox>
-                        <TeamPowerstats> Intelligence: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Strength: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Speed: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Durability: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Power: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Combat: <DataTeamPowerstats>  </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Intelligence: <DataTeamPowerstats> {TeamIntelligence} </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Strength: <DataTeamPowerstats> {TeamStrength} </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Speed: <DataTeamPowerstats> {TeamSpeed} </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Durability: <DataTeamPowerstats> {TeamDurability} </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Power: <DataTeamPowerstats> {TeamPower} </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Combat: <DataTeamPowerstats> {TeamCombat} </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Height: <DataTeamPowerstats> {TeamHeight} </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Weight: <DataTeamPowerstats> {TeamWeight} </DataTeamPowerstats> </TeamPowerstats>
                     </TeamPowerstatsBox>
                 </HomeContent>
         </>

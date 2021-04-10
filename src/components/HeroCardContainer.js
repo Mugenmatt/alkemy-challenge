@@ -134,44 +134,27 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                                 </AddHeroForm>
                             }
 
-                            <>
-                                {
-                                    goodHeroes.length === 3 && 
-                                    hero.biography.alignment === 'good' &&
-                                    <AddHeroForm >
-                                        {
-                                            hero.biography.alignment === 'good' &&
-                                            <AddHeroBtn type='button' value='No more superheroes!' />
-                                        }
-                                    </AddHeroForm>
-                                }
-                                {
-                                    badHeroes.length === 3 && 
-                                    hero.biography.alignment === 'bad' &&
-                                    <AddHeroForm >
-                                        {
-                                            hero.biography.alignment === 'bad' &&
-                                            <AddHeroBtn type='button' value='No more supervillains!' />
-                                        }
-                                    </AddHeroForm>
-                                }
-                            </>
-
                             {
-                            goodHeroes.length === 3 || badHeroes.length === 3 ?
+                                hero.biography.alignment === 'good' &&
                                 <AddHeroForm >
-                                    <AddHeroBtn type='button'
-                                    value={'Add to My Team!'} 
-                                />
-                                </AddHeroForm>
-                                :
-                                    <AddHeroForm >
-                                    <AddHeroBtn type='button' 
-                                    value={'Add to My Team!'} 
-                                    onClick={() => handleSelectedHeroe(hero)} />
+                                    {
+                                        goodHeroes.length === 3 ?
+                                        <AddHeroBtn type='button' value='No more SuperHeroe'/>
+                                        : <AddHeroBtn type='button' value='SuperHeroe' onClick={() => handleSelectedHeroe(hero)} />
+                                    }
                                 </AddHeroForm>
                             }
 
+                            {
+                                hero.biography.alignment === 'bad' &&
+                                <AddHeroForm >
+                                    {
+                                        badHeroes.length === 3 ?
+                                        <AddHeroBtn type='button' value='No more SuperVillain' />
+                                        : <AddHeroBtn type='button' value='SuperVillain' onClick={() => handleSelectedHeroe(hero)} />
+                                    }
+                                </AddHeroForm>
+                            }
                         </HeroCard>
                     }
 
