@@ -135,7 +135,7 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe }) => {
             }
         }
         try {
-            let fetchHeroes = await fetch(`${urlToken}/search/${writtenHero}`, settings)
+            let fetchHeroes = await fetch(`${proxy}/${urlToken}/search/${writtenHero}`, settings)
             let selectedHero = await fetchHeroes.json();
                 if(selectedHero.response === 'success') {
                     selectedHero = selectedHero.results;
