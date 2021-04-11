@@ -3,17 +3,18 @@ import styled from 'styled-components/macro';
 
 const FormBox = styled.div`
     width: 40%;
-    margin: auto;
+    margin: 0 auto 8.17% auto;
     padding: 2% 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #fff;
+    background-color: rgba(81, 203, 238, 0.6);
     border-radius: 20px;
 `;
 
 const FormTitle = styled.h1`
     font-weight: 500;
+    color: #fff;
 `;
 
 const FormData = styled.form`
@@ -28,6 +29,7 @@ const LabelInput = styled.label`
     width: 70%;
     text-align: left;
     margin-top: 5%;
+    color: #fff;
 `;
 
 const Input = styled.input`
@@ -37,6 +39,13 @@ const Input = styled.input`
     padding: 2%;
     margin: 2% 0;
     cursor: pointer;
+    transition: all 0.30s ease-in-out;
+    outline: none;
+    border: 1px solid #DDDDDD;
+    :focus {
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+        border: 1px solid rgba(81, 203, 238, 1);
+    }
 `;
 
 const SendBtn = styled.input`

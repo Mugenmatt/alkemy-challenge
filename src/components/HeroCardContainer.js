@@ -7,25 +7,40 @@ import styled from 'styled-components';
 const HeroCard = styled.div`
     width: 100%;
     height: 100%;
-    cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: space-between;
-    border: 0.4em solid #000;
+    background: ${(props) => props.background};
+    border: 0.7em solid #000;
     border-radius: 10px;
     overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    :hover {
+        transform: translateY(-2em) scale(1.4) rotateY(360deg) rotateZ(2deg);
+        perspective: 800px;
+        perspective-origin: 150% 100%;
+        box-shadow: 0 0 25px #000;
+    }
+`;
+
+const HeroData = styled.div`
+    margin: 10% 5% 0 5%;
 `;
 
 const HeroImg = styled.img`
     width: 100%;
     max-height: 200px;
+    margin-bottom: 10%;
+    border-radius: 10px;
+    cursor: pointer;
 `;
 
 const HeroName = styled.h3`
     font-size: 1.5em;
     text-align: center;
-    margin: 0.3em 0 0.5em 0;
+    margin: 0 0 0.5em 0;
+    color: #fff;
 `;
 
 const AddHeroForm = styled.form`
@@ -37,7 +52,6 @@ const AddHeroForm = styled.form`
 const AddHeroBtn = styled.input`
     padding: 10px;
     font-size: 1em;
-    margin-bottom: 3%;
     background-color: #fff;
     color: #000;
     border: 0.06em solid #000;
@@ -54,29 +68,56 @@ const ModalBox = styled.div`
     margin: auto;
     display: flex;
     flex-direction: column;
+    background-color:${(props) => props.background};
+`;
+
+const HeroImgModalBox = styled.div`
+    display: flex;
+    justify-content: center;
 `;
 
 const HeroImgModal = styled.img`
-    width: 100%;
+    width: 50%;
+`;
+
+const HeroNameDescriptionModal = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `;
 
 const HeroNameModal = styled.p`
+    width: 50%;
+    color: #fff;
     font-size: 2em;
-    display: inline-block;
-    margin: 0.2em 0 0.2em 0;
+    display: block;
+    text-align: center;
+    margin: 1em 0 0.2em 0;
+`;
 
+const TitleTypeData = styled.p`
+    color: #fff;
+    margin-bottom: 0;
+    font-weight: 700;
+    font-size: 3em;
+    border-bottom: 2px solid #fff;
 `;
 
 const HeroDescriptionModal = styled.p`
+    color: #fff;
     font-size: 2em;
-    display: inline-block;
-    margin: 0.5em 0 0.5em 0;
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 1em 0 0.3em 0;
 `;
 
 const HeroDataModal = styled.span`
-    font-size: 2em;
+    font-size: 1.5em;
     color: red;
-    display: inline-block;
+    display: block;
+    text-align: center;
     margin: 0.5em 0 0.5em 0;
 `;
 
@@ -88,10 +129,11 @@ const CloseModal = styled.button`
     margin: 5% auto;
     cursor: pointer;
     background-color: #fff;
-    border: #000;
+    border: 2px solid transparent;
     border-radius: 10px;
     :hover {
         background-color: #000;
+        border: 2px solid #fff;
         color:#fff;
     }
 `;
@@ -99,7 +141,6 @@ const CloseModal = styled.button`
 export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutralHeroSelection, goodHeroes, badHeroes }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [chosenHeroModal, setChosenHeroModal] = useState({});
-    console.log(heroesList);
 
     return (<>
         {   
@@ -114,7 +155,15 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                 return <div style={{display:'inline', width: '15%', margin:'0 3% 3% 0'}} key={hero.id}>
                     {
                         !myTeamID.includes(hero.id) &&
-                        <HeroCard >
+                        <HeroCard background={hero.biography.alignment === 'good' || hero.biography.alignment === 'neutral' ? '#03198a' : '#8a0303'}>
+                            <HeroData>
+                                
+                            <HeroName onClick={() => {
+                                setModalIsOpen(true) 
+                                setChosenHeroModal(hero)
+                                }
+                            } >{hero.name}
+                            </HeroName>
 
                             {
                                 !hero.image.url.error ?
@@ -130,13 +179,7 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                                     }
                                 } />
                             }
-                            <HeroName onClick={() => {
-                                setModalIsOpen(true) 
-                                setChosenHeroModal(hero)
-                                }
-                            } >{hero.name}
-                            </HeroName>
-
+                            
                             {
                                 hero.biography.alignment === 'neutral' &&
                                 <AddHeroForm >
@@ -150,7 +193,7 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                                     {
                                         goodHeroes.length === 3 ?
                                         <AddHeroBtn type='button' value='No more SuperHeroes!'/>
-                                        : <AddHeroBtn type='button' value='SuperHeroes' onClick={() => handleSelectedHeroe(hero)} />
+                                        : <AddHeroBtn type='button' value='Hero' onClick={() => handleSelectedHeroe(hero)} />
                                     }
                                 </AddHeroForm>
                             }
@@ -161,10 +204,11 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                                     {
                                         badHeroes.length === 3 ?
                                         <AddHeroBtn type='button' value='No more SuperVillains!' />
-                                        : <AddHeroBtn type='button' value='SuperVillain' onClick={() => handleSelectedHeroe(hero)} />
+                                        : <AddHeroBtn type='button' value='Villain' onClick={() => handleSelectedHeroe(hero)} />
                                     }
                                 </AddHeroForm>
                             }
+                            </HeroData>
                         </HeroCard>
                     }
 
@@ -175,19 +219,66 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                 {
                 modalIsOpen &&
                     <Modal
+                    style={
+                        {
+                            overlay:{
+                                width:'80%',
+                                margin: 'auto',
+                                backgroundColor: '#000',
+                            },
+                            content:{
+                                backgroundColor: '#000',
+                            }
+                        }
+                    }
                     isOpen={true} 
                     onRequestClose={() => setModalIsOpen(false)}
                     >
                         <ModalBox>
-                            {chosenHeroModal.image.url ? <HeroImgModal src={chosenHeroModal.image.url} alt='Hero Image' /> : <HeroImgModal src={userDefaultIcon} alt='Hero Image' />}
-                            <HeroNameModal>Hero Name: <HeroDataModal> {chosenHeroModal.name}</HeroDataModal></HeroNameModal>
-                            <HeroDescriptionModal>Nick Name: <HeroDataModal>{chosenHeroModal.biography.aliases[0] === '-' ? 'No aliases' : chosenHeroModal.biography.aliases} </HeroDataModal></HeroDescriptionModal>
-                            <HeroDescriptionModal>Height: <HeroDataModal> {chosenHeroModal.appearance.height[0] === '-' ? "Unknown" : chosenHeroModal.appearance.height[0] } </HeroDataModal></HeroDescriptionModal>
-                            <HeroDescriptionModal>Weight: <HeroDataModal> {chosenHeroModal.appearance.weight[1] === '0 kg' ? "Unknown" : chosenHeroModal.appearance.weight[1]} </HeroDataModal></HeroDescriptionModal>
-                            <HeroDescriptionModal>Eyes Color: <HeroDataModal> {chosenHeroModal.appearance['eye-color'] === '-' ? "Unknown" : chosenHeroModal.appearance['eye-color']} </HeroDataModal></HeroDescriptionModal>
-                            <HeroDescriptionModal>Hair Color: <HeroDataModal> {chosenHeroModal.appearance['hair-color'] === '-' ? 'Unknown' : chosenHeroModal.appearance['hair-color']} </HeroDataModal></HeroDescriptionModal>
-                            <HeroDescriptionModal>Job: <HeroDataModal> {chosenHeroModal.work.occupation === '-' ? 'No job' : chosenHeroModal.work.occupation} </HeroDataModal></HeroDescriptionModal>
-                            <HeroDescriptionModal>Alignment: <HeroDataModal> {chosenHeroModal.biography.alignment} </HeroDataModal></HeroDescriptionModal>
+                            <HeroImgModalBox>
+                                {chosenHeroModal.image.url ? 
+                                <HeroImgModal 
+                                    background={chosenHeroModal.biography.alignment === 'good' || 
+                                    chosenHeroModal.biography.alignment === 'neutral' ? '#03198a' 
+                                    : '#8a0303'} 
+                                    src={chosenHeroModal.image.url} alt='Hero Image' /> 
+                                    : <HeroImgModal 
+                                        src={userDefaultIcon} 
+                                        alt='Hero Image' />
+                                }
+                            </HeroImgModalBox>
+                            
+                            <HeroNameDescriptionModal>
+                                <HeroNameModal>Name: <HeroDataModal> {chosenHeroModal.name}</HeroDataModal></HeroNameModal>
+                                <HeroDescriptionModal>Nick Name: <HeroDataModal>{chosenHeroModal.biography.aliases[0] === '-' ? 'No aliases' : chosenHeroModal.biography.aliases} </HeroDataModal></HeroDescriptionModal>
+
+                                <TitleTypeData> Appearance </TitleTypeData>
+                                <HeroDescriptionModal>Height: <HeroDataModal> {chosenHeroModal.appearance.height[0] === '-' ? "Unknown" : chosenHeroModal.appearance.height[0] } </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Weight: <HeroDataModal> {chosenHeroModal.appearance.weight[1] === '0 kg' ? "Unknown" : chosenHeroModal.appearance.weight[1]} </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Eyes Color: <HeroDataModal> {chosenHeroModal.appearance['eye-color'] === '-' ? "Unknown" : chosenHeroModal.appearance['eye-color']} </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Hair Color: <HeroDataModal> {chosenHeroModal.appearance['hair-color'] === '-' ? 'Unknown' : chosenHeroModal.appearance['hair-color']} </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Race: <HeroDataModal> {chosenHeroModal.appearance.race === 'null' ? 'Unknown' : chosenHeroModal.appearance.race} </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Gender: <HeroDataModal> {chosenHeroModal.appearance.gender === '-' ? 'Unknown' : chosenHeroModal.appearance.gender} </HeroDataModal></HeroDescriptionModal>
+
+                                <TitleTypeData> Work </TitleTypeData>
+                                <HeroDescriptionModal>Job: <HeroDataModal> {chosenHeroModal.work.occupation === '-' ? 'No job' : chosenHeroModal.work.occupation} </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Base of operation: <HeroDataModal> {chosenHeroModal.work.base === '-' ? 'No base' : chosenHeroModal.work.base} </HeroDataModal></HeroDescriptionModal>
+
+                                <TitleTypeData> Connections </TitleTypeData>
+                                <HeroDescriptionModal>Group Affiliation : <HeroDataModal> {chosenHeroModal.connections["group-affiliation"] === '-' ? 'No group affiliation' : chosenHeroModal.connections["group-affiliation"]} </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Relatives: <HeroDataModal> {chosenHeroModal.connections.relatives === '-' ? 'No relatives' : chosenHeroModal.connections.relatives} </HeroDataModal></HeroDescriptionModal>
+
+                                <TitleTypeData> Biography </TitleTypeData>
+                                <HeroDescriptionModal>Alter egos: <HeroDataModal> {chosenHeroModal.biography["alter-egos"] === '-' ? 'No alter egos' : chosenHeroModal.biography["alter-egos"]} </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Place of Birth: <HeroDataModal> {chosenHeroModal.biography["place-of-birth"] === '-' ? 'Unknown' : chosenHeroModal.biography["place-of-birth"]} </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>First appearance: <HeroDataModal> {chosenHeroModal.biography["first-appearance"] === '-' ? 'Unknown' : chosenHeroModal.biography["first-appearance"]} </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Publisher: <HeroDataModal> {chosenHeroModal.biography.publisher === '-' ? 'Unknown' : chosenHeroModal.biography.publisher} </HeroDataModal></HeroDescriptionModal>
+
+
+                                <HeroDescriptionModal>Alignment: <HeroDataModal> {chosenHeroModal.biography.alignment} </HeroDataModal></HeroDescriptionModal>
+                            </HeroNameDescriptionModal>
+
+
                             <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
                         </ModalBox>
                     </Modal>

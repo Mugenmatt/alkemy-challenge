@@ -8,7 +8,7 @@ const HomeContent = styled.div`
     width: 80%;
     margin: auto;
     padding: 20px 100px;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 20px;
     margin-bottom: 3%;
 `;
@@ -26,47 +26,70 @@ const TeamBox = styled.div`
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    padding: 50px;
+`;
+
+const TeamContainer = styled.div`
+    margin-right: 2%;
+    width: 400px;
 `;
 
 const Hero = styled.div`
-    width: 20%;
-    margin-bottom: 3%;
-    display: flex;
-    flex-direction: column;
-    border: 0.8em solid #000;
+    width: 100%;
+    background: ${(props) => props.background};
+    margin-bottom: 10%;
+    border: 1em solid #000;
     border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    :hover {
+        transform: translateY(-2em);
+        perspective: 800px;
+        perspective-origin: 150% 100%;
+        box-shadow: 0 0 25px #000;
+    }
+`;
+
+const HeroData = styled.div`
+    margin: 5% 5% 0 5%;
 `;
 
 const HeroImg = styled.img`
     width: 100%;
-    max-height: 200px;
-    margin: auto;
+    max-height: 300px;
+    border-radius: 10px;
+    cursor: pointer;
 `;
 
 const HeroName = styled.h3`
     text-align: center;
     font-size: 2em;
+    color: #fff;
 `;
 
 const HeroPowerStats = styled.p`
     font-weight: 300;
     margin: 0.7em 0;
-    margin-left: 15%;
+    font-size: 1.5em;
+    color: #fff;
+    margin-left: 25%;
 `;
 
 const DataHeroPowerstats = styled.span`
-    color: red;
+    color: #fff;
     font-weight: 700;
 `;
 
-const DeleteBox = styled.form`
-    margin: 3% auto 5% auto;
+const DeleteBox = styled.div`
+    margin: 3% 0 5% 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 `;
 
 const DeleteBtn = styled.input`
     padding: 20px;
     font-size: 1em;
+    margin-top: 3%;
     background-color: #fff;
     border-radius: 10px;
     border: 1px solid #000;
@@ -77,16 +100,23 @@ const DeleteBtn = styled.input`
     }
 `;
 
+const AddHeroBtnBox = styled.p`
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+`;
+
 const AddHeroBtn = styled.p`
-    width: 10%;
+    width: 100%;
     font-size: 150px;
-    padding: 10px;
-    margin: 0 auto 5% auto;
+    display: inline-block;
+    padding: 10px 25px;
+    margin: 0 auto 10% auto;
     text-align: center;
     color: #000;
     border: 2px solid #000;
     border-radius: 10px;
-    :hover {
+    &:hover {
         background-color: #000;
         color: #fff;
     }
@@ -119,21 +149,25 @@ const HeroImgModal = styled.img`
 
 const HeroNameModal = styled.p`
     font-size: 2em;
-    display: inline-block;
+    display: block;
+    text-align: center;
     margin: 0.2em 0 0.2em 0;
-
+    color: #fff;
 `;
 
 const HeroDescriptionModal = styled.p`
     font-size: 2em;
     display: inline-block;
     margin: 0.5em 0 0.5em 0;
+    color: #fff;
+    text-align: center;
 `;
 
 const HeroDataModal = styled.span`
     font-size: 2em;
     color: red;
-    display: inline-block;
+    text-align: center;
+    display: block;
     margin: 0.5em 0 0.5em 0;
 `;
 
@@ -145,10 +179,11 @@ const CloseModal = styled.button`
     margin: 5% auto;
     cursor: pointer;
     background-color: #fff;
-    border: #000;
+    border: 2px solid transparent;
     border-radius: 10px;
     :hover {
         background-color: #000;
+        border: 2px solid #fff;
         color:#fff;
     }
 `;
@@ -253,33 +288,35 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
                     <TeamBox>
                         {
                             team.map(hero => {
-                                return(<>
+                                return(<TeamContainer key={hero.id}>
                                     {
                                         hero.isChosen === 'true' &&
                                         <>
-                                        <Hero key={hero.id}>
-                                            <HeroImg src={hero.image.url} alt="Image of the Hero" onClick={() => {
-                                                setModalIsOpen(true)
-                                                setChosenHeroModal(hero)
-                                                }
-                                            } />
-                                            <HeroName onClick={() => {
-                                                setModalIsOpen(true)
-                                                setChosenHeroModal(hero)
-                                                }
-                                            }> {hero.name} </HeroName>
-                                            <HeroPowerStats> Intelligence:<DataHeroPowerstats> {hero.powerstats.intelligence === 'null' ? 0 : hero.powerstats.intelligence} </DataHeroPowerstats> </HeroPowerStats>
-                                            <HeroPowerStats> Strength:<DataHeroPowerstats> {hero.powerstats.strength === 'null' ? 0 : hero.powerstats.strength} </DataHeroPowerstats> </HeroPowerStats>
-                                            <HeroPowerStats> Speed:<DataHeroPowerstats> {hero.powerstats.speed === 'null' ? 0 : hero.powerstats.speed} </DataHeroPowerstats> </HeroPowerStats>
-                                            <HeroPowerStats> Durability:<DataHeroPowerstats> {hero.powerstats.durability === 'null' ? 0 : hero.powerstats.durability} </DataHeroPowerstats> </HeroPowerStats>
-                                            <HeroPowerStats> Power:<DataHeroPowerstats> {hero.powerstats.power === 'null' ? 0 : hero.powerstats.power} </DataHeroPowerstats> </HeroPowerStats>
-                                            <HeroPowerStats> Combat:<DataHeroPowerstats> {hero.powerstats.combat === 'null' ? 0 : hero.powerstats.combat} </DataHeroPowerstats> </HeroPowerStats>
-                                            <DeleteBox>
-                                                <DeleteBtn type="button" value="Delete" onClick={() => handleDeleteHero(hero)} />
-                                            </DeleteBox>
+                                        <Hero background={hero.biography.alignment === 'good' || hero.biography.alignment === 'neutral' ? '#03198a' : '#8a0303'} >
+                                            <HeroData>
+                                                <HeroImg src={hero.image.url} alt="Image of the Hero" onClick={() => {
+                                                    setModalIsOpen(true)
+                                                    setChosenHeroModal(hero)
+                                                    }
+                                                } />
+                                                <HeroName onClick={() => {
+                                                    setModalIsOpen(true)
+                                                    setChosenHeroModal(hero)
+                                                    }
+                                                }> {hero.name} </HeroName>
+                                                <HeroPowerStats> Intelligence:<DataHeroPowerstats> {hero.powerstats.intelligence === 'null' ? 0 : hero.powerstats.intelligence} </DataHeroPowerstats> </HeroPowerStats>
+                                                <HeroPowerStats> Strength:<DataHeroPowerstats> {hero.powerstats.strength === 'null' ? 0 : hero.powerstats.strength} </DataHeroPowerstats> </HeroPowerStats>
+                                                <HeroPowerStats> Speed:<DataHeroPowerstats> {hero.powerstats.speed === 'null' ? 0 : hero.powerstats.speed} </DataHeroPowerstats> </HeroPowerStats>
+                                                <HeroPowerStats> Durability:<DataHeroPowerstats> {hero.powerstats.durability === 'null' ? 0 : hero.powerstats.durability} </DataHeroPowerstats> </HeroPowerStats>
+                                                <HeroPowerStats> Power:<DataHeroPowerstats> {hero.powerstats.power === 'null' ? 0 : hero.powerstats.power} </DataHeroPowerstats> </HeroPowerStats>
+                                                <HeroPowerStats> Combat:<DataHeroPowerstats> {hero.powerstats.combat === 'null' ? 0 : hero.powerstats.combat} </DataHeroPowerstats> </HeroPowerStats>
+                                                <DeleteBox>
+                                                    <DeleteBtn type="button" value="Delete" onClick={() => handleDeleteHero(hero)} />
+                                                </DeleteBox>
+                                            </HeroData>
                                         </Hero>
                                     </>}
-                                </>)
+                                </TeamContainer>)
                             })
                         }
                             {
@@ -287,6 +324,18 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
                                 <Modal
                                 isOpen={modalIsOpen} 
                                 onRequestClose={() => setModalIsOpen(false)}
+                                style={
+                                    {
+                                        overlay:{
+                                            width:'80%',
+                                            margin: 'auto',
+                                            backgroundColor: '#000',
+                                        },
+                                        content:{
+                                            backgroundColor: '#000',
+                                        }
+                                    }
+                                }
                                 >
                                     <ModalBox>
                                         <HeroImgModal src={chosenHeroModal.image.url} alt='Hero Image' />
@@ -296,7 +345,7 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
                                         <HeroDescriptionModal>Weight: <HeroDataModal> {chosenHeroModal.appearance.weight[1]} </HeroDataModal></HeroDescriptionModal>
                                         <HeroDescriptionModal>Eyes Color: <HeroDataModal> {chosenHeroModal.appearance['eye-color']} </HeroDataModal></HeroDescriptionModal>
                                         <HeroDescriptionModal>Hair Color: <HeroDataModal> {chosenHeroModal.appearance['hair-color']} </HeroDataModal></HeroDescriptionModal>
-                                        <HeroDescriptionModal>Job: <HeroDataModal> {chosenHeroModal.work.occupation} </HeroDataModal></HeroDescriptionModal>
+                                        <HeroDescriptionModal>Job: <HeroDataModal> {chosenHeroModal.work.occupation === '-' ? 'No job' : chosenHeroModal.work.occupation} </HeroDataModal></HeroDescriptionModal>
                                         <HeroDescriptionModal>Alignment: <HeroDataModal> {chosenHeroModal.biography.alignment} </HeroDataModal></HeroDescriptionModal>
                                         <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
                                     </ModalBox>
@@ -305,7 +354,11 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
                     </TeamBox>
 
                     {   JSON.parse(window.localStorage.getItem('myTeam')).length < 6 &&
-                         <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>
+                        <>
+                            <AddHeroBtnBox>
+                                <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>
+                            </AddHeroBtnBox>
+                        </>
                     }
 
                     <TitleHome>Team Powerstats</TitleHome>

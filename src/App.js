@@ -6,10 +6,17 @@ import { SearchHeroes } from './pages/search';
 import { Error } from './pages/error'
 import styled from 'styled-components/macro';
 import  userDefaultIcon  from './assets/img/userDefault.svg';
+import  bg  from './assets/img/bg2.jpg';
 import logoutIcon from './assets/img/logout.svg';
 import ReactModal from 'react-modal';
 
 ReactModal.setAppElement('#root');
+
+const AppDiv = styled.div`
+  background: url(${bg});
+  background-color: #000;
+  padding: 20px;
+`;
 
 const Header = styled.div`
   background-color: #fff;
@@ -21,6 +28,7 @@ const Header = styled.div`
 `;
 
 const AlkemyIcon = styled.h1`
+  color: rgba(81, 203, 238, 1);
   font-weight: 500;
 `;
 
@@ -38,7 +46,7 @@ const Main = styled.div`
 
 const App = () => {
     const token = 1132055343928952;
-    const urlToken = `https://superheroapi.com/api/${token}`
+    const urlToken = `https://superheroapi.com/api/${token}`;
     const proxy = 'https://rocky-basin-57618.herokuapp.com';
 
     const correctUser = {
@@ -98,7 +106,7 @@ const App = () => {
 
 
     return (
-      <div className="App">
+      <AppDiv>
         <Router>
           <Header>
             <Link to='/' style={{textDecoration:'none', color:'#000'}}>
@@ -155,7 +163,7 @@ const App = () => {
 
           </Main>
         </Router>
-      </div>
+      </AppDiv>
     );
 }
 

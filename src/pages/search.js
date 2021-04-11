@@ -8,7 +8,7 @@ const SearchContent = styled.div`
     width: 80%;
     margin: auto;
     padding: 20px 100px;
-    background-color: #fff;
+    background-color: rgba(81, 203, 238, .5);
     margin-bottom: 3%;
     border-radius: 20px;
 `;
@@ -17,20 +17,21 @@ const TitleSearch = styled.h1`
     font-size: 4em;
     font-weight: 700;
     text-align: center;
+    color: #fff;
     margin-bottom: 3%;
 `;
 
 const TitleRules = styled.p`
     font-size: 2em;
-    color: green;
+    color: rgba(255, 255, 255, .8);
     font-weight: 700;
     text-align: center;
     margin-bottom: 0;
 `;
 
 const RulesClarification = styled.p`
-    display: block;
-    font-size: 1em;
+    display: ${({display}) => display};
+    font-size: 2em;
     color: red;
     font-weight: 700;
     text-align: center;
@@ -38,7 +39,8 @@ const RulesClarification = styled.p`
 `;
 
 const AlignmentHeroes = styled.p`
-    color: #000;
+    color: #fff;
+    font-weight: 700;
     display:inline-block;
     width: 40%;
     font-size: 2em;
@@ -53,7 +55,7 @@ const AlignmentHeroesData = styled.span`
     vertical-align: middle;
 `;
 
-const Search = styled.form`
+const Search = styled.div`
     text-align: center;
     width: 100%;
     margin-top: 4%;
@@ -61,6 +63,15 @@ const Search = styled.form`
 
 const SearchInput = styled.input`
     width: 20%;
+    padding: 3px 0px 3px 3px;
+    transition: all 0.30s ease-in-out;
+    outline: none;
+    border: 1px solid #DDDDDD;
+    :focus {
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+        padding: 3px 0px 3px 3px;
+        border: 1px solid rgba(81, 203, 238, 1);
+    }
 `;
 
 const SearchBtn = styled.input`
@@ -70,10 +81,18 @@ const SearchBtn = styled.input`
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: #000;
-    border: none;
+    background-color: rgba(81, 203, 238, .7);
+    border: 1px solid rgba(81, 203, 238, 0);
+    outline: none;
     padding: 0.2%;
+    transition: all 0.30s ease-in-out;
     cursor: pointer;
+    :hover {
+        background-color: rgba(81, 203, 238, 1);
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+        padding: 3px 0px 3px 3px;
+        border: 1px solid rgba(81, 203, 238, 1);
+    }
 `;
 
 const AllHeroes = styled.div`
@@ -85,7 +104,7 @@ const AllHeroes = styled.div`
 
 const BackHomeBtn = styled.p`
     width: 30%;
-    margin: auto;
+    margin: 0 auto 3% auto;
     color: #000;
     padding: 10px;
     font-size: 2em;
@@ -163,8 +182,8 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
 
                     <TitleRules>There should be 3 superheroes and 3 supervillains!</TitleRules>
 
-                    { <RulesClarification style={{opacity: neutralChoice ? '1' : '0'}}>Neutral heroes does not count</RulesClarification> }
-                    { <RulesClarification style={{opacity: errorNoData ? '1' : '0'}}> Character with given name not found </RulesClarification> }
+                    { <RulesClarification display={neutralChoice === false ? 'none' : 'block'} >Neutral heroes does not count</RulesClarification> }
+                    { <RulesClarification display={errorNoData === false ? 'none' : 'block'}> Character with given name not found </RulesClarification> }
 
                     <Search >
                         <SearchInput type='text' placeholder='Hero name...' onChange={handleWrittenHero} />
