@@ -8,9 +8,10 @@ const HomeContent = styled.div`
     width: 80%;
     margin: auto;
     padding: 20px 100px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(0, 0, 0, 0.7);
     border-radius: 20px;
     margin-bottom: 3%;
+    z-index: 100;
 `;
 
 const TitleHome = styled.h1`
@@ -18,6 +19,8 @@ const TitleHome = styled.h1`
     font-weight: 700;
     text-align: center;
     margin-bottom: 3%;
+    color: #fff;
+    font-family: 'comictypemedium';
 `;
 
 const TeamBox = styled.div`
@@ -113,11 +116,12 @@ const AddHeroBtn = styled.p`
     padding: 10px 25px;
     margin: 0 auto 10% auto;
     text-align: center;
-    color: #000;
-    border: 2px solid #000;
+    color: #fff;
+    border: 2px solid #fff;
     border-radius: 10px;
     &:hover {
         background-color: #000;
+        border: 2px solid #fff;
         color: #fff;
     }
 `;
@@ -128,6 +132,7 @@ const TeamPowerstatsBox = styled.div`
 `;
 
 const TeamPowerstats = styled.p`
+    color: #fff;
     font-size: 2em;
 `;
 

@@ -3,17 +3,30 @@ import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components/macro';
 import {HeroCardContainer} from '../components/HeroCardContainer'
 import  searchIcon  from '../assets/img/search-icon.svg';
+import bg from '../assets/img/bg1.jpg';
 
 const SearchContent = styled.div`
     width: 80%;
     margin: auto;
     padding: 20px 100px;
-    background-color: rgba(81, 203, 238, .5);
+    background-color: rgba(0, 0, 0, 0.5);
     margin-bottom: 3%;
     border-radius: 20px;
+    z-index: 100;
+`;
+
+const Background = styled.div`
+  width: 100%;
+  height: ${(props) => props.height};
+  position: absolute;
+  background-color: #ffcc01;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
+  z-index: -1;
+  top: -265px;
 `;
 
 const TitleSearch = styled.h1`
+    font-family: 'comictypemedium';
     font-size: 4em;
     font-weight: 700;
     text-align: center;
@@ -63,6 +76,7 @@ const Search = styled.div`
 
 const SearchInput = styled.input`
     width: 20%;
+    font-family: 'comictypemedium';
     padding: 3px 0px 3px 3px;
     transition: all 0.30s ease-in-out;
     outline: none;
@@ -105,16 +119,18 @@ const AllHeroes = styled.div`
 const BackHomeBtn = styled.p`
     width: 30%;
     margin: 0 auto 3% auto;
-    color: #000;
+    color: #fff;
     padding: 10px;
     font-size: 2em;
     font-weight: 300;
     text-align: center;
     border: 0.1em solid #000;    
     border-radius: 10px;
+    box-shadow: inset 0px 0px 10px #000;
     :hover {
         background-color: #000;
         color: #fff;
+        
     }
 `;
 
@@ -124,6 +140,7 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
     const [errorFetch, setErrorFetch] = useState('')
     const [errorNoData, setErrorNoData] = useState(false);
     const [neutralChoice, setNeutralChoice] = useState(false);
+    const [fetchDone, setFetchDone] = useState(false)
 
     if(isLogged === 'false' || !isLogged){
         return <Redirect to='/login' />
@@ -155,6 +172,7 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
                 selectedHero.map(hero => {
                     return hero.isChosen = 'false'
                 })
+                setFetchDone(true)
                 return setHeroesList(selectedHero);
             } else {
                 console.log('ERROR: ' + selectedHero.error);
@@ -176,6 +194,7 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
     
     return (
         <>
+            <Background height={fetchDone ? '150vh' : '70vh'}></Background>
                 <SearchContent>
 
                     <TitleSearch>Choose your heroes!</TitleSearch>

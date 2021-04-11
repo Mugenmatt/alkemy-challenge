@@ -8,13 +8,15 @@ const FormBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgba(81, 203, 238, 0.6);
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 20px;
+    z-index: 200;
 `;
 
 const FormTitle = styled.h1`
-    font-weight: 500;
     color: #fff;
+    font-family: 'comictypemedium';
+    font-size: 3em;
 `;
 
 const FormData = styled.form`
