@@ -216,7 +216,7 @@ const CloseModal = styled.button`
 
 const SpanColorPowerstats = styled.span``;
 
-export const Home = ({ handleDeleteHero, team, isLoading, setIsLoading }) => {
+export const Home = ({ handleDeleteHero }) => {
 
     const isLogged = window.localStorage.getItem('isAuthorized');
     const usernameParsed = window.localStorage.getItem('username');
@@ -227,9 +227,13 @@ export const Home = ({ handleDeleteHero, team, isLoading, setIsLoading }) => {
     const username = JSON.parse(window.localStorage.getItem('username'));
     
     if(isLogged === 'false' || !isLogged){
-        return <Redirect to='/login' />
+        console.log('hola');
+        // if(window.localStorage.getItem('username') === 'null'){
+            return <Redirect to='/login' />
+        // }
     }
 
+    const team = JSON.parse(window.localStorage.getItem('myTeam'));
     const teamPowerstats = [...team];
 
     let TeamIntelligence = teamPowerstats.reduce((prev, curHero) => {

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {useState, useEffect} from 'react';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { HeaderContainer } from './components/header'
 import { Home } from './pages/home';
 import { Login } from './pages/login';
@@ -27,7 +27,7 @@ const App = () => {
   const [nameData, setNameData] = useState(null);
   const [emailData, setEmailData] = useState(null);
   const [passwordData, setPasswordData] = useState(null);
-  const [isAuth, setIsAuth] = useState(null);
+  const [isAuth, setIsAuth] = useState(false);
   const [invalidInput, setInvalidInput] = useState(false);
   const [emptyInput, setEmptyInput] = useState(false);
   const [selectedHero, setSelectedHero] = useState([]);
@@ -52,24 +52,31 @@ const App = () => {
   }
 
   const handleSubmit = e => {
-    if(emailData === correctUser.email && passwordData === correctUser.password) {
+    if(nameData !== null && emailData === correctUser.email && passwordData === correctUser.password) {
       window.localStorage.setItem('isAuthorized', 'true');
-    return setIsAuth(true)
-      } else if(nameData === null || emailData === null || passwordData === null) {
-        return setEmptyInput(true)
-      } else {
-        return setInvalidInput(true)
-      }
+      return setIsAuth(true)
+    } else if(nameData === null || emailData === null || passwordData === null) {
+      return setEmptyInput(true)
+    } else {
+      return setInvalidInput(true)
+    }
   }
 
-  if(isLogged === 'true') {
-    window.localStorage.setItem('username', JSON.stringify(nameData));
-    window.localStorage.setItem('myTeam', JSON.stringify(selectedHero));
-  }
+    if(isLogged === 'true' && nameData) {
+      window.localStorage.setItem('username', JSON.stringify(nameData));
+
+      if(window.localStorage.getItem('myTeam') === 'null'){
+        setSelectedHero(selectedHero)
+        window.localStorage.setItem('myTeam', JSON.stringify(selectedHero));
+      } else {
+        window.localStorage.setItem('myTeam', JSON.stringify(selectedHero));
+      }
+    }
 
   const handleLogout = () => {
-    window.localStorage.setItem('isAuthorized', null)
-    window.localStorage.removeItem('username')
+    setIsAuth(false);
+    window.localStorage.setItem('isAuthorized', false)
+    window.localStorage.setItem('username', null)
   }
 
   const handleSelectedHeroe = (hero) => {
@@ -81,7 +88,7 @@ const App = () => {
     let deleteCharacter = team.filter(hero => {
         return hero.id !== heroDelete.id
       })
-      setSelectedHero(deleteCharacter)
+    setSelectedHero(deleteCharacter)
   }
 
   const handleShowLogMsg = () => {
@@ -97,8 +104,6 @@ const App = () => {
               handleLogout={handleLogout}
               handleShowLogMsg={handleShowLogMsg}
               showLogMsg={showLogMsg}
-              isLogged={isLogged}
-            
             />
             <Main>
                 <Switch>
@@ -124,7 +129,6 @@ const App = () => {
                       setHeroesList={setHeroesList}
                       heroesList={heroesList}
                       handleDeleteHero={handleDeleteHero}
-                      team={team}
                       isLoading={isLoading}
                       setIsLoading={setIsLoading}
                     />

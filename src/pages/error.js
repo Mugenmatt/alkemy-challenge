@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import { useEffect, useRef} from 'react';
 import {NavLink} from 'react-router-dom';
 import styled from 'styled-components';
 import lottie from 'lottie-web';
@@ -47,7 +47,7 @@ const Lottie = styled.div`
     right: 150px;
 `;
 
-export const Error = ({isLoading, setIsLoading}) => {
+export const Error = () => {
     const container = useRef(null)
 
     useEffect(() => {

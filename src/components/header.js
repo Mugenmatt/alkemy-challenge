@@ -1,4 +1,3 @@
-import React, {useState} from 'react';
 import { Link } from "react-router-dom";
 import userDefaultIcon from '../assets/img/userDefault.svg';
 import logoutIcon from '../assets/img/logout.svg';
@@ -63,7 +62,10 @@ border: 2px solid #000;
 }
 `;
 
-export const HeaderContainer = ({handleLogout, handleShowLogMsg, showLogMsg, isLogged}) => {
+export const HeaderContainer = ({handleLogout, handleShowLogMsg, showLogMsg}) => {
+
+    const isLogged = window.localStorage.getItem('isAuthorized');
+
     return (
         <Header>
             <Link to='/' style={{textDecoration:'none', color:'#000'}}>
