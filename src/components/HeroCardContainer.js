@@ -84,6 +84,9 @@ const HeroImgModalBox = styled.div`
 
 const HeroImgModal = styled.img`
     width: 50%;
+    @media (max-width: 769px) {
+        width: 100%;
+    }
 `;
 
 const HeroNameDescriptionModal = styled.div`
@@ -108,6 +111,9 @@ const TitleTypeData = styled.p`
     font-weight: 700;
     font-size: 3em;
     border-bottom: 2px solid #fff;
+    @media (max-width: 769px) {
+        font-size: 2em;
+    }
 `;
 
 const HeroDescriptionModal = styled.p`
@@ -117,6 +123,9 @@ const HeroDescriptionModal = styled.p`
     width: 100%;
     text-align: center;
     margin: 1em 0 0.3em 0;
+    @media (max-width: 769px) {
+        font-size: 1em;
+    }
 `;
 
 const HeroDataModal = styled.span`
@@ -141,6 +150,9 @@ const CloseModal = styled.button`
         background-color: #000;
         border: 2px solid #fff;
         color:#fff;
+    }
+    @media (max-width: 1025px) {
+        width: 50%;
     }
 `;
 

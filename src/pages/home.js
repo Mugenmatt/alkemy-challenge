@@ -37,6 +37,10 @@ const TitleHome = styled.h1`
     @media (max-width: 1025px) {
         font-size: 2.8em;
     }
+    @media (max-width: 769px) {
+        font-size: 2.5em;
+        margin-bottom: 10%;
+    }
 `;
 
 const HierarchyPoints = styled.p`
@@ -44,6 +48,9 @@ const HierarchyPoints = styled.p`
     color: #fff;
     font-size: 2em;
     text-align: center;
+    @media (max-width: 769px) {
+        display: none;
+    }
 `;
 
 
@@ -57,6 +64,9 @@ const TeamBox = styled.div`
         display: grid;
         grid-template-columns: repeat(1, 1fr);
         grid-gap: 20px;
+    }
+    @media (max-width: 769px) {
+        justify-items: center;
     }
 `;
 
@@ -150,6 +160,9 @@ const AddHeroBtnBox = styled.p`
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    @media (max-width: 769px) {
+        width: 85%;
+    }
 `;
 
 const AddHeroBtn = styled.span`
@@ -169,6 +182,7 @@ const AddHeroBtn = styled.span`
         border: 2px solid #fff;
         color: #fff;
     }
+
 `;
 
 const TeamPowerstatsBox = styled.div`
@@ -177,6 +191,9 @@ const TeamPowerstatsBox = styled.div`
     @media (max-width: 1025px) {
         font-size: 1em;
         width: 60%;
+    }
+    @media (max-width: 769px) {
+        width: 50%;
     }
 `;
 
@@ -214,6 +231,10 @@ const HeroNameModal = styled.p`
     text-align: center;
     margin: 0.2em 0 0.2em 0;
     color: #fff;
+    @media (max-width: 769px) {
+        font-size: 1.5em;
+        margin-top: 10%;
+    }
 `;
 
 const HeroDescriptionModal = styled.p`
@@ -222,6 +243,9 @@ const HeroDescriptionModal = styled.p`
     margin: 0.5em 0 0.5em 0;
     color: #fff;
     text-align: center;
+    @media (max-width: 769px) {
+        font-size: 1.5em;
+    }
 `;
 
 const HeroDataModal = styled.span`
@@ -230,6 +254,9 @@ const HeroDataModal = styled.span`
     text-align: center;
     display: block;
     margin: 0.5em 0 0.5em 0;
+    @media (max-width: 769px) {
+        font-size: 1.5em;
+    }
 `;
 
 const CloseModal = styled.button`
@@ -246,6 +273,9 @@ const CloseModal = styled.button`
         background-color: #000;
         border: 2px solid #fff;
         color:#fff;
+    }
+    @media (max-width: 1025px) {
+        width: 50%;
     }
 `;
 

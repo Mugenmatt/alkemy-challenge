@@ -22,12 +22,18 @@ const FormBox = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 20px;
     z-index: 200;
+    @media (max-width: 1200px) {
+        width: 70%;
+    }
 `;
 
 const FormTitle = styled.h1`
     color: #fff;
     font-family: 'comictypemedium';
     font-size: 3em;
+    @media (max-width: 1200px) {
+        margin-bottom: 0;
+    }
 `;
 
 const FormData = styled.form`

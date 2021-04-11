@@ -47,6 +47,10 @@ const TitleRules = styled.p`
     @media (max-width: 1025px) {
         font-size: 1.5em;
     }
+    @media (max-width: 769px) {
+        font-size: 1em;
+        margin-bottom: 10%;
+    }
 `;
 
 const RulesClarification = styled.p`
@@ -69,6 +73,9 @@ const AlignmentHeroes = styled.p`
     @media (max-width: 1025px) {
         font-size: 1.7em;
         margin-top: 10%;
+    }
+    @media (max-width: 769px) {
+        width: 43%;
     }
 `;
 
@@ -103,6 +110,9 @@ const SearchInput = styled.input`
     @media (max-width: 1200px) {
         width: 60%;
     }
+    @media (max-width: 769px) {
+        width: 85%;
+    }
 `;
 
 const SearchBtn = styled.input`
@@ -130,6 +140,10 @@ const SearchBtn = styled.input`
     @media (max-width: 1025px) {
         padding: 1.96%;
         width: 7%;
+    }
+    @media (max-width: 769px) {
+        padding: 2.7%;
+        width: 9%;
     }
 `;
 
@@ -160,7 +174,10 @@ const BackHomeBtn = styled.p`
     :hover {
         background-color: #000;
         color: #fff;
-        
+    }
+    @media (max-width: 769px) {
+        width: 50%;
+        margin-top: 15%;
     }
 `;
 

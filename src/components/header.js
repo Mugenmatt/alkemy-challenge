@@ -18,6 +18,10 @@ z-index: 200;
     justify-content: space-between;
     padding: 20px 50px;
 }
+@media (max-width: 769px) {
+    width: 70%;
+    padding-bottom: 0;
+}
 `;
 
 const AlkemyIcon = styled.h1`
