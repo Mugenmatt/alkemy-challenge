@@ -22,6 +22,9 @@ const HomeContent = styled.div`
     border-radius: 20px;
     margin-bottom: 3%;
     z-index: 100;
+    @media (max-width: 1025px) {
+        width: 60%;
+    }
 `;
 
 const TitleHome = styled.h1`
@@ -31,6 +34,9 @@ const TitleHome = styled.h1`
     text-align: center;
     margin-bottom: 3%;
     color: #fff;
+    @media (max-width: 1025px) {
+        font-size: 2.8em;
+    }
 `;
 
 const HierarchyPoints = styled.p`
@@ -47,12 +53,21 @@ const TeamBox = styled.div`
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-
+    @media (max-width: 1025px) {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 20px;
+    }
 `;
 
 const TeamContainer = styled.div`
     margin-right: 2%;
     width: 400px;
+    @media (max-width: 1025px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 `;
 
 const Hero = styled.div`
@@ -68,6 +83,9 @@ const Hero = styled.div`
         perspective: 800px;
         perspective-origin: 150% 100%;
         box-shadow: 0 0 25px #000;
+    }
+    @media (max-width: 1025px) {
+        width: 300px;
     }
 `;
 
@@ -86,6 +104,10 @@ const HeroName = styled.h3`
     text-align: center;
     font-size: 2em;
     color: #fff;
+    @media (max-width: 1025px) {
+        font-size: 1.5em;
+        margin-top: 3%;
+    }
 `;
 
 const HeroPowerStats = styled.p`
@@ -94,6 +116,7 @@ const HeroPowerStats = styled.p`
     font-size: 1.5em;
     color: #fff;
     margin-left: 25%;
+    
 `;
 
 const DataHeroPowerstats = styled.span`
@@ -151,16 +174,26 @@ const AddHeroBtn = styled.span`
 const TeamPowerstatsBox = styled.div`
     width: 25%;
     margin:auto;
+    @media (max-width: 1025px) {
+        font-size: 1em;
+        width: 60%;
+    }
 `;
 
 const TeamPowerstats = styled.p`
     color: #fff;
     font-size: 2em;
+    @media (max-width: 1025px) {
+        font-size: 1.5em;
+    }
 `;
 
 const DataTeamPowerstats = styled.span`
     font-size: 1.5em;
     color: ${(props) => props.teamPowerstatsColor};
+    @media (max-width: 1025px) {
+        font-size: 1em;
+    }
 `;
 
 const ModalBox = styled.div`
@@ -216,7 +249,11 @@ const CloseModal = styled.button`
     }
 `;
 
-const SpanColorPowerstats = styled.span``;
+const SpanColorPowerstats = styled.span`
+    @media (max-width: 1025px) {
+        font-size: 0.57em;
+    }
+`;
 
 export const Home = ({ handleDeleteHero }) => {
 

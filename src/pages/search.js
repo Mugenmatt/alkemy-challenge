@@ -14,6 +14,9 @@ const SearchContent = styled.div`
     margin-bottom: 3%;
     border-radius: 20px;
     z-index: 100;
+    @media (max-width: 1025px) {
+        width: 60%;
+    }
 `;
 
 const Background = styled.div`
@@ -41,6 +44,9 @@ const TitleRules = styled.p`
     font-weight: 700;
     margin-top: 3%;
     text-align: center;
+    @media (max-width: 1025px) {
+        font-size: 1.5em;
+    }
 `;
 
 const RulesClarification = styled.p`
@@ -60,6 +66,10 @@ const AlignmentHeroes = styled.p`
     font-size: 2em;
     margin: 2% 0 5% 5%;
     text-align: center;
+    @media (max-width: 1025px) {
+        font-size: 1.7em;
+        margin-top: 10%;
+    }
 `;
 
 const AlignmentHeroesData = styled.span`
@@ -90,6 +100,9 @@ const SearchInput = styled.input`
         padding: 3px 0px 3px 3px;
         border: 1px solid rgba(81, 203, 238, 1);
     }
+    @media (max-width: 1200px) {
+        width: 60%;
+    }
 `;
 
 const SearchBtn = styled.input`
@@ -110,6 +123,14 @@ const SearchBtn = styled.input`
         box-shadow: 0 0 5px rgba(81, 203, 238, 1);
         border: 1px solid rgba(81, 203, 238, 1);
     }
+    @media (max-width: 1200px) {
+        padding: 1.25%;
+        width: 5%;
+    }
+    @media (max-width: 1025px) {
+        padding: 1.96%;
+        width: 7%;
+    }
 `;
 
 const AllHeroes = styled.div`
@@ -117,6 +138,11 @@ const AllHeroes = styled.div`
     justify-content: space-around;
     flex-wrap: wrap;
     margin-bottom: 3%;
+    @media (max-width: 1025px) {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 20px;
+    }
 `;
 
 const BackHomeBtn = styled.p`

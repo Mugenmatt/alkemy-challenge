@@ -76,6 +76,11 @@ const SendBtn = styled.input`
         color: #fff;
         border: 1px solid #fff;
     }
+    @media (max-width: 1025px) {
+        padding: 4%;
+        font-size: 1em;
+        text-align: center;
+    }
 `;
 
 const ErrorMessage = styled.p`

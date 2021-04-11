@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Modal from 'react-modal';
 import userDefaultIcon  from '../assets/img/userDefault.svg';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 
 const HeroCard = styled.div`
@@ -21,6 +21,11 @@ const HeroCard = styled.div`
         perspective: 800px;
         perspective-origin: 150% 100%;
         box-shadow: 0 0 25px #000;
+    }
+    @media (max-width: 1025px) {
+        padding: 5% 5% 0% 5%;
+        width: 130px;
+        max-height: 330px;
     }
 `;
 
