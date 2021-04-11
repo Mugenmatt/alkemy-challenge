@@ -155,7 +155,7 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
 
                 const heroColor = () => {
                     if(hero.biography.alignment === 'neutral') {
-                        return 'green'
+                        return '#a1a1a1'
                     } else if(hero.biography.alignment === 'good') {
                         return '#03198a'
                     } else {

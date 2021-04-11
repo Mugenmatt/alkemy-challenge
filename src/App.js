@@ -47,6 +47,7 @@ const LoginBox = styled.div`
   justify-content: space-between;
   align-items: center;
   position: relative;
+  right: -70px;
 `;
 
 const LogMsg = styled.p`
@@ -61,7 +62,6 @@ const LogMsg = styled.p`
 
 const UserIconImg = styled.img`
   width: 30%;
-  vertical-align: top;
   background-color: #000;
   padding: 10px;
   transition: all 0.6s ease-in-out;
@@ -76,7 +76,7 @@ const UserIconImg = styled.img`
 
 const Main = styled.div`
   margin-top: 4%;
-  position:relative;
+  position: relative;
 `;
 
 const App = () => {
@@ -88,6 +88,7 @@ const App = () => {
     email: 'challenge@alkemy.org',
     password: 'react'
   }
+  const [nameData, setNameData] = useState(null);
   const [emailData, setEmailData] = useState(null);
   const [passwordData, setPasswordData] = useState(null);
   const [isAuth, setIsAuth] = useState(null);
@@ -102,6 +103,10 @@ const App = () => {
 
   const team = JSON.parse(window.localStorage.getItem('myTeam'));
 
+  const handleName = name => {
+    return setNameData(name.target.value);
+  }
+
   const handleEmail = email => {
     return setEmailData(email.target.value);
   }
@@ -114,7 +119,7 @@ const App = () => {
     if(emailData === correctUser.email && passwordData === correctUser.password) {
       window.localStorage.setItem('isAuthorized', 'true');
     return setIsAuth(true)
-      } else if(emailData === null || passwordData === null) {
+      } else if(nameData === null || emailData === null || passwordData === null) {
         return setEmptyInput(true)
       } else {
         return setInvalidInput(true)
@@ -122,11 +127,13 @@ const App = () => {
   }
 
   if(isLogged === 'true') {
+    window.localStorage.setItem('username', JSON.stringify(nameData));
     window.localStorage.setItem('myTeam', JSON.stringify(selectedHero));
   }
 
   const handleLogout = () => {
-      window.localStorage.removeItem('isAuthorized')
+    window.localStorage.setItem('isAuthorized', null)
+    window.localStorage.removeItem('username')
   }
 
   const handleSelectedHeroe = (hero) => {
@@ -142,7 +149,7 @@ const App = () => {
   }
 
   const handleShowLogMsg = () => {
-    setTimeout( () => {setShowLogMsg(true)} ,3000)
+    setTimeout( () => {setShowLogMsg(true)} ,1000)
     setShowLogMsg(false)
   }
 
@@ -158,7 +165,7 @@ const App = () => {
                 <LoginBox>
                     <LogMsg displayMsg={!showLogMsg ? 'inline-block' : 'none'} >{isLogged === 'true' ? 'User logged in' : 'User logged out'}</LogMsg>
                     <Link to='/login' >
-                      <UserIconImg onMouseOver={handleShowLogMsg} src={isLogged === 'true' ? userDefaultIcon : logoutIcon} alt={isLogged === 'true' ? 'User logged in' : 'User logged out'} onClick={handleLogout} />
+                      <UserIconImg onMouseOut={handleShowLogMsg} src={isLogged === 'true' ? userDefaultIcon : logoutIcon} alt={isLogged === 'true' ? 'User logged in' : 'User logged out'} onClick={handleLogout} />
                     </Link>
                 </LoginBox>
             </Header>
@@ -167,6 +174,7 @@ const App = () => {
 
                   <Route path="/login" >
                     <Login 
+                      handleName={handleName}
                       handleEmail={handleEmail} 
                       handlePassword={handlePassword} 
                       handleSubmit={handleSubmit} 

@@ -82,7 +82,7 @@ const ErrorMessage = styled.p`
 `;
 
 export const Login = (props) => {
-    const { handleSubmit, handleEmail, handlePassword, invalidInput, emptyInput, isLoading, setIsLoading } = props;
+    const { handleName, handleEmail, handlePassword, handleSubmit, invalidInput, emptyInput } = props;
     const isLogged = window.localStorage.getItem('isAuthorized');
     if(isLogged === 'true') {
         return <Redirect to='/' />
@@ -98,6 +98,9 @@ export const Login = (props) => {
                 {invalidInput && <ErrorMessage> Invalid email or password </ErrorMessage>}
                 
                 <FormData onSubmit={handleSubmit}>
+
+                    <LabelInput>Your Name</LabelInput>
+                    <Input type="text" placeholder="Type your name here..." onChange={handleName} />
 
                     <LabelInput>Email</LabelInput>
                     <Input type="text" placeholder="Type your email here..." onChange={handleEmail} />

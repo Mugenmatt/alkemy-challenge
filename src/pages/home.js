@@ -219,9 +219,12 @@ const SpanColorPowerstats = styled.span``;
 export const Home = ({ handleDeleteHero, team, isLoading, setIsLoading }) => {
 
     const isLogged = window.localStorage.getItem('isAuthorized');
+    const usernameParsed = window.localStorage.getItem('username');
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
     const [chosenHeroModal, setChosenHeroModal] = useState(null);
+
+    const username = JSON.parse(window.localStorage.getItem('username'));
     
     if(isLogged === 'false' || !isLogged){
         return <Redirect to='/login' />
@@ -310,7 +313,7 @@ export const Home = ({ handleDeleteHero, team, isLoading, setIsLoading }) => {
             <Background></Background>
             <HomeContent>
 
-            <TitleHome>Your Team!</TitleHome>
+            <TitleHome>{usernameParsed.length > 0 ? `${username} your Team!` : `${username} build your Team!`}</TitleHome>
 
                 <TeamBox>
                     {
@@ -387,24 +390,27 @@ export const Home = ({ handleDeleteHero, team, isLoading, setIsLoading }) => {
                         </AddHeroBtnBox>
                     </>
                 }
+                
+                {   JSON.parse(window.localStorage.getItem('myTeam')).length > 0 &&
+                    <>
+                    <TitleHome>Team Powerstats</TitleHome>
+                    <HierarchyPoints> 
+                        <SpanColorPowerstats> Low: -100 ➡ </SpanColorPowerstats> 
+                        <SpanColorPowerstats style={{color:'#fcc203'}}> Medium: -200 ➡ </SpanColorPowerstats>
+                        <SpanColorPowerstats style={{color:'#fc8c03'}}> High: -300 ➡ </SpanColorPowerstats>
+                        <SpanColorPowerstats style={{color:'#fc0303'}}> God: +400 </SpanColorPowerstats>
+                    </HierarchyPoints>
 
-                <TitleHome>Team Powerstats</TitleHome>
-                <HierarchyPoints> 
-                    <SpanColorPowerstats> Low: -100 ➡ </SpanColorPowerstats> 
-                    <SpanColorPowerstats style={{color:'#fcc203'}}> Medium: -200 ➡ </SpanColorPowerstats>
-                    <SpanColorPowerstats style={{color:'#fc8c03'}}> High: -300 ➡ </SpanColorPowerstats>
-                    <SpanColorPowerstats style={{color:'#fc0303'}}> God: +400 </SpanColorPowerstats>
-                </HierarchyPoints>
-                {
+                        <TeamPowerstatsBox>
+                            <TeamPowerstats> Intelligence: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamIntelligence)} > {TeamIntelligence} pts </DataTeamPowerstats> </TeamPowerstats>
+                            <TeamPowerstats> Strength: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamStrength)} > {TeamStrength} pts </DataTeamPowerstats> </TeamPowerstats>
+                            <TeamPowerstats> Speed: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamSpeed)} > {TeamSpeed} pts </DataTeamPowerstats> </TeamPowerstats>
+                            <TeamPowerstats> Durability: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamDurability)} > {TeamDurability} pts </DataTeamPowerstats> </TeamPowerstats>
+                            <TeamPowerstats> Power: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamPower)} > {TeamPower} pts </DataTeamPowerstats> </TeamPowerstats>
+                            <TeamPowerstats> Combat: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamCombat)} > {TeamCombat} pts </DataTeamPowerstats> </TeamPowerstats>
+                        </TeamPowerstatsBox>
 
-                    <TeamPowerstatsBox>
-                        <TeamPowerstats> Intelligence: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamIntelligence)} > {TeamIntelligence} pts </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Strength: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamStrength)} > {TeamStrength} pts </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Speed: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamSpeed)} > {TeamSpeed} pts </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Durability: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamDurability)} > {TeamDurability} pts </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Power: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamPower)} > {TeamPower} pts </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Combat: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamCombat)} > {TeamCombat} pts </DataTeamPowerstats> </TeamPowerstats>
-                    </TeamPowerstatsBox>
+                    </>
                 }
 
             </HomeContent>
