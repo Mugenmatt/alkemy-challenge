@@ -82,7 +82,7 @@ const ErrorMessage = styled.p`
 `;
 
 export const Login = (props) => {
-    const { handleSubmit, handleEmail, handlePassword, invalidInput, emptyInput } = props;
+    const { handleSubmit, handleEmail, handlePassword, invalidInput, emptyInput, isLoading, setIsLoading } = props;
     const isLogged = window.localStorage.getItem('isAuthorized');
     if(isLogged === 'true') {
         return <Redirect to='/' />

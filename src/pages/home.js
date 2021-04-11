@@ -2,7 +2,6 @@ import {useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components/macro';
 import Modal from 'react-modal';
-// import  userDefaultIcon  from '../assets/img/userDefault.svg';
 
 const Background = styled.div`
   width: 100%;
@@ -25,13 +24,21 @@ const HomeContent = styled.div`
 `;
 
 const TitleHome = styled.h1`
+    font-family: 'comictypemedium';
     font-size: 4em;
     font-weight: 700;
     text-align: center;
     margin-bottom: 3%;
     color: #fff;
-    font-family: 'comictypemedium';
 `;
+
+const HierarchyPoints = styled.p`
+    font-family: 'comictypemedium';
+    color: #fff;
+    font-size: 2em;
+    text-align: center;
+`;
+
 
 const TeamBox = styled.div`
     width:100%;
@@ -88,7 +95,7 @@ const HeroPowerStats = styled.p`
 `;
 
 const DataHeroPowerstats = styled.span`
-    color: #fff;
+    color: ${(props) => props.heroPowerstatsColor};
     font-weight: 700;
 `;
 
@@ -129,7 +136,9 @@ const AddHeroBtn = styled.span`
     text-align: center;
     color: #fff;
     border: 2px solid #fff;
+    transition: all 0.30s ease-in-out;
     border-radius: 10px;
+    box-shadow: inset 0 0 50px #000;
     &:hover {
         background-color: #000;
         border: 2px solid #fff;
@@ -138,7 +147,7 @@ const AddHeroBtn = styled.span`
 `;
 
 const TeamPowerstatsBox = styled.div`
-    width:60%;
+    width: 25%;
     margin:auto;
 `;
 
@@ -149,7 +158,7 @@ const TeamPowerstats = styled.p`
 
 const DataTeamPowerstats = styled.span`
     font-size: 1.5em;
-    color: red;
+    color: ${(props) => props.teamPowerstatsColor};
 `;
 
 const ModalBox = styled.div`
@@ -205,7 +214,9 @@ const CloseModal = styled.button`
     }
 `;
 
-export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team, setFetchDone, fetchDone}) => {
+const SpanColorPowerstats = styled.span``;
+
+export const Home = ({ handleDeleteHero, team, isLoading, setIsLoading }) => {
 
     const isLogged = window.localStorage.getItem('isAuthorized');
 
@@ -272,40 +283,27 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team, setFet
         return prev + powerstats;
       }, 0);
 
-      let TeamHeight = teamPowerstats.reduce((prev, curHero) => {
-        prev = parseInt(prev)
-        let heightData = curHero.appearance.height[1];
+    const heroPowerstatsColor = (powerstat) => {
+        if(powerstat <= 49) {
+            return '#fff';
+          } else if(powerstat >= 50 && powerstat <= 79) {
+            return 'orange';
+          } else {
+            return 'red';
+        }
+    }
 
-        if(heightData.includes('cm')) {
-            heightData = heightData.replace('cm', '')
+    const teamPowerstatsColor = (powerstat) => {
+        if(powerstat <= 100){
+            return '#fff';
+        } else if(powerstat >= 101 && powerstat <= 200) {
+            return '#fcc203';
+        } else if(powerstat >= 201 && powerstat <= 300) {
+          return '#fc8c03';
         } else {
-            heightData = heightData.replace('meters', '')
+          return '#fc0303';
         }
-
-        if(heightData === null) {
-            heightData = 0
-        }
-        heightData = Number(heightData)
-        let resultado = parseInt(prev + heightData / teamPowerstats.length);
-        return `${resultado} cm`
-      }, 0);
-
-      let TeamWeight = teamPowerstats.reduce((prev, curHero) => {
-        prev = parseInt(prev)
-        let weightData = curHero.appearance.weight[1];
-        if(weightData.includes('kg')) {
-            weightData = weightData.replace('kg', '')
-        } else {
-            weightData = weightData.replace('tons', '')
-        }
-        
-        if(weightData === null) {
-            weightData = 0
-        }
-        weightData = Number(weightData)
-        let resultado = parseInt(prev + weightData / teamPowerstats.length);
-        return `${resultado} kg`
-      }, 0);
+    }
 
     return (
         <>
@@ -333,12 +331,12 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team, setFet
                                                 setChosenHeroModal(hero)
                                                 }
                                             }> {hero.name} </HeroName>
-                                            <HeroPowerStats> Intelligence:<DataHeroPowerstats> {hero.powerstats.intelligence === 'null' ? 0 : hero.powerstats.intelligence} </DataHeroPowerstats> </HeroPowerStats>
-                                            <HeroPowerStats> Strength:<DataHeroPowerstats> {hero.powerstats.strength === 'null' ? 0 : hero.powerstats.strength} </DataHeroPowerstats> </HeroPowerStats>
-                                            <HeroPowerStats> Speed:<DataHeroPowerstats> {hero.powerstats.speed === 'null' ? 0 : hero.powerstats.speed} </DataHeroPowerstats> </HeroPowerStats>
-                                            <HeroPowerStats> Durability:<DataHeroPowerstats> {hero.powerstats.durability === 'null' ? 0 : hero.powerstats.durability} </DataHeroPowerstats> </HeroPowerStats>
-                                            <HeroPowerStats> Power:<DataHeroPowerstats> {hero.powerstats.power === 'null' ? 0 : hero.powerstats.power} </DataHeroPowerstats> </HeroPowerStats>
-                                            <HeroPowerStats> Combat:<DataHeroPowerstats> {hero.powerstats.combat === 'null' ? 0 : hero.powerstats.combat} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Intelligence:<DataHeroPowerstats heroPowerstatsColor={() => heroPowerstatsColor(hero.powerstats.intelligence)} > {hero.powerstats.intelligence === 'null' ? 0 : hero.powerstats.intelligence} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Strength:<DataHeroPowerstats heroPowerstatsColor={() => heroPowerstatsColor(hero.powerstats.strength)} > {hero.powerstats.strength === 'null' ? 0 : hero.powerstats.strength} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Speed:<DataHeroPowerstats heroPowerstatsColor={() => heroPowerstatsColor(hero.powerstats.speed)} > {hero.powerstats.speed === 'null' ? 0 : hero.powerstats.speed} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Durability:<DataHeroPowerstats heroPowerstatsColor={() => heroPowerstatsColor(hero.powerstats.durability)} > {hero.powerstats.durability === 'null' ? 0 : hero.powerstats.durability} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Power:<DataHeroPowerstats heroPowerstatsColor={() => heroPowerstatsColor(hero.powerstats.power)} > {hero.powerstats.power === 'null' ? 0 : hero.powerstats.power} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Combat:<DataHeroPowerstats heroPowerstatsColor={() => heroPowerstatsColor(hero.powerstats.combat)} > {hero.powerstats.combat === 'null' ? 0 : hero.powerstats.combat} </DataHeroPowerstats> </HeroPowerStats>
                                             <DeleteBox>
                                                 <DeleteBtn type="button" value="Delete" onClick={() => handleDeleteHero(hero)} />
                                             </DeleteBox>
@@ -391,17 +389,24 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team, setFet
                 }
 
                 <TitleHome>Team Powerstats</TitleHome>
+                <HierarchyPoints> 
+                    <SpanColorPowerstats> Low: -100 ➡ </SpanColorPowerstats> 
+                    <SpanColorPowerstats style={{color:'#fcc203'}}> Medium: -200 ➡ </SpanColorPowerstats>
+                    <SpanColorPowerstats style={{color:'#fc8c03'}}> High: -300 ➡ </SpanColorPowerstats>
+                    <SpanColorPowerstats style={{color:'#fc0303'}}> God: +400 </SpanColorPowerstats>
+                </HierarchyPoints>
+                {
 
-                <TeamPowerstatsBox>
-                    <TeamPowerstats> Intelligence: <DataTeamPowerstats> {TeamIntelligence} </DataTeamPowerstats> </TeamPowerstats>
-                    <TeamPowerstats> Strength: <DataTeamPowerstats> {TeamStrength} </DataTeamPowerstats> </TeamPowerstats>
-                    <TeamPowerstats> Speed: <DataTeamPowerstats> {TeamSpeed} </DataTeamPowerstats> </TeamPowerstats>
-                    <TeamPowerstats> Durability: <DataTeamPowerstats> {TeamDurability} </DataTeamPowerstats> </TeamPowerstats>
-                    <TeamPowerstats> Power: <DataTeamPowerstats> {TeamPower} </DataTeamPowerstats> </TeamPowerstats>
-                    <TeamPowerstats> Combat: <DataTeamPowerstats> {TeamCombat} </DataTeamPowerstats> </TeamPowerstats>
-                    <TeamPowerstats> Height: <DataTeamPowerstats> {TeamHeight} </DataTeamPowerstats> </TeamPowerstats>
-                    <TeamPowerstats> Weight: <DataTeamPowerstats> {TeamWeight} </DataTeamPowerstats> </TeamPowerstats>
-                </TeamPowerstatsBox>
+                    <TeamPowerstatsBox>
+                        <TeamPowerstats> Intelligence: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamIntelligence)} > {TeamIntelligence} pts </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Strength: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamStrength)} > {TeamStrength} pts </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Speed: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamSpeed)} > {TeamSpeed} pts </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Durability: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamDurability)} > {TeamDurability} pts </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Power: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamPower)} > {TeamPower} pts </DataTeamPowerstats> </TeamPowerstats>
+                        <TeamPowerstats> Combat: <DataTeamPowerstats teamPowerstatsColor={() => teamPowerstatsColor(TeamCombat)} > {TeamCombat} pts </DataTeamPowerstats> </TeamPowerstats>
+                    </TeamPowerstatsBox>
+                }
+
             </HomeContent>
         </>
     )

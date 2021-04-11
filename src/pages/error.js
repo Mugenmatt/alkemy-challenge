@@ -1,5 +1,7 @@
+import {useState, useEffect, useRef} from 'react';
 import {NavLink} from 'react-router-dom';
 import styled from 'styled-components';
+import lottie from 'lottie-web';
 
 const Background = styled.div`
   width: 100%;
@@ -18,27 +20,57 @@ const ErrorContainer = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 100;
+    margin-top: 0;
 `;
 
 const ErrorTitle = styled.h1`
     color: #fff;
-    font-size: 4em;
-    display: inline-block;
-    background-color: rgba(255, 0, 0, 0.4);
+    font-size: 5em;
+    font-family: 'comictypemedium';
+    background-color: #fc0303;
     padding: 10px;
     border-radius: 10px;
+    margin-top: 0;
 `;
 
 const ErrorMsg = styled.p`
-    color: red;
+    color: #fc0303;
     font-size: 2em;
     text-align:center;
 `;
 
-export const Error = ({setFetchDone, fetchDone}) => {
-    return (
+const Lottie = styled.div`
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    bottom: -50px;
+    right: 150px;
+`;
+
+export const Error = ({isLoading, setIsLoading}) => {
+    const container = useRef(null)
+
+    useEffect(() => {
+        lottie.loadAnimation({
+            container: container.current,
+            renderer: 'gif',
+            loop: true,
+            autoplay: true,
+            animationData: require('../assets/loaders/batmanLoader'),
+            name: "Batman",
+            settings: {
+                style: {
+                    width: '50px',
+                    height: '50px'
+                }
+            }
+        })
+    }, [])
+
+    return (<>
+        <Background></Background>
         <ErrorContainer>
-            <Background></Background>
+            <Lottie ref={container} />
             <ErrorTitle>Error 404</ErrorTitle>
             <ErrorMsg>Sorry, this page doesn't exist</ErrorMsg>
             <NavLink style={
@@ -55,5 +87,6 @@ export const Error = ({setFetchDone, fetchDone}) => {
                 }
             } to="/">Go Back</NavLink>
         </ErrorContainer>
+        </>
     )    
 }

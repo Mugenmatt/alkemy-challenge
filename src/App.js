@@ -42,11 +42,28 @@ const AlkemyIcon = styled.h1`
   }
 `;
 
+const LoginBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+`;
+
+const LogMsg = styled.p`
+  font-family: 'comictypemedium';
+  color: #000;
+  font-size: 1.3em;
+  position: absolute;
+  bottom: 5px;
+  left: -160px;
+  display: ${(props) => props.displayMsg};
+`;
+
 const UserIconImg = styled.img`
   width: 30%;
   vertical-align: top;
   background-color: #000;
-  padding: 15px;
+  padding: 10px;
   transition: all 0.6s ease-in-out;
   border-radius: 50%;
   border: 2px solid #000;
@@ -78,6 +95,8 @@ const App = () => {
   const [emptyInput, setEmptyInput] = useState(false);
   const [selectedHero, setSelectedHero] = useState([]);
   const [heroesList, setHeroesList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showLogMsg, setShowLogMsg] = useState(false);
 
   const isLogged = window.localStorage.getItem('isAuthorized');
 
@@ -122,6 +141,11 @@ const App = () => {
       setSelectedHero(deleteCharacter)
   }
 
+  const handleShowLogMsg = () => {
+    setTimeout( () => {setShowLogMsg(true)} ,3000)
+    setShowLogMsg(false)
+  }
+
 
     return (
         <AppDiv>
@@ -130,14 +154,13 @@ const App = () => {
               <Link to='/' style={{textDecoration:'none', color:'#000'}}>
                 <AlkemyIcon> Alkemy Challenge </AlkemyIcon>
               </Link>
-              <Link to='/login' style={{width:'10%'}} >
-                { 
-                  isLogged === 'true' ?
-                  <UserIconImg src={userDefaultIcon} alt="User Login Icon" onClick={handleLogout} />
-                  :
-                  <UserIconImg src={logoutIcon} alt="User Logout Icon" />
-                }
-              </Link>
+              
+                <LoginBox>
+                    <LogMsg displayMsg={!showLogMsg ? 'inline-block' : 'none'} >{isLogged === 'true' ? 'User logged in' : 'User logged out'}</LogMsg>
+                    <Link to='/login' >
+                      <UserIconImg onMouseOver={handleShowLogMsg} src={isLogged === 'true' ? userDefaultIcon : logoutIcon} alt={isLogged === 'true' ? 'User logged in' : 'User logged out'} onClick={handleLogout} />
+                    </Link>
+                </LoginBox>
             </Header>
             <Main>
                 <Switch>
@@ -151,7 +174,9 @@ const App = () => {
                       passwordData={passwordData}
                       isAuth={isAuth} 
                       invalidInput={invalidInput} 
-                      emptyInput={emptyInput} 
+                      emptyInput={emptyInput}
+                      isLoading={isLoading}
+                      setIsLoading={setIsLoading}
                     /> 
                   </Route>
 
@@ -161,6 +186,8 @@ const App = () => {
                       heroesList={heroesList}
                       handleDeleteHero={handleDeleteHero}
                       team={team}
+                      isLoading={isLoading}
+                      setIsLoading={setIsLoading}
                     />
                   </Route>
 
@@ -171,6 +198,8 @@ const App = () => {
                       handleSelectedHeroe={handleSelectedHeroe}
                       setHeroesList={setHeroesList}
                       heroesList={heroesList}
+                      isLoading={isLoading}
+                      setIsLoading={setIsLoading}
                     />
                   </Route>
 

@@ -1,7 +1,8 @@
-import {useState} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components/macro';
 import {HeroCardContainer} from '../components/HeroCardContainer'
+import lottie from 'lottie-web';
 import  searchIcon  from '../assets/img/search-icon.svg';
 
 const SearchContent = styled.div`
@@ -31,15 +32,14 @@ const TitleSearch = styled.h1`
     font-weight: 700;
     text-align: center;
     color: #fff;
-    margin-bottom: 3%;
 `;
 
 const TitleRules = styled.p`
     font-size: 2em;
     color: rgba(255, 255, 255, .8);
     font-weight: 700;
+    margin-top: 3%;
     text-align: center;
-    margin-bottom: 0;
 `;
 
 const RulesClarification = styled.p`
@@ -136,13 +136,55 @@ const BackHomeBtn = styled.p`
     }
 `;
 
-export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesList, heroesList }) => {
+const LoadingBox = styled.div`
+    width: 500px;
+    height: 500px;    
+    top: 150px;
+    right: 100px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+const LoadingMsg = styled.p`
+    color: #fff;
+    font-size: 5em;
+    display: inline-block;
+    font-family: 'comictypemedium';
+`;
+
+const Lottie = styled.div`
+    width: 100%;
+    height: 100%;
+`;
+
+export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesList, heroesList, isLoading, setIsLoading }) => {
     const isLogged = window.localStorage.getItem('isAuthorized');
     const [writtenHero, setWrittenHero] = useState(null);
     const [errorFetch, setErrorFetch] = useState('')
     const [errorNoData, setErrorNoData] = useState(false);
     const [neutralChoice, setNeutralChoice] = useState(false);
-    const [fetchDone, setFetchDone] = useState(false)
+    const [fetchDone, setFetchDone] = useState(null)
+    const container = useRef(null)
+
+    useEffect(() => {
+        lottie.loadAnimation({
+            container: container.current,
+            renderer: 'gif',
+            loop: true,
+            autoplay: true,
+            animationData: require('../assets/loaders/flashLoader.json'),
+            name: "Flash",
+            settings: {
+                style: {
+                    width: '50px',
+                    height: '50px'
+                }
+            }
+        })
+    }, [fetchDone])
 
     if(isLogged === 'false' || !isLogged){
         return <Redirect to='/login' />
@@ -162,11 +204,13 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
     const handleErrorNoData = () => {
         setErrorNoData(true)
         setTimeout(() => { setErrorNoData(false) }, 4000);
+        setTimeout(() => { setFetchDone(false) }, 2000);
     }
 
     const searchHero = async e => {
         
         try {
+            setFetchDone(true)
             let fetchHeroes = await fetch(`${proxy}/${urlToken}/search/${writtenHero}`)
             let selectedHero = await fetchHeroes.json();
             if(selectedHero.response === 'success') {
@@ -174,7 +218,7 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
                 selectedHero.map(hero => {
                     return hero.isChosen = 'false'
                 })
-                setFetchDone(true)
+                setFetchDone(false)
                 return setHeroesList(selectedHero);
             } else {
                 console.log('ERROR: ' + selectedHero.error);
@@ -220,7 +264,7 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
     
     return (
         <>
-            <Background height={fetchDone ? '150vh' : '70vh'}></Background>
+            <Background height={fetchDone ? '200vh' : '70vh'}></Background>
                 <SearchContent>
 
                     <TitleSearch>Choose your heroes!</TitleSearch>
@@ -241,7 +285,13 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
                     <AlignmentHeroes>SuperVillains: <AlignmentHeroesData colorNumber={() => colorNumberbad()}>{badHeroes.length}/3</AlignmentHeroesData></AlignmentHeroes>
 
                     <AllHeroes>
-                        <>
+                        { 
+                                fetchDone && 
+                                <LoadingBox> 
+                                    {errorNoData ? <LoadingMsg>Error!</LoadingMsg> : <LoadingMsg>Loading!</LoadingMsg>}
+                                    <Lottie ref={container} /> 
+                                </LoadingBox> 
+                        }
                         <HeroCardContainer 
                             heroesList={heroesList} 
                             handleSelectedHeroe={handleSelectedHeroe} 
@@ -249,7 +299,6 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
                             badHeroes={badHeroes} 
                             handleNeutralHeroSelection={handleNeutralHeroSelection}
                         />
-                        </>
                     </AllHeroes>
 
                     <Link to='/' style={{ textDecoration: 'none'}}><BackHomeBtn> Go back with your team! </BackHomeBtn></Link>
