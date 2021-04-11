@@ -80,10 +80,6 @@ const Main = styled.div`
 `;
 
 const App = () => {
-    const token = 1132055343928952;
-    const urlToken = `https://superheroapi.com/api/${token}`;
-    const proxy = 'https://rocky-basin-57618.herokuapp.com';
-
     const correctUser = {
     email: 'challenge@alkemy.org',
     password: 'react'
@@ -201,8 +197,6 @@ const App = () => {
 
                   <Route path="/search-heroes">
                     <SearchHeroes 
-                      proxy={proxy}
-                      urlToken={urlToken}
                       handleSelectedHeroe={handleSelectedHeroe}
                       setHeroesList={setHeroesList}
                       heroesList={heroesList}

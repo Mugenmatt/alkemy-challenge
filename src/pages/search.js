@@ -211,6 +211,9 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
         
         try {
             setFetchDone(true)
+            const token = 1132055343928952;
+            const urlToken = `https://superheroapi.com/api/${token}`;
+            const proxy = 'https://rocky-basin-57618.herokuapp.com';
             let fetchHeroes = await fetch(`${proxy}/${urlToken}/search/${writtenHero}`)
             let selectedHero = await fetchHeroes.json();
             if(selectedHero.response === 'success') {
@@ -226,7 +229,7 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
             }
         } catch(error) {
             console.log('ERROR: ', error);
-            setErrorFetch(error)
+            setErrorFetch(JSON.stringify(error))
         }
     }
 
