@@ -51,12 +51,13 @@ const AddHeroForm = styled.form`
 
 const AddHeroBtn = styled.input`
     padding: 10px;
-    font-size: 1em;
+    font-size: 1.5em;
     background-color: #fff;
     color: #000;
     border: 0.06em solid #000;
     border-radius: 10px;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
     :hover {
         background-color: #000;
         color: #fff;
@@ -152,10 +153,20 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                     return hero.id;
                 })
 
+                const heroColor = () => {
+                    if(hero.biography.alignment === 'neutral') {
+                        return 'green'
+                    } else if(hero.biography.alignment === 'good') {
+                        return '#03198a'
+                    } else {
+                        return '#8a0303'
+                    }
+                }
+
                 return <div style={{display:'inline', width: '15%', margin:'0 3% 3% 0'}} key={hero.id}>
                     {
                         !myTeamID.includes(hero.id) &&
-                        <HeroCard background={hero.biography.alignment === 'good' || hero.biography.alignment === 'neutral' ? '#03198a' : '#8a0303'}>
+                        <HeroCard background={() => heroColor()}>
                             <HeroData>
                                 
                             <HeroName onClick={() => {
@@ -192,7 +203,7 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                                 <AddHeroForm >
                                     {
                                         goodHeroes.length === 3 ?
-                                        <AddHeroBtn type='button' value='No more SuperHeroes!'/>
+                                        <AddHeroBtn type='button' value='No more!'/>
                                         : <AddHeroBtn type='button' value='Hero' onClick={() => handleSelectedHeroe(hero)} />
                                     }
                                 </AddHeroForm>
@@ -203,7 +214,7 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                                 <AddHeroForm >
                                     {
                                         badHeroes.length === 3 ?
-                                        <AddHeroBtn type='button' value='No more SuperVillains!' />
+                                        <AddHeroBtn type='button' value='No more!' />
                                         : <AddHeroBtn type='button' value='Villain' onClick={() => handleSelectedHeroe(hero)} />
                                     }
                                 </AddHeroForm>
@@ -238,9 +249,6 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                             <HeroImgModalBox>
                                 {chosenHeroModal.image.url ? 
                                 <HeroImgModal 
-                                    background={chosenHeroModal.biography.alignment === 'good' || 
-                                    chosenHeroModal.biography.alignment === 'neutral' ? '#03198a' 
-                                    : '#8a0303'} 
                                     src={chosenHeroModal.image.url} alt='Hero Image' /> 
                                     : <HeroImgModal 
                                         src={userDefaultIcon} 

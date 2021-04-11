@@ -1,6 +1,16 @@
 import { Redirect } from 'react-router';
 import styled from 'styled-components/macro';
 
+const Background = styled.div`
+  width: 100%;
+  height: 70vh;
+  position: absolute;
+  background-color: #ffcc01;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
+  z-index: -1;
+  top: -265px;
+`;
+
 const FormBox = styled.div`
     width: 40%;
     margin: 0 auto 8.17% auto;
@@ -80,25 +90,26 @@ export const Login = (props) => {
     return (
 
         <>
-                <FormBox>
+            <Background></Background>
+            <FormBox>
 
-                    <FormTitle>LOGIN</FormTitle>
-                    {emptyInput && <ErrorMessage> Inputs cannot be empty! </ErrorMessage>}
-                    {invalidInput && <ErrorMessage> Invalid email or password </ErrorMessage>}
-                    
-                    <FormData onSubmit={handleSubmit}>
+                <FormTitle>LOGIN</FormTitle>
+                {emptyInput && <ErrorMessage> Inputs cannot be empty! </ErrorMessage>}
+                {invalidInput && <ErrorMessage> Invalid email or password </ErrorMessage>}
+                
+                <FormData onSubmit={handleSubmit}>
 
-                        <LabelInput>Email</LabelInput>
-                        <Input type="text" placeholder="Type your email here..." onChange={handleEmail} />
+                    <LabelInput>Email</LabelInput>
+                    <Input type="text" placeholder="Type your email here..." onChange={handleEmail} />
 
-                        <LabelInput>Password</LabelInput>
-                        <Input type="password" placeholder="Type your password here..." onChange={handlePassword} />
+                    <LabelInput>Password</LabelInput>
+                    <Input type="password" placeholder="Type your password here..." onChange={handlePassword} />
 
-                        <SendBtn type="submit" value="SUBMIT" />
+                    <SendBtn type="submit" value="SUBMIT" />
 
-                    </FormData>
+                </FormData>
 
-                </FormBox>
+            </FormBox>
             
         </>
     )

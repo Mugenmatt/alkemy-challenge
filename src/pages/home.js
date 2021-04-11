@@ -4,6 +4,16 @@ import styled from 'styled-components/macro';
 import Modal from 'react-modal';
 // import  userDefaultIcon  from '../assets/img/userDefault.svg';
 
+const Background = styled.div`
+  width: 100%;
+  height: 70vh;
+  position: absolute;
+  background-color: #ffcc01;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
+  z-index: -1;
+  top: -265px;
+`;
+
 const HomeContent = styled.div`
     width: 80%;
     margin: auto;
@@ -92,6 +102,7 @@ const DeleteBox = styled.div`
 const DeleteBtn = styled.input`
     padding: 20px;
     font-size: 1em;
+    font-weight: bolder;
     margin-top: 3%;
     background-color: #fff;
     border-radius: 10px;
@@ -109,7 +120,7 @@ const AddHeroBtnBox = styled.p`
     flex-wrap: wrap;
 `;
 
-const AddHeroBtn = styled.p`
+const AddHeroBtn = styled.span`
     width: 100%;
     font-size: 150px;
     display: inline-block;
@@ -150,6 +161,7 @@ const ModalBox = styled.div`
 
 const HeroImgModal = styled.img`
     width: 100%;
+    max-height: 800px;
 `;
 
 const HeroNameModal = styled.p`
@@ -193,7 +205,7 @@ const CloseModal = styled.button`
     }
 `;
 
-export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
+export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team, setFetchDone, fetchDone}) => {
 
     const isLogged = window.localStorage.getItem('isAuthorized');
 
@@ -263,7 +275,13 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
       let TeamHeight = teamPowerstats.reduce((prev, curHero) => {
         prev = parseInt(prev)
         let heightData = curHero.appearance.height[1];
-        heightData = heightData.replace('cm', '')
+
+        if(heightData.includes('cm')) {
+            heightData = heightData.replace('cm', '')
+        } else {
+            heightData = heightData.replace('meters', '')
+        }
+
         if(heightData === null) {
             heightData = 0
         }
@@ -275,7 +293,12 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
       let TeamWeight = teamPowerstats.reduce((prev, curHero) => {
         prev = parseInt(prev)
         let weightData = curHero.appearance.weight[1];
-        weightData = weightData.replace('kg', '')
+        if(weightData.includes('kg')) {
+            weightData = weightData.replace('kg', '')
+        } else {
+            weightData = weightData.replace('tons', '')
+        }
+        
         if(weightData === null) {
             weightData = 0
         }
@@ -286,99 +309,100 @@ export const Home = ({ handleDeleteHero, heroesList, setHeroesList, team}) => {
 
     return (
         <>
-                <HomeContent>
+            <Background></Background>
+            <HomeContent>
 
-                <TitleHome>Your Team!</TitleHome>
+            <TitleHome>Your Team!</TitleHome>
 
-                    <TeamBox>
+                <TeamBox>
+                    {
+                        team.map(hero => {
+                            return(<TeamContainer key={hero.id}>
+                                {
+                                    hero.isChosen === 'true' &&
+                                    <>
+                                    <Hero background={hero.biography.alignment === 'good' || hero.biography.alignment === 'neutral' ? '#03198a' : '#8a0303'} >
+                                        <HeroData>
+                                            <HeroImg src={hero.image.url} alt="Image of the Hero" onClick={() => {
+                                                setModalIsOpen(true)
+                                                setChosenHeroModal(hero)
+                                                }
+                                            } />
+                                            <HeroName onClick={() => {
+                                                setModalIsOpen(true)
+                                                setChosenHeroModal(hero)
+                                                }
+                                            }> {hero.name} </HeroName>
+                                            <HeroPowerStats> Intelligence:<DataHeroPowerstats> {hero.powerstats.intelligence === 'null' ? 0 : hero.powerstats.intelligence} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Strength:<DataHeroPowerstats> {hero.powerstats.strength === 'null' ? 0 : hero.powerstats.strength} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Speed:<DataHeroPowerstats> {hero.powerstats.speed === 'null' ? 0 : hero.powerstats.speed} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Durability:<DataHeroPowerstats> {hero.powerstats.durability === 'null' ? 0 : hero.powerstats.durability} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Power:<DataHeroPowerstats> {hero.powerstats.power === 'null' ? 0 : hero.powerstats.power} </DataHeroPowerstats> </HeroPowerStats>
+                                            <HeroPowerStats> Combat:<DataHeroPowerstats> {hero.powerstats.combat === 'null' ? 0 : hero.powerstats.combat} </DataHeroPowerstats> </HeroPowerStats>
+                                            <DeleteBox>
+                                                <DeleteBtn type="button" value="Delete" onClick={() => handleDeleteHero(hero)} />
+                                            </DeleteBox>
+                                        </HeroData>
+                                    </Hero>
+                                </>}
+                            </TeamContainer>)
+                        })
+                    }
                         {
-                            team.map(hero => {
-                                return(<TeamContainer key={hero.id}>
-                                    {
-                                        hero.isChosen === 'true' &&
-                                        <>
-                                        <Hero background={hero.biography.alignment === 'good' || hero.biography.alignment === 'neutral' ? '#03198a' : '#8a0303'} >
-                                            <HeroData>
-                                                <HeroImg src={hero.image.url} alt="Image of the Hero" onClick={() => {
-                                                    setModalIsOpen(true)
-                                                    setChosenHeroModal(hero)
-                                                    }
-                                                } />
-                                                <HeroName onClick={() => {
-                                                    setModalIsOpen(true)
-                                                    setChosenHeroModal(hero)
-                                                    }
-                                                }> {hero.name} </HeroName>
-                                                <HeroPowerStats> Intelligence:<DataHeroPowerstats> {hero.powerstats.intelligence === 'null' ? 0 : hero.powerstats.intelligence} </DataHeroPowerstats> </HeroPowerStats>
-                                                <HeroPowerStats> Strength:<DataHeroPowerstats> {hero.powerstats.strength === 'null' ? 0 : hero.powerstats.strength} </DataHeroPowerstats> </HeroPowerStats>
-                                                <HeroPowerStats> Speed:<DataHeroPowerstats> {hero.powerstats.speed === 'null' ? 0 : hero.powerstats.speed} </DataHeroPowerstats> </HeroPowerStats>
-                                                <HeroPowerStats> Durability:<DataHeroPowerstats> {hero.powerstats.durability === 'null' ? 0 : hero.powerstats.durability} </DataHeroPowerstats> </HeroPowerStats>
-                                                <HeroPowerStats> Power:<DataHeroPowerstats> {hero.powerstats.power === 'null' ? 0 : hero.powerstats.power} </DataHeroPowerstats> </HeroPowerStats>
-                                                <HeroPowerStats> Combat:<DataHeroPowerstats> {hero.powerstats.combat === 'null' ? 0 : hero.powerstats.combat} </DataHeroPowerstats> </HeroPowerStats>
-                                                <DeleteBox>
-                                                    <DeleteBtn type="button" value="Delete" onClick={() => handleDeleteHero(hero)} />
-                                                </DeleteBox>
-                                            </HeroData>
-                                        </Hero>
-                                    </>}
-                                </TeamContainer>)
-                            })
-                        }
-                            {
-                                modalIsOpen &&
-                                <Modal
-                                isOpen={modalIsOpen} 
-                                onRequestClose={() => setModalIsOpen(false)}
-                                style={
-                                    {
-                                        overlay:{
-                                            width:'80%',
-                                            margin: 'auto',
-                                            backgroundColor: '#000',
-                                        },
-                                        content:{
-                                            backgroundColor: '#000',
-                                        }
+                            modalIsOpen &&
+                            <Modal
+                            isOpen={modalIsOpen} 
+                            onRequestClose={() => setModalIsOpen(false)}
+                            style={
+                                {
+                                    overlay:{
+                                        width:'80%',
+                                        margin: 'auto',
+                                        backgroundColor: '#000',
+                                    },
+                                    content:{
+                                        backgroundColor: '#000',
                                     }
                                 }
-                                >
-                                    <ModalBox>
-                                        <HeroImgModal src={chosenHeroModal.image.url} alt='Hero Image' />
-                                        <HeroNameModal>Hero Name: <HeroDataModal> {chosenHeroModal.name}</HeroDataModal></HeroNameModal>
-                                        <HeroDescriptionModal>Nick Name: <HeroDataModal>{chosenHeroModal.biography.aliases} </HeroDataModal></HeroDescriptionModal>
-                                        <HeroDescriptionModal>Height: <HeroDataModal> {chosenHeroModal.appearance.height[1]}  </HeroDataModal></HeroDescriptionModal>
-                                        <HeroDescriptionModal>Weight: <HeroDataModal> {chosenHeroModal.appearance.weight[1]} </HeroDataModal></HeroDescriptionModal>
-                                        <HeroDescriptionModal>Eyes Color: <HeroDataModal> {chosenHeroModal.appearance['eye-color']} </HeroDataModal></HeroDescriptionModal>
-                                        <HeroDescriptionModal>Hair Color: <HeroDataModal> {chosenHeroModal.appearance['hair-color']} </HeroDataModal></HeroDescriptionModal>
-                                        <HeroDescriptionModal>Job: <HeroDataModal> {chosenHeroModal.work.occupation === '-' ? 'No job' : chosenHeroModal.work.occupation} </HeroDataModal></HeroDescriptionModal>
-                                        <HeroDescriptionModal>Alignment: <HeroDataModal> {chosenHeroModal.biography.alignment} </HeroDataModal></HeroDescriptionModal>
-                                        <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
-                                    </ModalBox>
-                                </Modal>
                             }
-                    </TeamBox>
+                            >
+                                <ModalBox>
+                                    <HeroImgModal src={chosenHeroModal.image.url} alt='Hero Image' />
+                                    <HeroNameModal>Hero Name: <HeroDataModal> {chosenHeroModal.name}</HeroDataModal></HeroNameModal>
+                                    <HeroDescriptionModal>Nick Name: <HeroDataModal>{chosenHeroModal.biography.aliases} </HeroDataModal></HeroDescriptionModal>
+                                    <HeroDescriptionModal>Height: <HeroDataModal> {chosenHeroModal.appearance.height[1]}  </HeroDataModal></HeroDescriptionModal>
+                                    <HeroDescriptionModal>Weight: <HeroDataModal> {chosenHeroModal.appearance.weight[1]} </HeroDataModal></HeroDescriptionModal>
+                                    <HeroDescriptionModal>Eyes Color: <HeroDataModal> {chosenHeroModal.appearance['eye-color']} </HeroDataModal></HeroDescriptionModal>
+                                    <HeroDescriptionModal>Hair Color: <HeroDataModal> {chosenHeroModal.appearance['hair-color']} </HeroDataModal></HeroDescriptionModal>
+                                    <HeroDescriptionModal>Job: <HeroDataModal> {chosenHeroModal.work.occupation === '-' ? 'No job' : chosenHeroModal.work.occupation} </HeroDataModal></HeroDescriptionModal>
+                                    <HeroDescriptionModal>Alignment: <HeroDataModal> {chosenHeroModal.biography.alignment} </HeroDataModal></HeroDescriptionModal>
+                                    <CloseModal onClick={() => setModalIsOpen(false)}>Close</CloseModal>
+                                </ModalBox>
+                            </Modal>
+                        }
+                </TeamBox>
 
-                    {   JSON.parse(window.localStorage.getItem('myTeam')).length < 6 &&
-                        <>
-                            <AddHeroBtnBox>
-                                <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>
-                            </AddHeroBtnBox>
-                        </>
-                    }
+                {   JSON.parse(window.localStorage.getItem('myTeam')).length < 6 &&
+                    <>
+                        <AddHeroBtnBox>
+                            <Link to='/search-heroes' style={{ textDecoration: 'none'}}><AddHeroBtn> + </AddHeroBtn></Link>
+                        </AddHeroBtnBox>
+                    </>
+                }
 
-                    <TitleHome>Team Powerstats</TitleHome>
+                <TitleHome>Team Powerstats</TitleHome>
 
-                    <TeamPowerstatsBox>
-                        <TeamPowerstats> Intelligence: <DataTeamPowerstats> {TeamIntelligence} </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Strength: <DataTeamPowerstats> {TeamStrength} </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Speed: <DataTeamPowerstats> {TeamSpeed} </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Durability: <DataTeamPowerstats> {TeamDurability} </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Power: <DataTeamPowerstats> {TeamPower} </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Combat: <DataTeamPowerstats> {TeamCombat} </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Height: <DataTeamPowerstats> {TeamHeight} </DataTeamPowerstats> </TeamPowerstats>
-                        <TeamPowerstats> Weight: <DataTeamPowerstats> {TeamWeight} </DataTeamPowerstats> </TeamPowerstats>
-                    </TeamPowerstatsBox>
-                </HomeContent>
+                <TeamPowerstatsBox>
+                    <TeamPowerstats> Intelligence: <DataTeamPowerstats> {TeamIntelligence} </DataTeamPowerstats> </TeamPowerstats>
+                    <TeamPowerstats> Strength: <DataTeamPowerstats> {TeamStrength} </DataTeamPowerstats> </TeamPowerstats>
+                    <TeamPowerstats> Speed: <DataTeamPowerstats> {TeamSpeed} </DataTeamPowerstats> </TeamPowerstats>
+                    <TeamPowerstats> Durability: <DataTeamPowerstats> {TeamDurability} </DataTeamPowerstats> </TeamPowerstats>
+                    <TeamPowerstats> Power: <DataTeamPowerstats> {TeamPower} </DataTeamPowerstats> </TeamPowerstats>
+                    <TeamPowerstats> Combat: <DataTeamPowerstats> {TeamCombat} </DataTeamPowerstats> </TeamPowerstats>
+                    <TeamPowerstats> Height: <DataTeamPowerstats> {TeamHeight} </DataTeamPowerstats> </TeamPowerstats>
+                    <TeamPowerstats> Weight: <DataTeamPowerstats> {TeamWeight} </DataTeamPowerstats> </TeamPowerstats>
+                </TeamPowerstatsBox>
+            </HomeContent>
         </>
     )
 }

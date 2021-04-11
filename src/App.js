@@ -6,13 +6,10 @@ import { SearchHeroes } from './pages/search';
 import { Error } from './pages/error'
 import styled from 'styled-components/macro';
 import userDefaultIcon from './assets/img/userDefault.svg';
-import bg from './assets/img/bg1.jpg';
 import logoutIcon from './assets/img/logout.svg';
 import ReactModal from 'react-modal';
 
 ReactModal.setAppElement('#root');
-
-// COLORS #8a0303 #03198a 
 
 const AppDiv = styled.div`
   overflow: hidden;
@@ -20,7 +17,7 @@ const AppDiv = styled.div`
 
 const Header = styled.div`
   width: 75%;
-  border-bottom: 2px solid #031a8a69;
+  border-bottom: 2px solid #000;
   padding: 20px 200px;
   margin: 20px auto 0 auto;
   display: flex;
@@ -35,6 +32,7 @@ const AlkemyIcon = styled.h1`
   background-color: #000;
   color: #fff;
   padding: 20px;
+  transition: all 0.6s ease-in-out;
   border-radius: 10px;
   border: 2px solid #000;
   :hover {
@@ -49,6 +47,7 @@ const UserIconImg = styled.img`
   vertical-align: top;
   background-color: #000;
   padding: 15px;
+  transition: all 0.6s ease-in-out;
   border-radius: 50%;
   border: 2px solid #000;
   :hover {

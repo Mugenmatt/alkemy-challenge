@@ -3,7 +3,6 @@ import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components/macro';
 import {HeroCardContainer} from '../components/HeroCardContainer'
 import  searchIcon  from '../assets/img/search-icon.svg';
-import bg from '../assets/img/bg1.jpg';
 
 const SearchContent = styled.div`
     width: 80%;
@@ -23,6 +22,7 @@ const Background = styled.div`
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
   z-index: -1;
   top: -265px;
+  transition: all 0.30s ease-in-out;
 `;
 
 const TitleSearch = styled.h1`
@@ -62,7 +62,7 @@ const AlignmentHeroes = styled.p`
 `;
 
 const AlignmentHeroesData = styled.span`
-    color: red;
+    color: ${({colorNumber}) => colorNumber};
     display: inline-block;
     font-size: 2em;
     vertical-align: middle;
@@ -75,8 +75,10 @@ const Search = styled.div`
 `;
 
 const SearchInput = styled.input`
-    width: 20%;
+    width: 40%;
     font-family: 'comictypemedium';
+    color:#8a0303;
+    font-size: 2em;
     padding: 3px 0px 3px 3px;
     transition: all 0.30s ease-in-out;
     outline: none;
@@ -98,13 +100,12 @@ const SearchBtn = styled.input`
     background-color: rgba(81, 203, 238, .7);
     border: 1px solid rgba(81, 203, 238, 0);
     outline: none;
-    padding: 0.2%;
+    padding: 0.77%;
     transition: all 0.30s ease-in-out;
     cursor: pointer;
     :hover {
         background-color: rgba(81, 203, 238, 1);
         box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-        padding: 3px 0px 3px 3px;
         border: 1px solid rgba(81, 203, 238, 1);
     }
 `;
@@ -123,6 +124,7 @@ const BackHomeBtn = styled.p`
     padding: 10px;
     font-size: 2em;
     font-weight: 300;
+    transition: all 0.3s ease-in-out;
     text-align: center;
     border: 0.1em solid #000;    
     border-radius: 10px;
@@ -191,6 +193,30 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
     let badHeroes = heroes.filter(hero => {
         return hero.biography.alignment === 'bad'
     })
+
+    const colorNumberGood = () => {
+        if(goodHeroes.length === 0) {
+            return '#fff'
+        } else if(goodHeroes.length === 1) {
+            return '#ffcc01'
+        } else if(goodHeroes.length === 2) {
+            return 'orange'
+        } else {
+            return 'red'
+        }
+    }
+
+    const colorNumberbad = () => {
+        if(badHeroes.length === 0) {
+            return '#fff'
+        } else if(badHeroes.length === 1) {
+            return '#ffcc01'
+        } else if(badHeroes.length === 2) {
+            return 'orange'
+        } else {
+            return 'red'
+        }
+    }
     
     return (
         <>
@@ -211,8 +237,8 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
 
                     { errorFetch && <span> { errorFetch } </span> }
 
-                    <AlignmentHeroes>SuperHeroes: <AlignmentHeroesData>{goodHeroes.length}/3</AlignmentHeroesData></AlignmentHeroes>
-                    <AlignmentHeroes>SuperVillains: <AlignmentHeroesData>{badHeroes.length}/3</AlignmentHeroesData></AlignmentHeroes>
+                    <AlignmentHeroes>SuperHeroes: <AlignmentHeroesData colorNumber={() => colorNumberGood()}>{goodHeroes.length}/3</AlignmentHeroesData></AlignmentHeroes>
+                    <AlignmentHeroes>SuperVillains: <AlignmentHeroesData colorNumber={() => colorNumberbad()}>{badHeroes.length}/3</AlignmentHeroesData></AlignmentHeroes>
 
                     <AllHeroes>
                         <>

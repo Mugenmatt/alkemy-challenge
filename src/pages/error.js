@@ -1,6 +1,16 @@
 import {NavLink} from 'react-router-dom';
 import styled from 'styled-components';
 
+const Background = styled.div`
+  width: 100%;
+  height: 70vh;
+  position: absolute;
+  background-color: #ffcc01;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
+  z-index: -1;
+  top: -265px;
+`;
+
 const ErrorContainer = styled.div`
     width: 100%;
     display: flex;
@@ -25,9 +35,10 @@ const ErrorMsg = styled.p`
     text-align:center;
 `;
 
-export const Error = () => {
+export const Error = ({setFetchDone, fetchDone}) => {
     return (
         <ErrorContainer>
+            <Background></Background>
             <ErrorTitle>Error 404</ErrorTitle>
             <ErrorMsg>Sorry, this page doesn't exist</ErrorMsg>
             <NavLink style={
