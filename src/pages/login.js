@@ -10,6 +10,10 @@ const Background = styled.div`
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
   z-index: -1;
   top: -265px;
+    @media (max-width: 481px) {
+        height: 50vh;
+        top: -300px;
+    }
 `;
 
 const FormBox = styled.div`

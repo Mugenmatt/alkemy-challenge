@@ -25,6 +25,9 @@ const HomeContent = styled.div`
     @media (max-width: 1025px) {
         width: 60%;
     }
+    @media (max-width: 481px) {
+        width: 30%;
+    }
 `;
 
 const TitleHome = styled.h1`
@@ -41,6 +44,9 @@ const TitleHome = styled.h1`
         font-size: 2.5em;
         margin-bottom: 10%;
     }
+    @media (max-width: 481px) {
+        font-size: 1.5em;
+    }
 `;
 
 const HierarchyPoints = styled.p`
@@ -51,6 +57,7 @@ const HierarchyPoints = styled.p`
     @media (max-width: 769px) {
         display: none;
     }
+
 `;
 
 
@@ -68,6 +75,9 @@ const TeamBox = styled.div`
     @media (max-width: 769px) {
         justify-items: center;
     }
+    @media (max-width: 481px) {
+        background-color: red;
+    }
 `;
 
 const TeamContainer = styled.div`
@@ -77,6 +87,12 @@ const TeamContainer = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+    @media (max-width: 481px) {
+        width: 100%;
+        justify-content: center;
+        position: relative;
+        right: 60px;
     }
 `;
 
@@ -96,6 +112,9 @@ const Hero = styled.div`
     }
     @media (max-width: 1025px) {
         width: 300px;
+    }
+    @media (max-width: 481px) {
+        width: 250px;
     }
 `;
 
@@ -126,7 +145,9 @@ const HeroPowerStats = styled.p`
     font-size: 1.5em;
     color: #fff;
     margin-left: 25%;
-    
+    @media (max-width: 481px) {
+        margin-left: 20%;
+    }
 `;
 
 const DataHeroPowerstats = styled.span`
@@ -210,6 +231,9 @@ const DataTeamPowerstats = styled.span`
     color: ${(props) => props.teamPowerstatsColor};
     @media (max-width: 1025px) {
         font-size: 1em;
+    }
+    @media (max-width: 481px) {
+        font-size: 0.9em;
     }
 `;
 

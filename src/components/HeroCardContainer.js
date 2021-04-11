@@ -27,10 +27,18 @@ const HeroCard = styled.div`
         width: 130px;
         max-height: 330px;
     }
+    @media (max-width: 481px) {
+        padding: 5% 5% 0% 5%;
+        width: 80px;
+        max-height: 200px;
+    }
 `;
 
 const HeroData = styled.div`
     margin: 10% 5% 0 5%;
+    @media (max-width: 481px) {
+        font-size: 0.7em;
+    }
 `;
 
 const HeroImg = styled.img`
@@ -66,6 +74,10 @@ const AddHeroBtn = styled.input`
     :hover {
         background-color: #000;
         color: #fff;
+    }
+    @media (max-width: 481px) {
+        padding: 5%;
+        margin-top: 10%;
     }
 `;
 
@@ -153,6 +165,9 @@ const CloseModal = styled.button`
     }
     @media (max-width: 1025px) {
         width: 50%;
+    }
+    @media (max-width: 481px) {
+        width: 100%;
     }
 `;
 

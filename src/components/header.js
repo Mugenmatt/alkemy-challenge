@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import userDefaultIcon from '../assets/img/userDefault.svg';
 import logoutIcon from '../assets/img/logout.svg';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 const Header = styled.div`
 width: 75%;
@@ -12,16 +12,25 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 z-index: 200;
-@media (max-width: 1200px) {
-    width: 80%;
-    margin-left: 68px;
-    justify-content: space-between;
-    padding: 20px 50px;
-}
-@media (max-width: 769px) {
-    width: 70%;
-    padding-bottom: 0;
-}
+    @media (max-width: 1200px) {
+        width: 80%;
+        margin-left: 68px;
+        justify-content: space-between;
+        padding: 20px 50px;
+    }
+    @media (max-width: 769px) {
+        width: 70%;
+        padding-bottom: 0;
+    }
+    @media (max-width: 481px) {
+        width: 60%;
+        margin-left: 10%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 `;
 
 const AlkemyIcon = styled.h1`
@@ -33,12 +42,15 @@ padding: 20px;
 transition: all 0.6s ease-in-out;
 border-radius: 10px;
 border: 2px solid #000;
-:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, .3);
-  box-shadow: inset 0px 0px 5px #000;
-}
-
+    :hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, .3);
+    box-shadow: inset 0px 0px 5px #000;
+    }
+    @media (max-width: 481px) {
+        width: 90%;
+        text-align: center;
+    }
 `;
 
 const LoginBox = styled.div`
@@ -76,6 +88,10 @@ border: 2px solid #000;
   cursor: pointer;
   background-color: rgba(0, 0, 0, .3);
   box-shadow: inset 0px 0px 5px #000;
+}
+@media (max-width: 1200px) {
+    position: relative;
+    right: 20px;
 }
 `;
 

@@ -12,8 +12,6 @@ import ReactModal from 'react-modal';
 ReactModal.setAppElement('#root');
 
 // 320px — 480px: Mobile devices
-// 481px — 768px: iPads, Tablets
-// 769px — 1024px: Small screens, laptops
 
 const AppDiv = styled.div`
   overflow: hidden;

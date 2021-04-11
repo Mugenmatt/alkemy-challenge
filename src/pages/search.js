@@ -17,6 +17,9 @@ const SearchContent = styled.div`
     @media (max-width: 1025px) {
         width: 60%;
     }
+    @media (max-width: 481px) {
+        width: 30%;
+    }
 `;
 
 const Background = styled.div`
@@ -36,6 +39,9 @@ const TitleSearch = styled.h1`
     font-weight: 700;
     text-align: center;
     color: #fff;
+    @media (max-width: 481px) {
+        font-size: 2em;
+    }
 `;
 
 const TitleRules = styled.p`
@@ -50,6 +56,9 @@ const TitleRules = styled.p`
     @media (max-width: 769px) {
         font-size: 1em;
         margin-bottom: 10%;
+    }
+    @media (max-width: 481px) {
+        display: none;
     }
 `;
 
@@ -77,6 +86,11 @@ const AlignmentHeroes = styled.p`
     @media (max-width: 769px) {
         width: 43%;
     }
+    @media (max-width: 481px) {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
 `;
 
 const AlignmentHeroesData = styled.span`
@@ -85,6 +99,10 @@ const AlignmentHeroesData = styled.span`
     font-size: 2em;
     vertical-align: middle;
     transition: all 1s ease-in-out;
+    @media (max-width: 481px) {
+        font-size: 1em;
+        margin-left: 6%;
+    }
 `;
 
 const Search = styled.div`
@@ -112,6 +130,15 @@ const SearchInput = styled.input`
     }
     @media (max-width: 769px) {
         width: 85%;
+    }
+    @media (max-width: 481px) {
+        width: 50%;
+        font-size: 1em;
+        padding: 10%;
+        margin-bottom: 10%;
+        :hover {
+            padding: 10%;
+        }
     }
 `;
 
@@ -145,6 +172,10 @@ const SearchBtn = styled.input`
         padding: 2.7%;
         width: 9%;
     }
+    @media (max-width: 481px) {
+        padding: 10%;
+        width: 14%;
+    }
 `;
 
 const AllHeroes = styled.div`
@@ -156,6 +187,9 @@ const AllHeroes = styled.div`
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 20px;
+    }
+    @media (max-width: 481px) {
+        grid-template-columns: repeat(2, 1fr);
     }
 `;
 
@@ -178,6 +212,10 @@ const BackHomeBtn = styled.p`
     @media (max-width: 769px) {
         width: 50%;
         margin-top: 15%;
+    }
+    @media (max-width: 481px) {
+        width: 100%;
+        font-size: 1.5em;
     }
 `;
 
