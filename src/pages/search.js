@@ -1,7 +1,8 @@
 import {useState, useEffect, useRef} from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import styled from 'styled-components/macro';
 import {HeroCardContainer} from '../components/HeroCardContainer'
+import styled from 'styled-components/macro';
+import propTypes from 'prop-types';
 import lottie from 'lottie-web';
 import  searchIcon  from '../assets/img/search-icon.svg';
 
@@ -66,6 +67,7 @@ const AlignmentHeroesData = styled.span`
     display: inline-block;
     font-size: 2em;
     vertical-align: middle;
+    transition: all 1s ease-in-out;
 `;
 
 const Search = styled.div`
@@ -207,7 +209,7 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
         setTimeout(() => { setFetchDone(false) }, 2000);
     }
 
-    const searchHero = async e => {
+    const searchHero = async () => {
         
         try {
             setFetchDone(true)
@@ -309,4 +311,8 @@ export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesLi
                 </SearchContent>
         </>
     )
+}
+
+SearchHeroes.propTypes = {
+    
 }

@@ -5,6 +5,7 @@ import { Home } from './pages/home';
 import { Login } from './pages/login';
 import { SearchHeroes } from './pages/search';
 import { Error } from './pages/error'
+import propTypes, { object } from 'prop-types';
 import styled from 'styled-components/macro';
 import ReactModal from 'react-modal';
 
@@ -24,7 +25,7 @@ const App = () => {
     email: 'challenge@alkemy.org',
     password: 'react'
   }
-  const [nameData, setNameData] = useState(null);
+  let [nameData, setNameData] = useState(null);
   const [emailData, setEmailData] = useState(null);
   const [passwordData, setPasswordData] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
@@ -52,31 +53,23 @@ const App = () => {
   }
 
   const handleSubmit = e => {
-    if(nameData !== null && emailData === correctUser.email && passwordData === correctUser.password) {
+    if(emailData === correctUser.email && passwordData === correctUser.password) {
       window.localStorage.setItem('isAuthorized', 'true');
+      window.localStorage.setItem('username', JSON.stringify(nameData))
       return setIsAuth(true)
     } else if(nameData === null || emailData === null || passwordData === null) {
+      console.log('entramo');
       return setEmptyInput(true)
     } else {
       return setInvalidInput(true)
     }
   }
 
-    if(isLogged === 'true' && nameData) {
-      window.localStorage.setItem('username', JSON.stringify(nameData));
-
-      if(window.localStorage.getItem('myTeam') === 'null'){
-        setSelectedHero(selectedHero)
-        window.localStorage.setItem('myTeam', JSON.stringify(selectedHero));
-      } else {
-        window.localStorage.setItem('myTeam', JSON.stringify(selectedHero));
-      }
-    }
-
   const handleLogout = () => {
     setIsAuth(false);
     window.localStorage.setItem('isAuthorized', false)
-    window.localStorage.setItem('username', null)
+    window.localStorage.removeItem('username')
+    setNameData('');
   }
 
   const handleSelectedHeroe = (hero) => {
@@ -96,6 +89,15 @@ const App = () => {
     setShowLogMsg(false)
   }
 
+  if(isLogged === 'true') {
+
+    if(team === 'null'){
+      setSelectedHero(selectedHero)
+      window.localStorage.setItem('myTeam', JSON.stringify(selectedHero));
+    } else {
+      window.localStorage.setItem('myTeam', JSON.stringify(selectedHero));
+    }
+  }
 
     return (
         <AppDiv>
@@ -155,3 +157,8 @@ const App = () => {
 }
 
 export default App;
+
+
+App.propTypes = {
+
+}

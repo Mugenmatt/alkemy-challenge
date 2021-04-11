@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components/macro';
+import propTypes from 'prop-types';
 import Modal from 'react-modal';
 
 const Background = styled.div`
@@ -219,17 +220,13 @@ const SpanColorPowerstats = styled.span``;
 export const Home = ({ handleDeleteHero }) => {
 
     const isLogged = window.localStorage.getItem('isAuthorized');
-    const usernameParsed = window.localStorage.getItem('username');
+    const username = JSON.parse(window.localStorage.getItem('username'));
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
     const [chosenHeroModal, setChosenHeroModal] = useState(null);
 
-    const username = JSON.parse(window.localStorage.getItem('username'));
-    
     if(isLogged === 'false' || !isLogged){
-        if(window.localStorage.getItem('username') === 'null'){
-            return <Redirect to='/login' />
-        }
+        return <Redirect to='/login' />
     }
 
     const team = JSON.parse(window.localStorage.getItem('myTeam'));
@@ -316,7 +313,15 @@ export const Home = ({ handleDeleteHero }) => {
             <Background></Background>
             <HomeContent>
 
-            <TitleHome>{usernameParsed.length > 0 ? `${username} your Team!` : `${username} build your Team!`}</TitleHome>
+            <TitleHome>
+                {team.length === 0 ?
+                `Welcome ${!username ?
+                'unknown creature' :
+                username}, make your Team!`:
+                `${!username ?
+                'unknown creature' :
+                username} your Team!`}
+            </TitleHome>
 
                 <TeamBox>
                     {
@@ -419,4 +424,8 @@ export const Home = ({ handleDeleteHero }) => {
             </HomeContent>
         </>
     )
+}
+
+Home.propTypes = {
+  
 }

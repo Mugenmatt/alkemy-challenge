@@ -1,5 +1,6 @@
 import { Redirect } from 'react-router';
 import styled from 'styled-components/macro';
+import propTypes from 'prop-types';
 
 const Background = styled.div`
   width: 100%;
@@ -84,6 +85,7 @@ const ErrorMessage = styled.p`
 export const Login = (props) => {
     const { handleName, handleEmail, handlePassword, handleSubmit, invalidInput, emptyInput } = props;
     const isLogged = localStorage.getItem('isAuthorized');
+
     if(isLogged === 'true') {
         return <Redirect to='/' />
     }
@@ -97,7 +99,7 @@ export const Login = (props) => {
                 {emptyInput && <ErrorMessage> Inputs cannot be empty! </ErrorMessage>}
                 {invalidInput && <ErrorMessage> Invalid email or password </ErrorMessage>}
                 
-                <FormData onSubmit={handleSubmit}>
+                <FormData >
 
                     <LabelInput>Your Name</LabelInput>
                     <Input type="text" placeholder="Type your name here..." onChange={handleName} />
@@ -108,7 +110,7 @@ export const Login = (props) => {
                     <LabelInput>Password</LabelInput>
                     <Input type="password" placeholder="Type your password here..." onChange={handlePassword} />
 
-                    <SendBtn type="submit" value="SUBMIT" />
+                    <SendBtn type="button" onClick={handleSubmit} value="SUBMIT" />
 
                 </FormData>
 
@@ -116,4 +118,8 @@ export const Login = (props) => {
             
         </>
     )
+}
+
+Login.propTypes = {
+    
 }
