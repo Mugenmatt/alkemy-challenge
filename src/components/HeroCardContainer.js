@@ -280,7 +280,7 @@ export const HeroCardContainer = ({ heroesList, handleSelectedHeroe, handleNeutr
                                 <HeroDescriptionModal>Alter egos: <HeroDataModal> {chosenHeroModal.biography["alter-egos"] === '-' ? 'No alter egos' : chosenHeroModal.biography["alter-egos"]} </HeroDataModal></HeroDescriptionModal>
                                 <HeroDescriptionModal>Place of Birth: <HeroDataModal> {chosenHeroModal.biography["place-of-birth"] === '-' ? 'Unknown' : chosenHeroModal.biography["place-of-birth"]} </HeroDataModal></HeroDescriptionModal>
                                 <HeroDescriptionModal>First appearance: <HeroDataModal> {chosenHeroModal.biography["first-appearance"] === '-' ? 'Unknown' : chosenHeroModal.biography["first-appearance"]} </HeroDataModal></HeroDescriptionModal>
-                                <HeroDescriptionModal>Publisher: <HeroDataModal> {chosenHeroModal.biography.publisher === '-' ? 'Unknown' : chosenHeroModal.biography.publisher} </HeroDataModal></HeroDescriptionModal>
+                                <HeroDescriptionModal>Publisher: <HeroDataModal> {chosenHeroModal.biography.publisher === 'null' ? 'Unknown' : chosenHeroModal.biography.publisher} </HeroDataModal></HeroDescriptionModal>
 
 
                                 <HeroDescriptionModal>Alignment: <HeroDataModal> {chosenHeroModal.biography.alignment} </HeroDataModal></HeroDescriptionModal>

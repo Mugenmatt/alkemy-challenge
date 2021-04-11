@@ -47,6 +47,7 @@ const TeamBox = styled.div`
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+
 `;
 
 const TeamContainer = styled.div`
@@ -319,8 +320,8 @@ export const Home = ({ handleDeleteHero }) => {
                 'unknown creature' :
                 username}, make your Team!`:
                 `${!username ?
-                'unknown creature' :
-                username} your Team!`}
+                'Unknown creature' :
+                username} this is your Team!`}
             </TitleHome>
 
                 <TeamBox>

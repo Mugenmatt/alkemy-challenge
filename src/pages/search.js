@@ -162,7 +162,7 @@ const Lottie = styled.div`
     height: 100%;
 `;
 
-export const SearchHeroes = ({ urlToken, proxy, handleSelectedHeroe, setHeroesList, heroesList, isLoading, setIsLoading }) => {
+export const SearchHeroes = ({ handleSelectedHeroe, setHeroesList, heroesList }) => {
     const isLogged = window.localStorage.getItem('isAuthorized');
     const [writtenHero, setWrittenHero] = useState(null);
     const [errorFetch, setErrorFetch] = useState('')

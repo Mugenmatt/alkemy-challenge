@@ -12,6 +12,12 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 z-index: 200;
+@media (max-width: 1200px) {
+    width: 80%;
+    margin-left: 68px;
+    justify-content: space-between;
+    padding: 20px 50px;
+}
 `;
 
 const AlkemyIcon = styled.h1`
@@ -28,6 +34,7 @@ border: 2px solid #000;
   background-color: rgba(0, 0, 0, .3);
   box-shadow: inset 0px 0px 5px #000;
 }
+
 `;
 
 const LoginBox = styled.div`
@@ -36,6 +43,9 @@ justify-content: space-between;
 align-items: center;
 position: relative;
 right: -70px;
+@media (max-width: 1200px) {
+    right: -70px;
+}
 `;
 
 const LogMsg = styled.p`
@@ -46,6 +56,9 @@ position: absolute;
 bottom: 5px;
 left: -160px;
 display: ${(props) => props.displayMsg};
+@media (max-width: 1200px) {
+    display: none;
+}
 `;
 
 const UserIconImg = styled.img`

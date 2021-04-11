@@ -11,6 +11,12 @@ import ReactModal from 'react-modal';
 
 ReactModal.setAppElement('#root');
 
+// 320px — 480px: Mobile devices
+// 481px — 768px: iPads, Tablets
+// 769px — 1024px: Small screens, laptops
+// 1025px — 1200px: Desktops, large screens
+// 1201px and more —  Extra large screens, TV
+
 const AppDiv = styled.div`
   overflow: hidden;
 `;
@@ -78,9 +84,11 @@ const App = () => {
   }
   
   const handleDeleteHero = (heroDelete) => {
+    console.log(heroDelete);
     let deleteCharacter = team.filter(hero => {
         return hero.id !== heroDelete.id
       })
+      console.log(deleteCharacter);
     setSelectedHero(deleteCharacter)
   }
 
