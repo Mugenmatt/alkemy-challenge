@@ -1,77 +1,17 @@
 import React, {useState} from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { HeaderContainer } from './components/header'
 import { Home } from './pages/home';
 import { Login } from './pages/login';
 import { SearchHeroes } from './pages/search';
 import { Error } from './pages/error'
 import styled from 'styled-components/macro';
-import userDefaultIcon from './assets/img/userDefault.svg';
-import logoutIcon from './assets/img/logout.svg';
 import ReactModal from 'react-modal';
 
 ReactModal.setAppElement('#root');
 
 const AppDiv = styled.div`
   overflow: hidden;
-`;
-
-const Header = styled.div`
-  width: 75%;
-  border-bottom: 2px solid #000;
-  padding: 20px 200px;
-  margin: 20px auto 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 200;
-`;
-
-const AlkemyIcon = styled.h1`
-  font-family: 'comic_stripregular';
-  font-weight: 500;
-  background-color: #000;
-  color: #fff;
-  padding: 20px;
-  transition: all 0.6s ease-in-out;
-  border-radius: 10px;
-  border: 2px solid #000;
-  :hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, .3);
-    box-shadow: inset 0px 0px 5px #000;
-  }
-`;
-
-const LoginBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  right: -70px;
-`;
-
-const LogMsg = styled.p`
-  font-family: 'comictypemedium';
-  color: #000;
-  font-size: 1.3em;
-  position: absolute;
-  bottom: 5px;
-  left: -160px;
-  display: ${(props) => props.displayMsg};
-`;
-
-const UserIconImg = styled.img`
-  width: 30%;
-  background-color: #000;
-  padding: 10px;
-  transition: all 0.6s ease-in-out;
-  border-radius: 50%;
-  border: 2px solid #000;
-  :hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, .3);
-    box-shadow: inset 0px 0px 5px #000;
-  }
 `;
 
 const Main = styled.div`
@@ -153,18 +93,13 @@ const App = () => {
     return (
         <AppDiv>
           <Router>
-            <Header>
-              <Link to='/' style={{textDecoration:'none', color:'#000'}}>
-                <AlkemyIcon> Alkemy Challenge </AlkemyIcon>
-              </Link>
-              
-                <LoginBox>
-                    <LogMsg displayMsg={!showLogMsg ? 'inline-block' : 'none'} >{isLogged === 'true' ? 'User logged in' : 'User logged out'}</LogMsg>
-                    <Link to='/login' >
-                      <UserIconImg onMouseOut={handleShowLogMsg} src={isLogged === 'true' ? userDefaultIcon : logoutIcon} alt={isLogged === 'true' ? 'User logged in' : 'User logged out'} onClick={handleLogout} />
-                    </Link>
-                </LoginBox>
-            </Header>
+            <HeaderContainer
+              handleLogout={handleLogout}
+              handleShowLogMsg={handleShowLogMsg}
+              showLogMsg={showLogMsg}
+              isLogged={isLogged}
+            
+            />
             <Main>
                 <Switch>
 
