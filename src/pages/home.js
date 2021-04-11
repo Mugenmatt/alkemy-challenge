@@ -227,10 +227,9 @@ export const Home = ({ handleDeleteHero }) => {
     const username = JSON.parse(window.localStorage.getItem('username'));
     
     if(isLogged === 'false' || !isLogged){
-        console.log('hola');
-        // if(window.localStorage.getItem('username') === 'null'){
+        if(window.localStorage.getItem('username') === 'null'){
             return <Redirect to='/login' />
-        // }
+        }
     }
 
     const team = JSON.parse(window.localStorage.getItem('myTeam'));
