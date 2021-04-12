@@ -7,7 +7,6 @@ import  searchIcon  from '../assets/img/search-icon.svg';
 
 const SearchContent = styled.div`
     width: 80%;
-    height: 100vh;
     margin: auto;
     padding: 20px 100px;
     background-color: rgba(0, 0, 0, 0.5);
