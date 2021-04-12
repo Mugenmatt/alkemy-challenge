@@ -1,6 +1,5 @@
 import { Redirect } from 'react-router';
 import styled from 'styled-components/macro';
-import propTypes from 'prop-types';
 
 const Background = styled.div`
   width: 100%;
@@ -53,6 +52,9 @@ const LabelInput = styled.label`
     text-align: left;
     margin-top: 5%;
     color: #fff;
+    @media (max-width: 320px) {
+        font-size: 1em;
+    }
 `;
 
 const Input = styled.input`
@@ -133,8 +135,4 @@ export const Login = (props) => {
             
         </>
     )
-}
-
-Login.propTypes = {
-    
 }

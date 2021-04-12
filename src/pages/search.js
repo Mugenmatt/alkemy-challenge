@@ -2,7 +2,6 @@ import {useState, useEffect, useRef} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import {HeroCardContainer} from '../components/HeroCardContainer'
 import styled from 'styled-components/macro';
-import propTypes from 'prop-types';
 import lottie from 'lottie-web';
 import  searchIcon  from '../assets/img/search-icon.svg';
 
@@ -31,6 +30,9 @@ const Background = styled.div`
   z-index: -1;
   top: -265px;
   transition: all 0.30s ease-in-out;
+    @media (max-width: 481px) {
+        top: -300px;
+    }
 `;
 
 const TitleSearch = styled.h1`
@@ -40,7 +42,8 @@ const TitleSearch = styled.h1`
     text-align: center;
     color: #fff;
     @media (max-width: 481px) {
-        font-size: 2em;
+        font-size: 1.9em;
+        width: 100%;
     }
 `;
 
@@ -69,6 +72,18 @@ const RulesClarification = styled.p`
     font-weight: 700;
     text-align: center;
     margin-bottom: 3%;
+    @media (max-width: 1025px) {
+    font-size: 1.8em;
+    }
+    @media (max-width: 769px) {
+    font-size: 1.5em;
+    }
+    @media (max-width: 481px) {
+    font-size: 1em;
+    }
+    @media (max-width: 320px) {
+    font-size: 0.7em;
+    }
 `;
 
 const AlignmentHeroes = styled.p`
@@ -90,6 +105,7 @@ const AlignmentHeroes = styled.p`
         width: 100%;
         display: flex;
         justify-content: center;
+        font-size: 1em;
     }
 `;
 
@@ -220,25 +236,56 @@ const BackHomeBtn = styled.p`
 `;
 
 const LoadingBox = styled.div`
-    width: 500px;
-    height: 500px;    
-    top: 150px;
-    right: 100px;
+    width: 1000px;
+    height: 1000px;    
+    top: 365px;
+    right: 360px;
     position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition: all 0.30s ease-in-out;
+    @media (max-width: 1200px) {
+        width: 900px;
+        height: 900px;  
+        top: 345px;
+        right: 100px;
+    }
+    @media (max-width: 1025px) {
+        width: 800px;
+        height: 800px;  
+        top: 400px;
+        right: 70px;
+    }
+    @media (max-width: 769px) {
+        width: 700px;
+        height: 700px;  
+        top: 540px;
+        right: 0;
+    }
+    @media (max-width: 481px) {
+        width: 600px;
+        height: 600px;  
+        top: 240px;
+        right: -100px;
+    }
+    @media (max-width: 320px) {
+        width: 500px;
+        height: 500px;  
+        top: 300px;
+        right: -100px;
+    }
 `;
 
 const LoadingMsg = styled.p`
-    color: #fff;
+    color: #000;
     font-size: 5em;
     display: inline-block;
     font-family: 'comictypemedium';
 `;
 
-const Lottie = styled.div`
+const LottieOne = styled.div`
     width: 100%;
     height: 100%;
 `;
@@ -250,22 +297,16 @@ export const SearchHeroes = ({ handleSelectedHeroe, setHeroesList, heroesList })
     const [errorNoData, setErrorNoData] = useState(false);
     const [neutralChoice, setNeutralChoice] = useState(false);
     const [fetchDone, setFetchDone] = useState(null)
-    const container = useRef(null)
+    const containerOne = useRef(null)
 
     useEffect(() => {
         lottie.loadAnimation({
-            container: container.current,
+            container: containerOne.current,
             renderer: 'gif',
             loop: true,
             autoplay: true,
             animationData: require('../assets/loaders/flashLoader.json'),
             name: "Flash",
-            settings: {
-                style: {
-                    width: '50px',
-                    height: '50px'
-                }
-            }
         })
     }, [fetchDone])
 
@@ -375,7 +416,7 @@ export const SearchHeroes = ({ handleSelectedHeroe, setHeroesList, heroesList })
                                 fetchDone && 
                                 <LoadingBox> 
                                     {errorNoData ? <LoadingMsg>Error!</LoadingMsg> : <LoadingMsg>Loading!</LoadingMsg>}
-                                    <Lottie ref={container} /> 
+                                    <LottieOne ref={containerOne} /> 
                                 </LoadingBox> 
                         }
                         <HeroCardContainer 
@@ -392,8 +433,4 @@ export const SearchHeroes = ({ handleSelectedHeroe, setHeroesList, heroesList })
                 </SearchContent>
         </>
     )
-}
-
-SearchHeroes.propTypes = {
-    
 }

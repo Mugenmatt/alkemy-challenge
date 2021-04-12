@@ -1,17 +1,14 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { HeaderContainer } from './components/header'
 import { Home } from './pages/home';
 import { Login } from './pages/login';
 import { SearchHeroes } from './pages/search';
 import { Error } from './pages/error'
-import propTypes, { object } from 'prop-types';
 import styled from 'styled-components/macro';
 import ReactModal from 'react-modal';
 
 ReactModal.setAppElement('#root');
-
-// 320px — 480px: Mobile devices
 
 const AppDiv = styled.div`
   overflow: hidden;
@@ -161,8 +158,3 @@ const App = () => {
 }
 
 export default App;
-
-
-App.propTypes = {
-
-}

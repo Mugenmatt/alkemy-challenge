@@ -1,7 +1,7 @@
-import {useState} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components/macro';
-import propTypes from 'prop-types';
+import lottie from 'lottie-web';
 import Modal from 'react-modal';
 
 const Background = styled.div`
@@ -15,18 +15,21 @@ const Background = styled.div`
 `;
 
 const HomeContent = styled.div`
-    width: 80%;
+    width: 85%;
     margin: auto;
-    padding: 20px 100px;
+    padding: 20px 50px;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 20px;
     margin-bottom: 3%;
     z-index: 100;
     @media (max-width: 1025px) {
-        width: 60%;
+        width: 80%;
     }
     @media (max-width: 481px) {
-        width: 30%;
+        width: 60%;
+    }
+    @media (max-width: 320px) {
+        width: 60%;
     }
 `;
 
@@ -46,6 +49,10 @@ const TitleHome = styled.h1`
     }
     @media (max-width: 481px) {
         font-size: 1.5em;
+    }
+    @media (max-width: 320px) {
+        font-size: 2em;
+        text-align: center;
     }
 `;
 
@@ -69,14 +76,15 @@ const TeamBox = styled.div`
     flex-wrap: wrap;
     @media (max-width: 1025px) {
         display: grid;
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         grid-gap: 20px;
     }
     @media (max-width: 769px) {
         justify-items: center;
     }
     @media (max-width: 481px) {
-        background-color: red;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 20px;
     }
 `;
 
@@ -88,12 +96,15 @@ const TeamContainer = styled.div`
         flex-direction: column;
         align-items: center;
     }
-    @media (max-width: 481px) {
-        width: 100%;
-        justify-content: center;
-        position: relative;
-        right: 60px;
+    @media (max-width: 769px) {
+        margin: 0;
+        width: 200px;
     }
+    @media (max-width: 481px) {
+        width: 100px;
+        justify-content: center;
+    }
+    
 `;
 
 const Hero = styled.div`
@@ -113,8 +124,12 @@ const Hero = styled.div`
     @media (max-width: 1025px) {
         width: 300px;
     }
-    @media (max-width: 481px) {
-        width: 250px;
+    @media (max-width: 769px) {
+        width: 200px;
+        margin: 0;
+    }
+    @media (max-width: 320px) {
+        width: 150px;
     }
 `;
 
@@ -137,6 +152,9 @@ const HeroName = styled.h3`
         font-size: 1.5em;
         margin-top: 3%;
     }
+    @media (max-width: 320px) {
+        font-size: 1em;
+    }
 `;
 
 const HeroPowerStats = styled.p`
@@ -145,8 +163,16 @@ const HeroPowerStats = styled.p`
     font-size: 1.5em;
     color: #fff;
     margin-left: 25%;
+    @media (max-width: 769px) {
+        margin-left: 15%;
+        font-size: 1.2em;
+    }
     @media (max-width: 481px) {
-        margin-left: 20%;
+        margin-left: 10%;
+    }
+    @media (max-width: 320px) {
+        font-size: 1em;
+        margin-left: 5%;
     }
 `;
 
@@ -182,7 +208,11 @@ const AddHeroBtnBox = styled.p`
     justify-content: center;
     flex-wrap: wrap;
     @media (max-width: 769px) {
+        margin-top: 10%;
         width: 85%;
+    }
+    @media (max-width: 320px) {
+        width: 90%;
     }
 `;
 
@@ -203,7 +233,11 @@ const AddHeroBtn = styled.span`
         border: 2px solid #fff;
         color: #fff;
     }
-
+    @media (max-width: 320px) {
+        width: 70%;
+        padding: 15px 30px;
+        font-size: 5em;
+    }
 `;
 
 const TeamPowerstatsBox = styled.div`
@@ -216,6 +250,9 @@ const TeamPowerstatsBox = styled.div`
     @media (max-width: 769px) {
         width: 50%;
     }
+    @media (max-width: 320px) {
+        width: 80%;
+    }
 `;
 
 const TeamPowerstats = styled.p`
@@ -223,6 +260,9 @@ const TeamPowerstats = styled.p`
     font-size: 2em;
     @media (max-width: 1025px) {
         font-size: 1.5em;
+    }
+    @media (max-width: 320px) {
+        font-size: 1em;
     }
 `;
 
@@ -234,6 +274,9 @@ const DataTeamPowerstats = styled.span`
     }
     @media (max-width: 481px) {
         font-size: 0.9em;
+    }
+    @media (max-width: 320px) {
+        font-size: 1em;
     }
 `;
 
@@ -309,6 +352,185 @@ const SpanColorPowerstats = styled.span`
     }
 `;
 
+const LottieContainer = styled.div`
+    width: 150px;
+    height: 150px;    
+    position: absolute;
+    transition: all 0.30s ease-in-out;
+    animation: fly ease-in-out 3s infinite;
+    @keyframes fly {
+        0% { opacity: 0;}
+        10% {    opacity: 0;}
+        20% {
+            opacity: 1;
+            top: -240px;
+            left: 540px;
+        }
+        40% {
+            opacity: 1;
+            top: -240px;
+            left: 540px;
+        }
+        45% {    opacity: 0;}
+        50% {    opacity: 0;}
+        60% {
+            opacity: 1;
+            top: -240px;
+            left: 100px;
+        }
+        70% {
+            opacity: 1;
+            top: -240px;
+            left: 100px;
+        }
+        75% {    opacity: 0;}
+        85% {    opacity: 0;}
+        90% {
+            opacity: 1;
+            top: -240px;
+            left: 540px;
+        }
+        95% {
+            opacity: 1;
+            top: -240px;
+            left: 540px;
+        }
+        100% {    opacity: 0;}
+    }
+    @media (max-width: 1200px) {
+        @keyframes fly {
+        0% {    opacity: 0;}
+        10% {    opacity: 0;}
+        20% {
+            opacity: 1;
+            top: -210px;
+            left: 0;
+        }
+        40% {
+            opacity: 1;
+            top: -210px;
+            left: 0;
+        }
+        45% {    opacity: 0;}
+        50% {    opacity: 0;}
+        60% {
+            opacity: 1;
+            top: -210px;
+            left: 400px;
+        }
+        70% {
+            opacity: 1;
+            top: -210px;
+            left: 400px;
+        }
+        75% {    opacity: 0;}
+        85% {    opacity: 0;}
+        90% {
+            opacity: 1;
+            top: -210px;
+            left: 0;
+        }
+        95% {
+            opacity: 1;
+            top: -210px;
+            left: 0;
+        }
+        100% {    opacity: 0;}
+        }
+    }
+    @media (max-width: 1025px) {
+        @keyframes fly {
+        0% {    opacity: 0;}
+        10% {    opacity: 0;}
+        20% {
+            opacity: 1;
+            top: -200px;
+            left: 20px;
+        }
+        40% {
+            opacity: 1;
+            top: -200px;
+            left: 20px;
+        }
+        45% {    opacity: 0;}
+        50% {    opacity: 0;}
+        60% {
+            opacity: 1;
+            top: -200px;
+            left: 370px;
+        }
+        70% {
+            opacity: 1;
+            top: -200px;
+            left: 370px;
+        }
+        75% {    opacity: 0;}
+        85% {    opacity: 0;}
+        90% {
+            opacity: 1;
+            top: -200px;
+            left: 20px;
+        }
+        95% {
+            opacity: 1;
+            top: -200px;
+            left: 20px;
+        }
+        100% {    opacity: 0;}
+        }
+    }
+    @media (max-width: 769px) {
+
+        @keyframes fly {
+        0% {    opacity: 0;}
+        10% {    opacity: 0;}
+        20% {
+            opacity: 1;
+            top: -170px;
+            left: 20px;
+        }
+        40% {
+            opacity: 1;
+            top: -170px;
+            left: 20px;
+        }
+        45% {    opacity: 0;}
+        50% {    opacity: 0;}
+        60% {
+            opacity: 1;
+            top: -170px;
+            left: 370px;
+        }
+        70% {
+            opacity: 1;
+            top: -170px;
+            left: 370px;
+        }
+        75% {    opacity: 0;}
+        85% {    opacity: 0;}
+        90% {
+            opacity: 1;
+            top: -170px;
+            left: 20px;
+        }
+        95% {
+            opacity: 1;
+            top: -170px;
+            left: 20px;
+        }
+        100% {    opacity: 0;}
+        }
+    }
+    @media (max-width: 481px) {
+        display: none;
+    }
+`;
+
+const LottieTwo = styled.div`
+    width: 100%;
+    height: 100%;
+`;
+
 export const Home = ({ handleDeleteHero }) => {
 
     const isLogged = window.localStorage.getItem('isAuthorized');
@@ -316,6 +538,18 @@ export const Home = ({ handleDeleteHero }) => {
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
     const [chosenHeroModal, setChosenHeroModal] = useState(null);
+    const containerTwo = useRef(null)
+
+    useEffect(() => {
+        lottie.loadAnimation({
+            container: containerTwo.current,
+            renderer: 'gif',
+            loop: true,
+            autoplay: true,
+            animationData: require('../assets/loaders/superHeroLoader.json'),
+            name: "HeroFlying",
+        })
+    }, [])
 
     if(isLogged === 'false' || !isLogged){
         return <Redirect to='/login' />
@@ -323,6 +557,8 @@ export const Home = ({ handleDeleteHero }) => {
 
     const team = JSON.parse(window.localStorage.getItem('myTeam'));
     const teamPowerstats = [...team];
+    
+
 
     let TeamIntelligence = teamPowerstats.reduce((prev, curHero) => {
         let powerstats;
@@ -403,6 +639,9 @@ export const Home = ({ handleDeleteHero }) => {
     return (
         <>
             <Background></Background>
+            <LottieContainer>
+                <LottieTwo ref={containerTwo} /> 
+            </LottieContainer>
             <HomeContent>
 
             <TitleHome>

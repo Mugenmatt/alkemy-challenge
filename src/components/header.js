@@ -31,6 +31,10 @@ z-index: 200;
         justify-content: center;
         flex-wrap: wrap;
     }
+    @media (max-width: 320px) {
+        width: 50%;
+        margin-left: 10%;
+    }
 `;
 
 const AlkemyIcon = styled.h1`
@@ -50,6 +54,13 @@ border: 2px solid #000;
     @media (max-width: 481px) {
         width: 90%;
         text-align: center;
+    }
+    @media (max-width: 320px) {
+        width: 100%;
+        font-size: 1em;
+        position: relative;
+        right: 20px;
+        top: -20px;
     }
 `;
 
@@ -84,15 +95,19 @@ padding: 10px;
 transition: all 0.6s ease-in-out;
 border-radius: 50%;
 border: 2px solid #000;
-:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, .3);
-  box-shadow: inset 0px 0px 5px #000;
-}
-@media (max-width: 1200px) {
-    position: relative;
-    right: 20px;
-}
+    :hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, .3);
+    box-shadow: inset 0px 0px 5px #000;
+    }
+    @media (max-width: 1200px) {
+        position: relative;
+        right: 20px;
+    }
+    @media (max-width: 320px) {
+        right: 25px;
+        top: -10px;
+    }
 `;
 
 export const HeaderContainer = ({handleLogout, handleShowLogMsg, showLogMsg}) => {
