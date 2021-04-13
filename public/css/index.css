@@ -4,5 +4,7 @@ body {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    background-image: url('https://images-ext-2.discordapp.net/external/_8R1owMh8lJco9Gcn3Zhw4L1yOOESJILuCt1DiCGCjs/https/img.wallpapersafari.com/desktop/1920/1080/89/39/dLKfJc.jpg?width=1202&height=676');
+    background-image: url('../bg.jpg');
+    background-repeat: repeat;
+    background-position: bottom;
 }

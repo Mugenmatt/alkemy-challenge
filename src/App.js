@@ -78,7 +78,11 @@ const App = () => {
   
   const handleDeleteHero = (heroDelete) => {
     let deleteCharacter = team.filter(hero => {
-        return hero.id !== heroDelete.id
+        if(hero.id === heroDelete.id) {
+          hero.isChosen = 'false'
+          return
+        }
+        return hero;
       })
     setSelectedHero(deleteCharacter)
   }
@@ -150,7 +154,6 @@ const App = () => {
                 </Switch>
             </Main>
           </Router>
-          {/* <BackgroundOne src={bg} alt='Background superheroes' /> */}
         </AppDiv>
       );
 }
