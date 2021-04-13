@@ -12,6 +12,3 @@ Password = react
  - Clone the repository
  - npm install
  - Enjoy!
-
-
-Vercel Deploy Link: https://alkemy-challenge-git-master-mugenmatt.vercel.app/
