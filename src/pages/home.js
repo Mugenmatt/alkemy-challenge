@@ -355,12 +355,14 @@ const SpanColorPowerstats = styled.span`
 const LottieContainer = styled.div`
     width: 150px;
     height: 150px;    
+    top: -240px;
+    left: 540px;
     position: absolute;
     transition: all 0.30s ease-in-out;
     animation: fly ease-in-out 3s infinite;
     @keyframes fly {
         0% { opacity: 0;}
-        10% {    opacity: 0;}
+        10% { opacity: 0;}
         20% {
             opacity: 1;
             top: -240px;

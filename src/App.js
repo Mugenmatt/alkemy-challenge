@@ -77,11 +77,9 @@ const App = () => {
   }
   
   const handleDeleteHero = (heroDelete) => {
-    console.log(heroDelete);
     let deleteCharacter = team.filter(hero => {
         return hero.id !== heroDelete.id
       })
-      console.log(deleteCharacter);
     setSelectedHero(deleteCharacter)
   }
 
