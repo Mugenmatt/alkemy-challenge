@@ -12,3 +12,9 @@ Password = react
  - Clone the repository
  - npm install
  - Enjoy!
+
+[![home.png](https://i.postimg.cc/3NDcrXm5/home.png)](https://postimg.cc/n9pk0Q30)
+
+[![login.png](https://i.postimg.cc/vDFS44t1/login.png)](https://postimg.cc/jnch9d9K)
+
+[![search.png](https://i.postimg.cc/662W4Fhw/search.png)](https://postimg.cc/rzTXvnbY)
